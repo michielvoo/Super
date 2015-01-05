@@ -1,4 +1,5 @@
 wiki/
+.DS_Store
 *.lst
 *.obj
 *.rom
