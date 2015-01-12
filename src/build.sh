@@ -9,7 +9,12 @@ then
 fi
 
 # Determine file and project names
-program_file="$(pwd)/$1"
+program_file="$1"
+if ! [[ "$program_file" = /* ]];
+then
+    program_file="$(pwd)/$1"
+fi
+
 program_name="${program_file##*/}"
 project_dir="${program_file%/*}"
 project_name="${project_dir##*/}"
@@ -21,6 +26,7 @@ rom_file="$project_dir/$project_name.rom"
 
 pushd "$project_dir" 1> /dev/null
 
+PATH=$PATH:/usr/local/bin
 wla-65816 -oiv "$program_file" "$obj_file" || { exit 1; }
 wlalink -irv "$link_file" "$rom_file" || { rm "$obj_file"; exit 1; }
 
