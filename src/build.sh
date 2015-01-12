@@ -22,7 +22,7 @@ rom_file="$project_dir/$project_name.rom"
 pushd "$project_dir" 1> /dev/null
 
 wla-65816 -oiv "$program_file" "$obj_file" || { exit 1; }
-wlalink -irvS "$link_file" "$rom_file" || { rm "$obj_file"; exit 1; }
+wlalink -irv "$link_file" "$rom_file" || { rm "$obj_file"; exit 1; }
 
 popd 1> /dev/null
 
