@@ -4,3 +4,5 @@ upload.sh
 *.lst
 *.obj
 *.rom
+*.sublime-workspace
+*.sym
