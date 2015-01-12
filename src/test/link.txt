@@ -1,2 +1,2 @@
 [objects]
-program.obj
+program.o
