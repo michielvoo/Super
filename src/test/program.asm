@@ -19,13 +19,37 @@ sta CGDATA
 lda #$0F
 sta INIDISP
 
-lda #$80
+lda #(NMIENABLE | JOYENABLE)
 sta NMITIMEN
+
+; rep #$20
 
 Loop:
     jmp Loop
 
 VBlank:
+    lda #JOYHUP
+    and JOY1H
+    cmp #JOYHUP
+    beq On
+
+    lda #JOYHDOWN
+    and JOY1H
+    cmp #JOYHDOWN
+    beq Off
+
+    rti
+
+On:
+    lda #$0F
+    sta INIDISP
+
+    rti
+
+Off:
+    lda #$80
+    sta INIDISP
+
     rti
 
 .ENDS
