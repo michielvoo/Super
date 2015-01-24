@@ -8,7 +8,8 @@
 Reset:
 
 .INCDIR "../lib/"
-.INCLUDE "reset.asm"
+.INCLUDE "registers.asm"
+.INCLUDE "initialize.asm"
 
 Loop:
     jmp Loop
