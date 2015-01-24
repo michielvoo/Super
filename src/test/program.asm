@@ -19,8 +19,14 @@ sta CGDATA
 lda #$0F
 sta INIDISP
 
+lda #$80
+sta NMITIMEN
+
 Loop:
     jmp Loop
+
+VBlank:
+    rti
 
 .ENDS
 

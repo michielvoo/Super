@@ -10,5 +10,6 @@
 
 .LOROM
 .SNESEMUVECTOR
-    RESET Reset
+    RESET   Reset
+    NMI     VBlank
 .ENDEMUVECTOR
