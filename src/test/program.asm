@@ -11,6 +11,14 @@ Reset:
 .INCLUDE "registers.asm"
 .INCLUDE "initialize.asm"
 
+stz CGADD
+lda #$FF
+sta CGDATA
+sta CGDATA
+
+lda #$0F
+sta INIDISP
+
 Loop:
     jmp Loop
 
