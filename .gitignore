@@ -2,7 +2,7 @@ wiki/
 .DS_Store
 upload.sh
 *.lst
-*.obj
+*.o
 *.rom
 *.sublime-workspace
 *.sym
