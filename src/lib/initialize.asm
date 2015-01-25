@@ -4,7 +4,23 @@ sta INIDISP     ; Screen off, brightness to zero
 stz OBSEL
 stz OAMADDL
 stz OAMADDH
+
 ; Clear OAMDATA
+    stx $80
+-   stz OAMDATA
+    stz OAMDATA
+    stz OAMDATA
+    stz OAMDATA
+    dex
+    bne -
+
+    stx $20
+-   stz OAMDATA
+    dex
+    bne -
+
+    stz OAMADDL
+    stz OAMADDH
 
 stz BGMODE
 stz MOSAIC
@@ -100,4 +116,3 @@ stz MEMSEL
 stz WMADDL
 stz WMADDH
 stz WMADDB
-; Clear WRAM
