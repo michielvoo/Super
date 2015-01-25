@@ -1,3 +1,5 @@
+sep #$30
+
 lda $80
 sta INIDISP     ; Screen off, brightness to zero
 
@@ -6,7 +8,7 @@ stz OAMADDL
 stz OAMADDH
 
 ; Clear OAMDATA
-    stx $80
+    ldx #$80
 -   stz OAMDATA
     stz OAMDATA
     stz OAMDATA
@@ -75,6 +77,15 @@ stz M7Y
 
 stz CGADD
 ; Clear CGDATA
+    rep #$10
+
+    ldx #$0100
+-   stz CGDATA
+    stz CGDATA
+    dex
+    bne -
+
+    sep #$10
 
 stz W12SEL
 stz W34SEL
