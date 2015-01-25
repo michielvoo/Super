@@ -1,3 +1,6 @@
+; Test
+; Turn the screen off and on again by pressing down and up respectively on the direction pad.
+
 .INCLUDE "header.asm"
 
 .BANK 0
