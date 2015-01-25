@@ -1,4 +1,4 @@
-; Test
+; test
 ; Super Nintendo experiments
 
 .INCLUDE "header.asm"
@@ -9,6 +9,9 @@
 .SECTION "Main"
 
 Reset:
+
+clc
+xce
 
 .INCDIR "../lib/"
 .INCLUDE "registers.asm"
