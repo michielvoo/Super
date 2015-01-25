@@ -1,5 +1,5 @@
-; Test
-; Turn the screen off and on again by pressing down and up respectively on the direction pad.
+; onoff
+; Turn the screen on and off again by pressing up and down respectively on the direction pad.
 
 .INCLUDE "header.asm"
 
@@ -24,8 +24,6 @@ sta INIDISP
 
 lda #(NMIENABLE | JOYENABLE)
 sta NMITIMEN
-
-; rep #$20
 
 Loop:
     jmp Loop
