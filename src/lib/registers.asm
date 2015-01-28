@@ -1,5 +1,3 @@
-; CPU registers
-
 .DEFINE INIDISP     $2100 ; w
 .DEFINE OBSEL       $2101 ; w
 .DEFINE OAMADD      $2102 ; w, 16-bit
@@ -79,86 +77,87 @@
 .DEFINE WMADDH      $2182 ; w
 .DEFINE WMADDB      $2183 ; w
 
-; PPU registers
+.DEFINE JOYSER0     $4016 ; rw
+.DEFINE JOYSER1     $4017 ; rw
 
-.DEFINE NMITIMEN $4200 ; w
-.DEFINE WRIO     $4201 ; w
-.DEFINE WRMPYA   $4202 ; w
-.DEFINE WRMPYB   $4203 ; w
-.DEFINE WRDIV    $4204 ; w, 16-bit
-.DEFINE WRDIVL   $4204 ; w
-.DEFINE WRDIVH   $4205 ; w
-.DEFINE WRDIVB   $4206 ; w
-.DEFINE HTIME    $4207 ; w, 16-bit
-.DEFINE HTIMEL   $4207 ; w
-.DEFINE HTIMEH   $4208 ; w
-.DEFINE VTIME    $4209 ; w, 16-bit
-.DEFINE VTIMEL   $4209 ; w
-.DEFINE VTIMEH   $420A ; w
-.DEFINE MDMAEN   $420B ; w
-.DEFINE HDMAEN   $420C ; w
-.DEFINE MEMSEL   $420D ; w
-.DEFINE RDNMI    $4210 ; r
-.DEFINE TIMEUP   $4211 ; r
-.DEFINE HVBJOY   $4212 ; r
-.DEFINE RDIO     $4213 ; r
-.DEFINE RDDIV    $4214 ; r, 16-bit
-.DEFINE RDDIVL   $4214 ; r
-.DEFINE RDDIVH   $4215 ; r
-.DEFINE RDMPY    $4216 ; r, 16-bit
-.DEFINE RDMPYL   $4216 ; r
-.DEFINE RDMPYH   $4217 ; r
-.DEFINE JOY1     $4218 ; r, 16-bit
-.DEFINE JOY1L    $4218 ; r
-.DEFINE JOY1H    $4219 ; r
-.DEFINE JOY2     $421A ; r, 16-bit
-.DEFINE JOY2L    $421A ; r
-.DEFINE JOY2H    $421B ; r
-.DEFINE JOY3     $421C ; r, 16-bit
-.DEFINE JOY3L    $421C ; r
-.DEFINE JOY3H    $421D ; r
-.DEFINE JOY4     $421E ; r, 16-bit
-.DEFINE JOY4L    $421E ; r
-.DEFINE JOY4H    $421F ; r
+.DEFINE NMITIMEN    $4200 ; w
+.DEFINE WRIO        $4201 ; w
+.DEFINE WRMPYA      $4202 ; w
+.DEFINE WRMPYB      $4203 ; w
+.DEFINE WRDIV       $4204 ; w, 16-bit
+.DEFINE WRDIVL      $4204 ; w
+.DEFINE WRDIVH      $4205 ; w
+.DEFINE WRDIVB      $4206 ; w
+.DEFINE HTIME       $4207 ; w, 16-bit
+.DEFINE HTIMEL      $4207 ; w
+.DEFINE HTIMEH      $4208 ; w
+.DEFINE VTIME       $4209 ; w, 16-bit
+.DEFINE VTIMEL      $4209 ; w
+.DEFINE VTIMEH      $420A ; w
+.DEFINE MDMAEN      $420B ; w
+.DEFINE HDMAEN      $420C ; w
+.DEFINE MEMSEL      $420D ; w
+.DEFINE RDNMI       $4210 ; r
+.DEFINE TIMEUP      $4211 ; r
+.DEFINE HVBJOY      $4212 ; r
+.DEFINE RDIO        $4213 ; r
+.DEFINE RDDIV       $4214 ; r, 16-bit
+.DEFINE RDDIVL      $4214 ; r
+.DEFINE RDDIVH      $4215 ; r
+.DEFINE RDMPY       $4216 ; r, 16-bit
+.DEFINE RDMPYL      $4216 ; r
+.DEFINE RDMPYH      $4217 ; r
+.DEFINE JOY1        $4218 ; r, 16-bit
+.DEFINE JOY1L       $4218 ; r
+.DEFINE JOY1H       $4219 ; r
+.DEFINE JOY2        $421A ; r, 16-bit
+.DEFINE JOY2L       $421A ; r
+.DEFINE JOY2H       $421B ; r
+.DEFINE JOY3        $421C ; r, 16-bit
+.DEFINE JOY3L       $421C ; r
+.DEFINE JOY3H       $421D ; r
+.DEFINE JOY4        $421E ; r, 16-bit
+.DEFINE JOY4L       $421E ; r
+.DEFINE JOY4H       $421F ; r
 
 ; DMA registers (channel 0)
 
-.DEFINE DMAP0 $4300 ; w, DMA settings
-.DEFINE BBAD0 $4301 ; w, B-bus address
-.DEFINE A1T0  $4302 ; w, 16-bit, A-bus address
-.DEFINE A1T0L $4302 ; w
-.DEFINE A1T0H $4303 ; w
-.DEFINE A1B0  $4304 ; w
-.DEFINE DAS0  $4305 ; w, 16-bit, transfer size
-.DEFINE DAS0L $4305 ; w
-.DEFINE DAS0H $4306 ; w
-.DEFINE DASB0 $4307 ; w
-.DEFINE A2A0  $4308 ; w, 16-bit
-.DEFINE A2A0L $4308 ; w
-.DEFINE A2A0H $4309 ; w
-.DEFINE NTRL0 $430A ; w
+.DEFINE DMAP0       $4300 ; w, DMA settings
+.DEFINE BBAD0       $4301 ; w, B-bus address
+.DEFINE A1T0        $4302 ; w, 16-bit, A-bus address
+.DEFINE A1T0L       $4302 ; w
+.DEFINE A1T0H       $4303 ; w
+.DEFINE A1B0        $4304 ; w
+.DEFINE DAS0        $4305 ; w, 16-bit, transfer size
+.DEFINE DAS0L       $4305 ; w
+.DEFINE DAS0H       $4306 ; w
+.DEFINE DASB0       $4307 ; w
+.DEFINE A2A0        $4308 ; w, 16-bit
+.DEFINE A2A0L       $4308 ; w
+.DEFINE A2A0H       $4309 ; w
+.DEFINE NTRL0       $430A ; w
 
 ; Register values
 
 ; NMITIMEN
-.DEFINE NMIENABLE       $80
-.DEFINE JOYENABLE       $01
+.DEFINE NMIENABLE   $80
+.DEFINE JOYENABLE   $01
 
 ; HVBJOY
-.DEFINE JOYPAD_READY    $01
+.DEFINE JOYREADY    $01
 
 ; JOY1/2/3/4L
-.DEFINE JOYLR           $10
-.DEFINE JOYLL           $20
-.DEFINE JOYLX           $40 ; (blue)
-.DEFINE JOYLA           $80 ; (red)
+.DEFINE JOYLR       $10
+.DEFINE JOYLL       $20
+.DEFINE JOYLX       $40 ; (blue)
+.DEFINE JOYLA       $80 ; (red)
 
 ; JOY1/2/3/4H
-.DEFINE JOYHRIGHT       $01
-.DEFINE JOYHLEFT        $02
-.DEFINE JOYHDOWN        $04
-.DEFINE JOYHUP          $08
-.DEFINE JOYHSTART       $10 ; (right of select)
-.DEFINE JOYHSELECT      $20 ; (left of start)
-.DEFINE JOYHY           $40 ; (green)
-.DEFINE JOYHB           $80 ; (yellow)
+.DEFINE JOYHRIGHT   $01
+.DEFINE JOYHLEFT    $02
+.DEFINE JOYHDOWN    $04
+.DEFINE JOYHUP      $08
+.DEFINE JOYHSTART   $10 ; (right of select)
+.DEFINE JOYHSELECT  $20 ; (left of start)
+.DEFINE JOYHY       $40 ; (green)
+.DEFINE JOYHB       $80 ; (yellow)
