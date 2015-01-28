@@ -141,21 +141,24 @@
 ; Register values
 
 ; NMITIMEN
-.DEFINE NMIENABLE   $80
-.DEFINE JOYENABLE   $01
+.DEFINE NMIENABLE       $80
+.DEFINE JOYENABLE       $01
+
+; HVBJOY
+.DEFINE JOYPAD_READY    $01
 
 ; JOY1/2/3/4L
-.DEFINE JOYLR       $10
-.DEFINE JOYLL       $20
-.DEFINE JOYLX       $40 ; (blue)
-.DEFINE JOYLA       $80 ; (red)
+.DEFINE JOYLR           $10
+.DEFINE JOYLL           $20
+.DEFINE JOYLX           $40 ; (blue)
+.DEFINE JOYLA           $80 ; (red)
 
 ; JOY1/2/3/4H
-.DEFINE JOYHRIGHT   $01
-.DEFINE JOYHLEFT    $02
-.DEFINE JOYHDOWN    $04
-.DEFINE JOYHUP      $08
-.DEFINE JOYHSTART   $10 ; (right of select)
-.DEFINE JOYHSELECT  $20 ; (left of start)
-.DEFINE JOYHY       $40 ; (green)
-.DEFINE JOYHB       $80 ; (yellow)
+.DEFINE JOYHRIGHT       $01
+.DEFINE JOYHLEFT        $02
+.DEFINE JOYHDOWN        $04
+.DEFINE JOYHUP          $08
+.DEFINE JOYHSTART       $10 ; (right of select)
+.DEFINE JOYHSELECT      $20 ; (left of start)
+.DEFINE JOYHY           $40 ; (green)
+.DEFINE JOYHB           $80 ; (yellow)

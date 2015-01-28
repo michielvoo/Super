@@ -39,6 +39,11 @@ IRQ:
     rti
 
 VBlank:
+    lda #JOYPAD_READY
+-   and HVBJOY
+    cmp #JOYPAD_READY
+    bne -
+
     stz CGADD
 
     lda #JOYLA
