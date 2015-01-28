@@ -11,24 +11,35 @@
 Reset:
     clc
     xce
+    sei
 
     .INCDIR "../lib/"
     .INCLUDE "registers.asm"
     .INCLUDE "initialize.asm"
 
     stz CGADD
-    lda #$FF
+    lda #$57
     sta CGDATA
     sta CGDATA
 
     lda #$0F
     sta INIDISP
 
+    lda #(NMIENABLE | JOYENABLE)
+    sta NMITIMEN
+
+    cli
+
+-   wai
+    jmp -
+
 Loop:
     jmp Loop
 
+IRQ:
+    rti
+
 VBlank:
-    nop
     rti
 
 .ENDS

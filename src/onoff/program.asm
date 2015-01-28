@@ -9,24 +9,32 @@
 .SECTION "Main"
 
 Reset:
+    clc
+    xce
+    sei
 
-.INCDIR "../lib/"
-.INCLUDE "registers.asm"
-.INCLUDE "initialize.asm"
+    .INCDIR "../lib/"
+    .INCLUDE "registers.asm"
+    .INCLUDE "initialize.asm"
 
-stz CGADD
-lda #$FF
-sta CGDATA
-sta CGDATA
+    stz CGADD
+    lda #$FF
+    sta CGDATA
+    sta CGDATA
 
-lda #$0F
-sta INIDISP
+    lda #$0F
+    sta INIDISP
 
-lda #(NMIENABLE | JOYENABLE)
-sta NMITIMEN
+    lda #(NMIENABLE | JOYENABLE)
+    sta NMITIMEN
 
-Loop:
-    jmp Loop
+    cli
+
+-   wai
+    jmp -
+
+IRQ:
+    rti
 
 VBlank:
     lda #JOYHUP
