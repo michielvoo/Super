@@ -12,7 +12,6 @@
 Reset:
     clc
     xce
-    sei
 
     .INCDIR "../lib/"
     .INCLUDE "registers.asm"
@@ -30,8 +29,6 @@ Reset:
     lda #(NMIENABLE | JOYENABLE)
     sta NMITIMEN
 
-    cli
-
 -   wai
     jmp -
 
@@ -46,29 +43,38 @@ VBlank:
 
     stz CGADD
 
-    lda #JOYLA
-    and JOY1L
-    cmp #JOYLA
-    beq Red
+    rep #$20
 
-    lda #JOYHB
-    and JOY1H
-    cmp #JOYHB
+    lda #(JOYA + JOYY)
+    and JOY1
+    cmp #(JOYA + JOYY)
     beq Yellow
 
-    lda #JOYLX
-    and JOY1L
-    cmp #JOYLX
+    lda #JOYA
+    and JOY1
+    cmp #JOYA
+    beq Red
+
+    lda #JOYB
+    and JOY1
+    cmp #JOYB
+    beq Yellow
+
+    lda #JOYX
+    and JOY1
+    cmp #JOYX
     beq Blue
 
-    lda #JOYHY
-    and JOY1H
-    cmp #JOYHY
+    lda #JOYY
+    and JOY1
+    cmp #JOYY
     beq Green
 
     rti
 
 Red:
+    sep #$20
+
     lda #%00011111
     sta CGDATA
     lda #%00000000
@@ -77,6 +83,8 @@ Red:
     rti
 
 Green:
+    sep #$20
+
     lda #%11100000
     sta CGDATA
     lda #%00000011
@@ -85,6 +93,8 @@ Green:
     rti
 
 Blue:
+    sep #$20
+
     lda #%00000000
     sta CGDATA
     lda #%01111100
@@ -93,6 +103,8 @@ Blue:
     rti
 
 Yellow:
+    sep #$20
+
     lda #%11111111
     sta CGDATA
     lda #%00000011

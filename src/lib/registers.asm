@@ -146,13 +146,27 @@
 ; HVBJOY
 .DEFINE JOYREADY    $01
 
-; JOY1/2/3/4L
+; JOY1/2/3/4 (16-bit)
+.DEFINE JOYR        $0010
+.DEFINE JOYL        $0020
+.DEFINE JOYX        $0040 ; (blue)
+.DEFINE JOYA        $0080 ; (red)
+.DEFINE JOYRIGHT    $0100
+.DEFINE JOYLEFT     $0200
+.DEFINE JOYDOWN     $0400
+.DEFINE JOYUP       $0800
+.DEFINE JOYSTART    $1000 ; (right of select)
+.DEFINE JOYSELECT   $2000 ; (left of start)
+.DEFINE JOYY        $4000 ; (green)
+.DEFINE JOYB        $8000 ; (yellow)
+
+; JOY1/2/3/4L (8-bit)
 .DEFINE JOYLR       $10
 .DEFINE JOYLL       $20
 .DEFINE JOYLX       $40 ; (blue)
 .DEFINE JOYLA       $80 ; (red)
 
-; JOY1/2/3/4H
+; JOY1/2/3/4H (8-bit)
 .DEFINE JOYHRIGHT   $01
 .DEFINE JOYHLEFT    $02
 .DEFINE JOYHDOWN    $04

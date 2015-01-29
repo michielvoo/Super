@@ -11,7 +11,6 @@
 Reset:
     clc
     xce
-    sei
 
     .INCDIR "../lib/"
     .INCLUDE "registers.asm"
@@ -27,8 +26,6 @@ Reset:
 
     lda #(NMIENABLE | JOYENABLE)
     sta NMITIMEN
-
-    cli
 
 -   wai
     jmp -
