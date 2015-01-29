@@ -1,3 +1,5 @@
+; Initializes registers and clears OAM, CGDATA and VRAM.
+
 sep #$30
 
 lda $80

@@ -1,3 +1,5 @@
+; Defines registers and constants.
+
 .DEFINE INIDISP     $2100 ; w
 .DEFINE OBSEL       $2101 ; w
 .DEFINE OAMADD      $2102 ; w, 16-bit
