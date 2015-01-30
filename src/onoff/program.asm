@@ -30,9 +30,6 @@ Reset:
 -   wai
     jmp -
 
-IRQ:
-    rti
-
 VBlank:
     lda #JOYREADY
 -   and HVBJOY

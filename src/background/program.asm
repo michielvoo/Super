@@ -1,5 +1,5 @@
-; test
-; Super Nintendo experiments
+; background
+; Displays a background pattern
 
 .INCLUDE "header.asm"
 
@@ -29,12 +29,6 @@ Reset:
 
 -   wai
     jmp -
-
-Loop:
-    jmp Loop
-
-IRQ:
-    rti
 
 VBlank:
     rti
