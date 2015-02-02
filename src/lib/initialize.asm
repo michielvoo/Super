@@ -1,15 +1,17 @@
-; Initializes registers and clears OAM, CGDATA and VRAM.
+; Initializes registers and clears OAM, VRAM and CGRAM.
 
-sep #$30
+sep #$20
+rep #$10
 
 lda $80
-sta INIDISP     ; Screen off, brightness to zero
+sta INIDISP
 
 stz OBSEL
-stz OAMADDL
-stz OAMADDH
 
 ; Clear OAMDATA
+    stz OAMADDL
+    stz OAMADDH
+
     ldx #$80
 -   stz OAMDATA
     stz OAMDATA
@@ -57,11 +59,21 @@ stz BG4HOFS
 stz BG4VOFS
 stz BG4VOFS
 
-lda $80
-sta VMAIN       ; Set VMDATA transfer mode to 16-bit
-stz VMADDL
-stz VMADDH
 ; Clear VMDATA
+    lda $80
+    sta VMAIN   ; Set VMDATA transfer mode to 16-bit
+
+    stz VMADDL
+    stz VMADDH
+
+    ldx #$8000
+-   stz VMDATAL
+    stz VMDATAH
+    dex
+    bne -
+
+    stz VMADDL
+    stz VMADDH
 
 stz M7SEL
 stz M7A
@@ -77,9 +89,8 @@ stz M7X
 stz M7Y
 stz M7Y
 
-stz CGADD
 ; Clear CGDATA
-    rep #$10
+    stz CGADD
 
     ldx #$0100
 -   stz CGDATA
@@ -87,7 +98,7 @@ stz CGADD
     dex
     bne -
 
-    sep #$10
+    stz CGADD
 
 stz W12SEL
 stz W34SEL
