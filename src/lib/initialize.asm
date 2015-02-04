@@ -1,9 +1,8 @@
 ; Initializes registers and clears OAM, VRAM and CGRAM.
 
 sep #$20
-rep #$10
 
-lda $80
+lda #$80
 sta INIDISP
 
 stz OBSEL
@@ -20,7 +19,7 @@ stz OBSEL
     dex
     bne -
 
-    stx $20
+    ldx #$20
 -   stz OAMDATA
     dex
     bne -
@@ -60,11 +59,13 @@ stz BG4VOFS
 stz BG4VOFS
 
 ; Clear VMDATA
-    lda $80
+    lda #$80
     sta VMAIN   ; Set VMDATA transfer mode to 16-bit
 
     stz VMADDL
     stz VMADDH
+
+    rep #$10
 
     ldx #$8000
 -   stz VMDATAL
@@ -117,12 +118,12 @@ stz TSW
 
 stz CGWSEL
 stz CGADSUB
-lda $E0
+lda #$E0
 sta COLDATA     ; Set BGR to 0
 stz SETINI
 
 stz NMITIMEN
-lda $FF
+lda #$FF
 sta WRIO        ; Enable RDIO
 stz WRMPYA
 stz WRMPYB
