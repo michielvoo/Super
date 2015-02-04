@@ -60,7 +60,11 @@ Reset:
     ldx #$0400  ; Tilemap segment 1
     stx VMADD
     lda #$01    ; Character 1, palette 0
-    sta VMDATA
+    ldx #$0400
+-   sta VMDATAL
+    stz VMDATAH
+    dex
+    bne -
 
 
     stz BGMODE  ; Mode 0
