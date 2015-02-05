@@ -39,12 +39,19 @@ Reset:
     lda #$7F
     sta CGDATA
 
+    lda #$05    ; Palette 1, color 1
+    sta CGADD
+    lda #$FF
+    sta CGDATA
+    lda #$00
+    sta CGDATA
+
 ; Character
 
     lda #$00    ; Skip the high bytes when writing the character (plane 0)
     sta VMAIN
 
-    ldx #$08    ; Character segment 0, character 1
+    ldx #$08    ; Character segment 0, character 1 (skip character 0 part A and B at 2bpp)
     stx VMADD
 
     ; A
@@ -140,6 +147,13 @@ Reset:
     stz VMDATAH
     dex
     bne -
+
+    ldx #$0400      ; Tilemap segment 1
+    stx VMADD
+    lda #$01        ; Character 1, ...
+    sta VMDATAL
+    lda #%00000100  ; ... palette 1
+    sta VMDATAH
 
 ; Enable
 
