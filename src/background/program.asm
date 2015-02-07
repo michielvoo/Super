@@ -18,9 +18,9 @@ Reset:
     .INCLUDE "registers.asm"
     .INCLUDE "initialize.asm"
 
-    sep #$20
-
 ; Background
+
+    sep #$20
 
     lda #$10
     sta BGMODE  ; Mode 0, 16 x 16 tiles
