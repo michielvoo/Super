@@ -23,23 +23,23 @@ Reset:
 ; Background
 
     lda #$10
-    sta BGMODE  ; Mode 0, large tiles
+    sta BGMODE  ; Mode 0, 16 x 16 tiles
 
     lda #$04
-    sta BG1SC   ; Tilemap segment 1 (address $0400)
+    sta BG1SC   ; Background layer 1 uses tilemap segment 1 (address $0400 in VRAM)
 
-    stz BG12NBA ; Character segment 0
+    stz BG12NBA ; Background layer 1 uses character segment 0 (address $0000 in VRAM)
 
 ; Color
 
-    lda #$01    ; Palette 0, color 1
+    lda #$01    ; Palette 0, color 1 (white)
     sta CGADD
     lda #$FF
     sta CGDATA
     lda #$7F
     sta CGDATA
 
-    lda #$05    ; Palette 1, color 1
+    lda #$05    ; Palette 1, color 1 (orange)
     sta CGADD
     lda #$FF
     sta CGDATA
@@ -48,13 +48,15 @@ Reset:
 
 ; Character
 
-    lda #$00    ; Skip the high bytes when writing the character (plane 0)
+    lda #$00    ; Increment address after writing VMDATAL
     sta VMAIN
 
-    ldx #$08    ; Character segment 0, character 1 (skip character 0 part A and B at 2bpp)
+    ; Character segment 0
+    ; Skip to character 2 (@2bpp)
+    ldx #$0010
     stx VMADD
 
-    ; A
+    ; Character 2 (tile 1 part A)
     lda #%00000000
     sta VMDATAL
     lda #%00000000
@@ -72,7 +74,7 @@ Reset:
     lda #%00100000
     sta VMDATAL
 
-    ; B
+    ; Character 3 (tile 1 part B)
     lda #%00000000
     sta VMDATAL
     lda #%00000000
@@ -92,10 +94,11 @@ Reset:
     lda #%00000010
     sta VMDATAL
 
-    ; C
-    lda #($08 + (16 * 8) )
-    sta VMADD
+    ; Skip to character 18 (@2bpp)
+    ldx #$0090
+    stx VMADD
 
+    ; Character 18 (tile 1 part C)
     lda #%00100000
     sta VMDATAL
     lda #%00100000
@@ -113,7 +116,7 @@ Reset:
     lda #%00000000
     sta VMDATAL
 
-    ; D
+    ; Character 19 (tile 1 part D)
     lda #%10000010
     sta VMDATAL
     lda #%00000010
@@ -131,7 +134,6 @@ Reset:
     lda #%00000000
     sta VMDATAL
 
-
 ; Tilemap
 
     lda #$80
@@ -139,27 +141,29 @@ Reset:
 
     rep #$10
 
-    ldx #$0400  ; Tilemap segment 1
+    ldx #$0400      ; Tilemap segment 1, tile 0 (first tile)
     stx VMADD
-    lda #$01    ; Character 1, palette 0
-    ldx #$0400  ; 32 by 32 tilemap
+    lda #$02        ; Refer to character 2, ...
+    sta VMDATAL
+    lda #%00000100  ; ... using color 1 of palette 1 (orange)
+    sta VMDATAH
+
+    lda #$02    ; Refer to character 2, ...
+    ldx #$000E  ; Create 14 tiles in tilemap
 -   sta VMDATAL
-    stz VMDATAH
+    stz VMDATAH ; ... using color 1 of palette 0 (white)
     dex
     bne -
 
-    ldx #$0400      ; Tilemap segment 1
-    stx VMADD
-    lda #$01        ; Character 1, ...
+    lda #$02        ; Refer to character 2, ...
     sta VMDATAL
-    lda #%00000100  ; ... palette 1
+    lda #%00000100  ; ... using color 1 of palette 1 (orange)
     sta VMDATAH
 
 ; Enable
 
     lda #$01
     sta TM      ; Background layer 1
-
 
     lda #$0F
     sta INIDISP
