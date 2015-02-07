@@ -1,6 +1,5 @@
 ; bgcolor
-; Press the A, B, X and Y buttons to change the background color to red, yellow, blue or green 
-; respectively. 
+; Press the A, B, X and Y buttons to change the background color. 
 
 .INCLUDE "header.asm"
 
