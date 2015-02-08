@@ -29,6 +29,30 @@ Reset:
     lda #$7F
     sta CGDATA
 
+    ; Color 2 (red)
+    lda #%00011111
+    sta CGDATA
+    lda #$00
+    sta CGDATA
+
+    ; Color 3 (green)
+    lda #%11100000
+    sta CGDATA
+    lda #%00000011
+    sta CGDATA
+
+    ; Color 4 (blue)
+    lda #$00
+    sta CGDATA
+    lda #%01111111
+    sta CGDATA
+
+    ; Color 5 (yellow)
+    lda #$FF
+    sta CGDATA
+    lda #%00000011
+    sta CGDATA
+
 ; Create a sprite
 
     stz OBSEL   ; Sprite size is 8x8 or 16x16, sprite character segment 0
@@ -53,7 +77,7 @@ Reset:
 
 ; Create a character
 
-    lda #$00    ; Increment address after writing VMDATAL
+    lda #$80    ; Increment address after writing VMDATAH
     sta VMAIN
 
     ; Sprite character segment 0
@@ -61,45 +85,63 @@ Reset:
     lda #$20
     sta VMADD
 
-    ; Character 2
-    lda #%10000000
-    sta VMDATAL
-    lda #%11000000
-    sta VMDATAL
-    lda #%10100000
-    sta VMDATAL
-    lda #%10010000
-    sta VMDATAL
-    lda #%10001000
-    sta VMDATAL
-    lda #%10000100
-    sta VMDATAL
-    lda #%10000010
-    sta VMDATAL
-    lda #%10000001
-    sta VMDATAL
+    ; Character 2 (A)  plane 0 + 1
+    stz VMDATAL
+    lda #%00000000
+    sta VMDATAH
+    stz VMDATAL
+    lda #%01111111
+    sta VMDATAH
+    stz VMDATAL
+    lda #%01000000
+    sta VMDATAH
+    stz VMDATAL
+    lda #%01000000
+    sta VMDATAH
+    stz VMDATAL
+    lda #%01000000
+    sta VMDATAH
+    stz VMDATAL
+    lda #%01000000
+    sta VMDATAH
+    stz VMDATAL
+    lda #%01000000
+    sta VMDATAH
+    stz VMDATAL
+    lda #%01000000
+    sta VMDATAH
 
-    ; Skip to character 3 (@4bpp)
+    ; Character 3 (@4bpp)
     lda #$30
     sta VMADD
 
-    ; Character 3
+    ; Character 3 (B)  plane 0 + 1
     lda #%00000000
     sta VMDATAL
-    lda #%00000000
+    sta VMDATAH
+    lda #%01111111
     sta VMDATAL
-    lda #%00000000
+    sta VMDATAH
+    lda #%00000001
     sta VMDATAL
-    lda #%00000000
+    sta VMDATAH
+    lda #%00000001
     sta VMDATAL
-    lda #%00000000
+    sta VMDATAH
+    lda #%00000001
     sta VMDATAL
-    lda #%00000000
+    sta VMDATAH
+    lda #%00000001
     sta VMDATAL
-    lda #%00000000
+    sta VMDATAH
+    lda #%10000001
     sta VMDATAL
-    lda #%00000000
+    lda #%00000001
+    sta VMDATAH
+    lda #%10000001
     sta VMDATAL
+    lda #%00000001
+    sta VMDATAH
 
     rep #$20
 
@@ -107,45 +149,114 @@ Reset:
     lda #$0120
     sta VMADD
 
-    ; Character 18
-    lda #%10000000
+    sep #$20
+
+    ; Character 18 (C)  plane 0 + 1
+    lda #%00000011
     sta VMDATAL
-    lda #%10000000
+    stz VMDATAH
+    lda #%00000000
     sta VMDATAL
-    lda #%10000000
+    stz VMDATAH
+    lda #%00000000
     sta VMDATAL
-    lda #%10000000
+    stz VMDATAH
+    stz VMDATAL
+    stz VMDATAH
+    stz VMDATAL
+    stz VMDATAH
+    stz VMDATAL
+    stz VMDATAH
+    stz VMDATAL
+    stz VMDATAH
+    stz VMDATAL
+    stz VMDATAH
+
+    ; Character 18 (C)  plane 2 + 3
+    lda #%00000000
     sta VMDATAL
-    lda #%10000000
+    stz VMDATAH
+    lda #%01000000
     sta VMDATAL
-    lda #%10000000
+    stz VMDATAH
+    lda #%01000000
     sta VMDATAL
-    lda #%10000000
+    stz VMDATAH
+    lda #%01000000
     sta VMDATAL
-    lda #%11111111
+    stz VMDATAH
+    lda #%01000000
     sta VMDATAL
+    stz VMDATAH
+    lda #%01000000
+    sta VMDATAL
+    stz VMDATAH
+    lda #%01000000
+    sta VMDATAL
+    stz VMDATAH
+    lda #%01111111
+    sta VMDATAL
+    stz VMDATAH
+
+    rep #$20
 
     ; Skip to character 19 (@4bpp)
     lda #$0130
     sta VMADD
 
-    ; Character 19
-    lda #%10000000
+    sep #$20
+
+    ; Character 19 (D) plane 0 + 1
+    lda #%11100000
     sta VMDATAL
-    lda #%01000000
+    stz VMDATAH
+    lda #%10000001
     sta VMDATAL
-    lda #%00100000
+    stz VMDATAH
+    lda #%10000001
     sta VMDATAL
-    lda #%00010000
+    stz VMDATAH
+    lda #%00000001
     sta VMDATAL
-    lda #%00001000
+    stz VMDATAH
+    lda #%00000001
     sta VMDATAL
-    lda #%00000100
+    stz VMDATAH
+    lda #%00000001
     sta VMDATAL
-    lda #%00000010
+    stz VMDATAH
+    lda #%00000001
     sta VMDATAL
-    lda #%11111111
+    stz VMDATAH
+    lda #%01111111
     sta VMDATAL
+    stz VMDATAH
+
+    ; Character 19 (D) plane 2 + 3
+    lda #%00000000
+    sta VMDATAL
+    stz VMDATAH
+    lda #%00000001
+    sta VMDATAL
+    stz VMDATAH
+    lda #%00000001
+    sta VMDATAL
+    stz VMDATAH
+    lda #%00000001
+    sta VMDATAL
+    stz VMDATAH
+    lda #%00000001
+    sta VMDATAL
+    stz VMDATAH
+    lda #%00000001
+    sta VMDATAL
+    stz VMDATAH
+    lda #%00000001
+    sta VMDATAL
+    stz VMDATAH
+    lda #%01111111
+    sta VMDATAL
+    stz VMDATAH
 
 ; Enable background layer, screen
 
