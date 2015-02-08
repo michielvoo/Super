@@ -16,8 +16,14 @@ Reset:
     clc
     xce
 
+    ; Turn off decimal mode
+    rep #$08
+
     ; Initialize registers, OAM, CGDATA and VRAM
     .INCLUDE "../lib/initialize.asm"
+
+    ; Set accumulator register to 8-bit
+    sep #$20
 
     ; Set color 0 of palette 0 to white
     stz CGADD
@@ -34,7 +40,7 @@ Reset:
     lda #(NMITIMEN_NMIENABLE | NMITIMEN_JOYENABLE)
     sta NMITIMEN
 
-    ; Keep waiting for the interrupts
+    ; Keep waiting for interrupts
 -   wai
     jmp -
 

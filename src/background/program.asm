@@ -1,5 +1,6 @@
 ; background
-; Displays a background pattern
+; Displays a background pattern.
+
 .INCLUDE "../lib/registers.asm"
 .INCLUDE "../lib/settings.asm"
 .INCLUDE "header.asm"
@@ -10,52 +11,55 @@
 .SECTION "Main"
 
 Reset:
+    ; Switch to native mode
     clc
     xce
 
+    ; Turn off decimal mode
     rep #$08
 
     .INCLUDE "../lib/initialize.asm"
 
-; Background
-
+    ; Set accumulator register to 8-bit
     sep #$20
 
+    ; Set background mode to 0 (4 layers with 4 colors) and tile size to 16x16
     lda #$10
-    sta BGMODE  ; Mode 0, 16 x 16 tiles
+    sta BGMODE
 
+    ; Set background layer 1 to use tilemap segment 1 (address $0400 in VRAM)
     lda #$04
-    sta BG1SC   ; Background layer 1 uses tilemap segment 1 (address $0400 in VRAM)
+    sta BG1SC
 
-    stz BG12NBA ; Background layer 1 uses character segment 0 (address $0000 in VRAM)
+    ; Set background layer 1 to use background character segment 0 (address $0000 in VRAM)
+    stz BG12NBA
 
-; Color
-
-    lda #$01    ; Palette 0, color 1 (white)
+    ; Set color 1 of palette 0 to white
+    lda #$01
     sta CGADD
     lda #$FF
     sta CGDATA
     lda #$7F
     sta CGDATA
 
-    lda #$05    ; Palette 1, color 1 (orange)
+    ; Set color 1 of palette 1 to orange
+    lda #$05
     sta CGADD
     lda #$FF
     sta CGDATA
     lda #$00
     sta CGDATA
 
-; Character
-
-    lda #$00    ; Increment address after writing VMDATAL
+    ; Set VRAM write mode to increment the VRAM address after writing VMDATAL
+    ; We will not be writing VMDATAH (bits for plane 1 of the background characters)
+    lda #$00
     sta VMAIN
 
-    ; Background layer 1 character segment 0
-    ; Skip to character 2 (@2bpp)
+    ; Set VRAM address to background layer 1's character segment, character 2 (@2bpp)
     ldx #$10
     stx VMADD
 
-    ; Character 2 (tile 1 part A)
+    ; Write bits for character 2 plane 0 (tile 1 part A)
     lda #%00000000
     sta VMDATAL
     lda #%00000000
@@ -73,7 +77,7 @@ Reset:
     lda #%00100000
     sta VMDATAL
 
-    ; Character 3 (tile 1 part B)
+    ; Write bits for character 3 plane 0 (tile 1 part A)
     lda #%00000000
     sta VMDATAL
     lda #%00000000
@@ -93,11 +97,12 @@ Reset:
     lda #%00000010
     sta VMDATAL
 
-    ; Skip to character 18 (@2bpp)
+    ; Set VRAM address to background layer 1's character segment, character 18 (@2bpp)
+    ; Characters for 16x16 tiles are interleaved in VRAM, so we skipped characters for other tiles
     ldx #$90
     stx VMADD
 
-    ; Character 18 (tile 1 part C)
+    ; Write bits for character 18 plane 0 (tile 1 part C)
     lda #%00100000
     sta VMDATAL
     lda #%00100000
@@ -115,7 +120,7 @@ Reset:
     lda #%00000000
     sta VMDATAL
 
-    ; Character 19 (tile 1 part D)
+    ; Write bits for character 19 plane 0 (tile 1 part D)
     lda #%10000010
     sta VMDATAL
     lda #%00000010
@@ -133,43 +138,53 @@ Reset:
     lda #%00000000
     sta VMDATAL
 
-; Tilemap
-
+    ; Set VRAM write mode to increment the VRAM address after writing VMDATAH
     lda #$80
     sta VMAIN
 
+    ; Reset index registers to 16-bit
     rep #$10
 
-    ldx #$0400      ; Tilemap segment 1, tile 0 (first tile)
+    ; Write tilemap segment 1 starting at tile 0
+    ldx #$0400
     stx VMADD
-    lda #$02        ; Refer to character 2, ...
+    ; Tile 0 refers to character 2
+    lda #$02
     sta VMDATAL
-    lda #%00000100  ; ... using color 1 of palette 1 (orange)
+    ; Tile 0 uses palette 1 (where color 1 is orange)
+    lda #%00000100
     sta VMDATAH
 
-    lda #$02    ; Refer to character 2, ...
-    ldx #$000E  ; Create 14 tiles in tilemap
+    ; The next tiles also refer to character 2
+    lda #$02
+    ; We will create 14 tiles in tilemap
+    ldx #$000E
 -   sta VMDATAL
-    stz VMDATAH ; ... using color 1 of palette 0 (white)
+    ; These tiles use palette 0 (where color 1 is white)
+    stz VMDATAH
     dex
     bne -
 
-    lda #$02        ; Refer to character 2, ...
+    ; The last tile also refers to character 2
+    lda #$02
     sta VMDATAL
-    lda #%00000100  ; ... using color 1 of palette 1 (orange)
+    ; This tile uses palette 1 (where color 1 is orange)
+    lda #%00000100
     sta VMDATAH
 
-; Enable
-
+    ; Enable background layer 1
     lda #$01
-    sta TM      ; Background layer 1
+    sta TM
 
+    ; Enable the screen at full brightness
     lda #$0F
     sta INIDISP
 
+    ; Enable the VBlank NMI
     lda #NMITIMEN_NMIENABLE
     sta NMITIMEN
 
+    ; Keep waiting for interrupts
 -   wai
     jmp -
 

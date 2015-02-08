@@ -1,5 +1,6 @@
 ; sprite
-; Displays a sprite that can be controlled with a controller
+; Displays a multi-colored sprite.
+
 .INCLUDE "../lib/registers.asm"
 .INCLUDE "../lib/settings.asm"
 .INCLUDE "../lib/values.asm"
@@ -11,43 +12,47 @@
 .SECTION "Main"
 
 Reset:
+    ; Switch to native mode
     clc
     xce
 
+    ; Turn off decimal mode
     rep #$08
 
     .INCLUDE "../lib/initialize.asm"
 
-; Create color palette
-
+    ; Set accumulator register to 8-bit
     sep #$20
 
-    lda #$81    ; Palette 8, color 1 (white)
+; Create color palette
+
+    ; Set color 1 of palette 8 to white
+    lda #$81
     sta CGADD
     lda #$FF
     sta CGDATA
     lda #$7F
     sta CGDATA
 
-    ; Color 2 (red)
+    ; Set color 2 of palette 8 to red
     lda #%00011111
     sta CGDATA
     lda #$00
     sta CGDATA
 
-    ; Color 3 (green)
+    ; Set color 3 of palette 8 to green
     lda #%11100000
     sta CGDATA
     lda #%00000011
     sta CGDATA
 
-    ; Color 4 (blue)
+    ; Set color 4 of palette 8 to blue
     lda #$00
     sta CGDATA
     lda #%01111111
     sta CGDATA
 
-    ; Color 5 (yellow)
+    ; Set color 5 of palette 8 to yellow
     lda #$FF
     sta CGDATA
     lda #%00000011
@@ -55,37 +60,44 @@ Reset:
 
 ; Create a sprite
 
-    stz OBSEL   ; Sprite size is 8x8 or 16x16, sprite character segment 0
+    ; Set available sprite sizes to 8x8 and 16x16 and select sprite character segment 0
+    stz OBSEL
 
-    stz OAMADDH     ; Select table 1
+    ; Select sprite table 1
+    stz OAMADDH
     stz OAMADDL
     
-    ; Sprite 0
+    ; Center sprite 0 on the screen
     lda #(SCREEN_W / 2 - 8)
-    sta OAMDATA     ; x
+    sta OAMDATA
     lda #(SCREEN_H / 2 - 8)
-    sta OAMDATA     ; y
-    lda #$02
-    sta OAMDATA     ; Character 2
-    stz OAMDATA     ; Palette 0, priority 0, no flip
+    sta OAMDATA
 
+    ; Sprite 0 refers to character 2
+    lda #$02
+    sta OAMDATA
+    ; Sprite 0 refers to palette 0, has priority 0 and no flip
+    stz OAMDATA
+
+    ; Select sprite table 2
+    lda #$01
     stz OAMADDL
-    lda #$01        ; Select table 2
     sta OAMADDH
+
+    ; Set sprite 0 size to large
     lda #%00000010
-    sta OAMDATA     ; Size large (see OBSEL)
+    sta OAMDATA
 
 ; Create a character
-
-    lda #$80    ; Increment address after writing VMDATAH
+    ; Set VRAM write mode to increment the VRAM address after writing VMDATAH
+    lda #$80
     sta VMAIN
 
-    ; Sprite character segment 0
-    ; Character 2 (@4bpp)
+    ; Set VRAM address to sprite 0's character segment, character 2 (@4bpp)
     lda #$20
     sta VMADD
 
-    ; Character 2 (A)  plane 0 + 1
+    ; Write bits for character 2 plane 0 + 1 (sprite 0 part A)
     stz VMDATAL
     lda #%00000000
     sta VMDATAH
@@ -111,11 +123,11 @@ Reset:
     lda #%01000000
     sta VMDATAH
 
-    ; Character 3 (@4bpp)
+    ; Set VRAM address to sprite 0's character segment, character 3 (@4bpp)
     lda #$30
     sta VMADD
 
-    ; Character 3 (B)  plane 0 + 1
+    ; Write bits for character 3 plane 0 + 1 (sprite 0 part B)
     lda #%00000000
     sta VMDATAL
     sta VMDATAH
@@ -143,15 +155,18 @@ Reset:
     lda #%00000001
     sta VMDATAH
 
+    ; Reset accumulator register to 16-bit mode
     rep #$20
 
-    ; Skip to character 18 (@4bpp)
+    ; Set VRAM address to sprite 0's character segment, character 18 (@4bpp)
+    ; Characters for sprites are interleaved in VRAM, so we skipped characters for other sprites
     lda #$0120
     sta VMADD
 
+    ; Set accumulator register to 8-bit mode
     sep #$20
 
-    ; Character 18 (C)  plane 0 + 1
+    ; Write bits for character 18 plane 0 + 1 (sprite 0 part C)
     lda #%00000011
     sta VMDATAL
     stz VMDATAH
@@ -172,7 +187,7 @@ Reset:
     stz VMDATAL
     stz VMDATAH
 
-    ; Character 18 (C)  plane 2 + 3
+    ; Write bits for character 18 plane 2 + 3 (sprite 0 part C)
     lda #%00000000
     sta VMDATAL
     stz VMDATAH
@@ -198,15 +213,7 @@ Reset:
     sta VMDATAL
     stz VMDATAH
 
-    rep #$20
-
-    ; Skip to character 19 (@4bpp)
-    lda #$0130
-    sta VMADD
-
-    sep #$20
-
-    ; Character 19 (D) plane 0 + 1
+    ; Write bits for character 19 plane 0 + 1 (sprite 0 part D)
     lda #%11100000
     sta VMDATAL
     stz VMDATAH
@@ -232,7 +239,7 @@ Reset:
     sta VMDATAL
     stz VMDATAH
 
-    ; Character 19 (D) plane 2 + 3
+    ; Write bits for character 19 plane 2 + 3 (sprite 0 part D)
     lda #%00000000
     sta VMDATAL
     stz VMDATAH
@@ -258,19 +265,19 @@ Reset:
     sta VMDATAL
     stz VMDATAH
 
-; Enable background layer, screen
-
-    sep #$20
-
-    lda #%00010000  ; Enable BG1
+    ; Enable background layer 1
+    lda #%00010000
     sta TM
 
+    ; Enable the screen at full brightness
     lda #$0F
     sta INIDISP
 
+    ; Enable the VBlank NMI
     lda #NMITIMEN_NMIENABLE
     sta NMITIMEN
 
+    ; Keep waiting for interrupts
 -   wai
     jmp -
 

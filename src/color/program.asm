@@ -16,7 +16,13 @@ Reset:
     clc
     xce
 
+    ; Turn off decimal mode
+    rep #$08
+
     .INCLUDE "../lib/initialize.asm"
+
+    ; Set accumulator register to 8-bit
+    sep #$20
 
     ; Set color 0 of palette 0 to white
     stz CGADD
@@ -33,7 +39,7 @@ Reset:
     lda #(NMITIMEN_NMIENABLE | NMITIMEN_JOYENABLE)
     sta NMITIMEN
 
-    ; Keep waiting for the interrupts
+    ; Keep waiting for interrupts
 -   wai
     jmp -
 
@@ -47,7 +53,7 @@ VBlank:
     ; Prepare to change color 0 of palette 0
     stz CGADD
 
-    ; Set accumulator register to 16-bit
+    ; Reset accumulator register to 16-bit
     rep #$20
 
     ; Jump to label Yellow if the A and Y buttons were pressed
