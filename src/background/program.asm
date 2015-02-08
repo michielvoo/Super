@@ -51,9 +51,9 @@ Reset:
     lda #$00    ; Increment address after writing VMDATAL
     sta VMAIN
 
-    ; Character segment 0
+    ; Background layer 1 character segment 0
     ; Skip to character 2 (@2bpp)
-    ldx #$0010
+    ldx #$10
     stx VMADD
 
     ; Character 2 (tile 1 part A)
@@ -95,7 +95,7 @@ Reset:
     sta VMDATAL
 
     ; Skip to character 18 (@2bpp)
-    ldx #$0090
+    ldx #$90
     stx VMADD
 
     ; Character 18 (tile 1 part C)

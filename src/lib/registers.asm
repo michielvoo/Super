@@ -5,7 +5,7 @@
 .DEFINE OAMADD      $2102 ; w, 16-bit
 .DEFINE OAMADDL     $2102 ; w
 .DEFINE OAMADDH     $2103 ; w
-.DEFINE OAMDATA     $2104 ; w, 2x? (also see OAMDATAREAD)
+.DEFINE OAMDATA     $2104 ; w (also see OAMDATAREAD)
 .DEFINE BGMODE      $2105 ; w
 .DEFINE MOSAIC      $2106 ; w
 .DEFINE BG1SC       $2107 ; w
@@ -177,3 +177,8 @@
 .DEFINE JOYHSELECT  $20 ; (left of start)
 .DEFINE JOYHY       $40 ; (green)
 .DEFINE JOYHB       $80 ; (yellow)
+
+; Environment values
+
+.DEFINE SCREENW 256     ; Screen width
+.DEFINE SCREENH 224     ; Screen height
