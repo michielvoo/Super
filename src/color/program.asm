@@ -1,6 +1,8 @@
 ; bgcolor
 ; Press the A, B, X and Y buttons to change the background color. 
-
+.INCLUDE "../lib/registers.asm"
+.INCLUDE "../lib/settings.asm"
+.INCLUDE "../lib/values.asm"
 .INCLUDE "header.asm"
 
 .BANK 0
@@ -12,9 +14,7 @@ Reset:
     clc
     xce
 
-    .INCDIR "../lib/"
-    .INCLUDE "registers.asm"
-    .INCLUDE "initialize.asm"
+    .INCLUDE "../lib/initialize.asm"
 
     stz CGADD
     lda #$FF
@@ -25,45 +25,45 @@ Reset:
     lda #$0F
     sta INIDISP
 
-    lda #(NMIENABLE | JOYENABLE)
+    lda #(NMITIMEN_NMIENABLE | NMITIMEN_JOYENABLE)
     sta NMITIMEN
 
 -   wai
     jmp -
 
 VBlank:
-    lda #JOYREADY
+    lda #HVBJOY_JOYREADY
 -   and HVBJOY
-    cmp #JOYREADY
+    cmp #HVBJOY_JOYREADY
     bne -
 
     stz CGADD
 
     rep #$20
 
-    lda #(JOYA + JOYY)
+    lda #(JOY_RED + JOY_GREEN)
     and JOY1
-    cmp #(JOYA + JOYY)
+    cmp #(JOY_RED + JOY_GREEN)
     beq Yellow
 
-    lda #JOYA
+    lda #JOY_RED
     and JOY1
-    cmp #JOYA
+    cmp #JOY_RED
     beq Red
 
-    lda #JOYB
+    lda #JOY_YELLOW
     and JOY1
-    cmp #JOYB
+    cmp #JOY_YELLOW
     beq Yellow
 
-    lda #JOYX
+    lda #JOY_BLUE
     and JOY1
-    cmp #JOYX
+    cmp #JOY_BLUE
     beq Blue
 
-    lda #JOYY
+    lda #JOY_GREEN
     and JOY1
-    cmp #JOYY
+    cmp #JOY_GREEN
     beq Green
 
     rti

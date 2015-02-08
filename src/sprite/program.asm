@@ -1,6 +1,8 @@
 ; sprite
 ; Displays a sprite that can be controlled with a controller
-
+.INCLUDE "../lib/registers.asm"
+.INCLUDE "../lib/settings.asm"
+.INCLUDE "../lib/values.asm"
 .INCLUDE "header.asm"
 
 .BANK 0
@@ -14,9 +16,7 @@ Reset:
 
     rep #$08
 
-    .INCDIR "../lib"
-    .INCLUDE "registers.asm"
-    .INCLUDE "initialize.asm"
+    .INCLUDE "../lib/initialize.asm"
 
 ; Create color palette
 
@@ -35,8 +35,10 @@ Reset:
 
     stz OAMADDL
     stz OAMADDH
-    stz OAMDATA ; x
-    stz OAMDATA ; y
+    lda #(SCREEN_W/2 - 4)
+    sta OAMDATA ; x
+    lda #(SCREEN_H/2 - 4)
+    sta OAMDATA ; y
     stz OAMDATA ; Character 0
     stz OAMDATA ; Palette 0, priority 0, no flip
                 ; Size small (8x8)
@@ -76,7 +78,7 @@ Reset:
     lda #$0F
     sta INIDISP
 
-    lda #NMIENABLE
+    lda #NMITIMEN_NMIENABLE
     sta NMITIMEN
 
 -   wai

@@ -1,6 +1,9 @@
 ; onoff
 ; Turn the screen on and off again by pressing up and down respectively on the direction pad.
 
+.INCLUDE "../lib/registers.asm"
+.INCLUDE "../lib/settings.asm"
+.INCLUDE "../lib/values.asm"
 .INCLUDE "header.asm"
 
 .BANK 0
@@ -12,9 +15,7 @@ Reset:
     clc
     xce
 
-    .INCDIR "../lib/"
-    .INCLUDE "registers.asm"
-    .INCLUDE "initialize.asm"
+    .INCLUDE "../lib/initialize.asm"
 
     stz CGADD
     lda #$FF
@@ -24,26 +25,26 @@ Reset:
     lda #$0F
     sta INIDISP
 
-    lda #(NMIENABLE | JOYENABLE)
+    lda #(NMITIMEN_NMIENABLE | NMITIMEN_JOYENABLE)
     sta NMITIMEN
 
 -   wai
     jmp -
 
 VBlank:
-    lda #JOYREADY
+    lda #HVBJOY_JOYREADY
 -   and HVBJOY
-    cmp #JOYREADY
+    cmp #HVBJOY_JOYREADY
     bne -
 
-    lda #JOYHUP
+    lda #JOYH_UP
     and JOY1H
-    cmp #JOYHUP
+    cmp #JOYH_UP
     beq On
 
-    lda #JOYHDOWN
+    lda #JOYH_DOWN
     and JOY1H
-    cmp #JOYHDOWN
+    cmp #JOYH_DOWN
     beq Off
 
     rti

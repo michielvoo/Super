@@ -1,4 +1,4 @@
-; Defines registers and constants.
+; PPU registers
 
 .DEFINE INIDISP     $2100 ; w
 .DEFINE OBSEL       $2101 ; w
@@ -69,18 +69,28 @@
 .DEFINE OPVCT       $213D ; r
 .DEFINE STAT77      $213E ; r
 .DEFINE STAT78      $213F ; r
+
+; APU registers
+
 .DEFINE APUI00      $2140 ; rw
 .DEFINE APUI01      $2141 ; rw
 .DEFINE APUI02      $2142 ; rw
 .DEFINE APUI03      $2143 ; rw
+
+; WRAM registers
+
 .DEFINE WMDATA      $2180 ; rw
 .DEFINE WMADD       $2181 ; w, 24-bit
 .DEFINE WMADDL      $2181 ; w
 .DEFINE WMADDH      $2182 ; w
 .DEFINE WMADDB      $2183 ; w
 
+; Serial joypad registers
+
 .DEFINE JOYSER0     $4016 ; rw
 .DEFINE JOYSER1     $4017 ; rw
+
+; CPU registers
 
 .DEFINE NMITIMEN    $4200 ; w
 .DEFINE WRIO        $4201 ; w
@@ -138,47 +148,3 @@
 .DEFINE A2A0L       $4308 ; w
 .DEFINE A2A0H       $4309 ; w
 .DEFINE NTRL0       $430A ; w
-
-; Register values
-
-; NMITIMEN
-.DEFINE NMIENABLE   $80
-.DEFINE JOYENABLE   $01
-
-; HVBJOY
-.DEFINE JOYREADY    $01
-
-; JOY1/2/3/4 (16-bit)
-.DEFINE JOYR        $0010
-.DEFINE JOYL        $0020
-.DEFINE JOYX        $0040 ; (blue)
-.DEFINE JOYA        $0080 ; (red)
-.DEFINE JOYRIGHT    $0100
-.DEFINE JOYLEFT     $0200
-.DEFINE JOYDOWN     $0400
-.DEFINE JOYUP       $0800
-.DEFINE JOYSTART    $1000 ; (right of select)
-.DEFINE JOYSELECT   $2000 ; (left of start)
-.DEFINE JOYY        $4000 ; (green)
-.DEFINE JOYB        $8000 ; (yellow)
-
-; JOY1/2/3/4L (8-bit)
-.DEFINE JOYLR       $10
-.DEFINE JOYLL       $20
-.DEFINE JOYLX       $40 ; (blue)
-.DEFINE JOYLA       $80 ; (red)
-
-; JOY1/2/3/4H (8-bit)
-.DEFINE JOYHRIGHT   $01
-.DEFINE JOYHLEFT    $02
-.DEFINE JOYHDOWN    $04
-.DEFINE JOYHUP      $08
-.DEFINE JOYHSTART   $10 ; (right of select)
-.DEFINE JOYHSELECT  $20 ; (left of start)
-.DEFINE JOYHY       $40 ; (green)
-.DEFINE JOYHB       $80 ; (yellow)
-
-; Environment values
-
-.DEFINE SCREENW 256     ; Screen width
-.DEFINE SCREENH 224     ; Screen height

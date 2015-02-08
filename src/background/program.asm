@@ -1,6 +1,7 @@
 ; background
 ; Displays a background pattern
-
+.INCLUDE "../lib/registers.asm"
+.INCLUDE "../lib/settings.asm"
 .INCLUDE "header.asm"
 
 .BANK 0
@@ -14,9 +15,7 @@ Reset:
 
     rep #$08
 
-    .INCDIR "../lib"
-    .INCLUDE "registers.asm"
-    .INCLUDE "initialize.asm"
+    .INCLUDE "../lib/initialize.asm"
 
 ; Background
 
@@ -168,7 +167,7 @@ Reset:
     lda #$0F
     sta INIDISP
 
-    lda #NMIENABLE
+    lda #NMITIMEN_NMIENABLE
     sta NMITIMEN
 
 -   wai
