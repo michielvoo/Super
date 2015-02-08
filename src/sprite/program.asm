@@ -35,11 +35,12 @@ Reset:
 
     stz OAMADDL
     stz OAMADDH
-    lda #(SCREEN_W/2 - 4)
+    lda #(SCREEN_W / 2 - 4)
     sta OAMDATA ; x
-    lda #(SCREEN_H/2 - 4)
+    lda #(SCREEN_H / 2 - 4)
     sta OAMDATA ; y
-    stz OAMDATA ; Character 0
+    lda #$01
+    sta OAMDATA ; Character 1
     stz OAMDATA ; Palette 0, priority 0, no flip
                 ; Size small (8x8)
 
@@ -49,8 +50,9 @@ Reset:
     sta VMAIN
 
     ; Sprite character segment 0
-    ; Character 0
-    stz VMADD
+    ; Character 1
+    lda #$10
+    sta VMADD
 
     ; Character 0
     lda #%10000000
