@@ -8,6 +8,8 @@ The main output is a ROM file located at `sprite/sprite.rom`. Other build artifa
 
 After assembly of the program has finished without errors, the build script attempts to locate a script called `upload.sh`. When found, this script is invoked with the ROM file as its only argument. You should provide your own upload script to upload the ROM to a device or emulator. (The build script itself does not accommodate the use of copiers or flash cartridges.) 
 
-An upload script for [OpenEmu](http://openemu.org/) on OS X is provided in `upload-openemu.sh`.
+An upload script for [OpenEmu](http://openemu.org/) on OS X is provided in `upload-openemu.sh`. Rename it to `upload.sh` and your ROM file will become available in your OpenEmu game library after each build.
+
+When using an emulator to test your programs, use [higan](http://byuu.org/emulation/higan/) for its accurate emulation (also available as a Super Nintendo emulator core in OpenEmu).
 
 To remove all build artifacts and intermediate files produced by the build process from all subdirectories, run `./clean.sh` from the `src` directory.
