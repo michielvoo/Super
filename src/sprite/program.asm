@@ -33,16 +33,23 @@ Reset:
 
     stz OBSEL   ; Sprite size is 8x8 or 16x16, sprite character segment 0
 
+    stz OAMADDH     ; Select table 1
     stz OAMADDL
-    stz OAMADDH
-    lda #(SCREEN_W / 2 - 4)
-    sta OAMDATA ; x
-    lda #(SCREEN_H / 2 - 4)
-    sta OAMDATA ; y
-    lda #$01
-    sta OAMDATA ; Character 1
-    stz OAMDATA ; Palette 0, priority 0, no flip
-                ; Size small (8x8)
+    
+    ; Sprite 0
+    lda #(SCREEN_W / 2 - 8)
+    sta OAMDATA     ; x
+    lda #(SCREEN_H / 2 - 8)
+    sta OAMDATA     ; y
+    lda #$02
+    sta OAMDATA     ; Character 2
+    stz OAMDATA     ; Palette 0, priority 0, no flip
+
+    stz OAMADDL
+    lda #$01        ; Select table 2
+    sta OAMADDH
+    lda #%00000010
+    sta OAMDATA     ; Size large (see OBSEL)
 
 ; Create a character
 
@@ -50,11 +57,11 @@ Reset:
     sta VMAIN
 
     ; Sprite character segment 0
-    ; Character 1
-    lda #$10
+    ; Character 2 (@4bpp)
+    lda #$20
     sta VMADD
 
-    ; Character 0
+    ; Character 2
     lda #%10000000
     sta VMDATAL
     lda #%11000000
@@ -69,10 +76,80 @@ Reset:
     sta VMDATAL
     lda #%10000010
     sta VMDATAL
+    lda #%10000001
+    sta VMDATAL
+
+    ; Skip to character 3 (@4bpp)
+    lda #$30
+    sta VMADD
+
+    ; Character 3
+    lda #%00000000
+    sta VMDATAL
+    lda #%00000000
+    sta VMDATAL
+    lda #%00000000
+    sta VMDATAL
+    lda #%00000000
+    sta VMDATAL
+    lda #%00000000
+    sta VMDATAL
+    lda #%00000000
+    sta VMDATAL
+    lda #%00000000
+    sta VMDATAL
+    lda #%00000000
+    sta VMDATAL
+
+    rep #$20
+
+    ; Skip to character 18 (@4bpp)
+    lda #$0120
+    sta VMADD
+
+    ; Character 18
+    lda #%10000000
+    sta VMDATAL
+    lda #%10000000
+    sta VMDATAL
+    lda #%10000000
+    sta VMDATAL
+    lda #%10000000
+    sta VMDATAL
+    lda #%10000000
+    sta VMDATAL
+    lda #%10000000
+    sta VMDATAL
+    lda #%10000000
+    sta VMDATAL
+    lda #%11111111
+    sta VMDATAL
+
+    ; Skip to character 19 (@4bpp)
+    lda #$0130
+    sta VMADD
+
+    ; Character 19
+    lda #%10000000
+    sta VMDATAL
+    lda #%01000000
+    sta VMDATAL
+    lda #%00100000
+    sta VMDATAL
+    lda #%00010000
+    sta VMDATAL
+    lda #%00001000
+    sta VMDATAL
+    lda #%00000100
+    sta VMDATAL
+    lda #%00000010
+    sta VMDATAL
     lda #%11111111
     sta VMDATAL
 
 ; Enable background layer, screen
+
+    sep #$20
 
     lda #%00010000  ; Enable BG1
     sta TM

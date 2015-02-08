@@ -3,8 +3,8 @@
 .DEFINE INIDISP     $2100 ; w
 .DEFINE OBSEL       $2101 ; w
 .DEFINE OAMADD      $2102 ; w, 16-bit
-.DEFINE OAMADDL     $2102 ; w
-.DEFINE OAMADDH     $2103 ; w
+.DEFINE OAMADDL     $2102 ; w, 2x
+.DEFINE OAMADDH     $2103 ; w (sprite table select)
 .DEFINE OAMDATA     $2104 ; w (also see OAMDATAREAD)
 .DEFINE BGMODE      $2105 ; w
 .DEFINE MOSAIC      $2106 ; w
