@@ -1,10 +1,11 @@
 ; onoff
 ; Turn the screen on and off by pressing up and down respectively on the direction pad.
 
+.INCLUDE "header.asm"
 .INCLUDE "../lib/registers.asm"
 .INCLUDE "../lib/settings.asm"
 .INCLUDE "../lib/values.asm"
-.INCLUDE "header.asm"
+.INCLUDE "../lib/initialization.asm"
 
 .BANK 0
 .ORG 0
@@ -12,15 +13,7 @@
 .SECTION "Main"
 
 Reset:
-    ; Switch to native mode
-    clc
-    xce
-
-    ; Turn off decimal mode
-    rep #$08
-
-    ; Initialize registers, OAM, CGDATA and VRAM
-    .INCLUDE "../lib/initialize.asm"
+    RESET
 
     ; Set accumulator register to 8-bit
     sep #$20

@@ -1,9 +1,10 @@
 ; background
 ; Displays a background pattern.
 
+.INCLUDE "header.asm"
 .INCLUDE "../lib/registers.asm"
 .INCLUDE "../lib/settings.asm"
-.INCLUDE "header.asm"
+.INCLUDE "../lib/initialization.asm"
 
 .BANK 0
 .ORG 0
@@ -11,14 +12,7 @@
 .SECTION "Main"
 
 Reset:
-    ; Switch to native mode
-    clc
-    xce
-
-    ; Turn off decimal mode
-    rep #$08
-
-    .INCLUDE "../lib/initialize.asm"
+    RESET
 
     ; Set accumulator register to 8-bit
     sep #$20
@@ -56,8 +50,8 @@ Reset:
     sta VMAIN
 
     ; Set VRAM address to background layer 1's character segment, character 2 (@2bpp)
-    ldx #$10
-    stx VMADD
+    lda #$10
+    sta VMADD
 
     ; Write bits for character 2 plane 0 (tile 1 part A)
     lda #%00000000
@@ -99,8 +93,8 @@ Reset:
 
     ; Set VRAM address to background layer 1's character segment, character 18 (@2bpp)
     ; Characters for 16x16 tiles are interleaved in VRAM, so we skipped characters for other tiles
-    ldx #$90
-    stx VMADD
+    lda #$90
+    sta VMADD
 
     ; Write bits for character 18 plane 0 (tile 1 part C)
     lda #%00100000
