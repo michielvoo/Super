@@ -61,7 +61,7 @@ InitializeCPU:
     stz VTIMEL
     stz VTIMEH
 
-    ; Initialize (H)DMA channels
+    ; Initialize (H)DMA channel registers
     stz MDMAEN
     stz HDMAEN
 
