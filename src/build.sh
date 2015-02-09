@@ -22,7 +22,6 @@ obj_file="$project_dir/${program_name%.*}.o"
 link_file="$project_dir/link.txt"
 rom_file="$project_dir/$project_name.rom"
 
-
 # Remove previous build artifacts
 
 rm -f "$obj_file"
@@ -52,7 +51,14 @@ fi
 popd 1> /dev/null
 
 # Determine path to the loader
-build_script_file="$(pwd)/$0"
+if [[ $0 == /* ]];
+then
+    # Path to start this script was absolute, use as is
+    build_script_file="$0"
+else
+    # Path to start this script was relative, make absolute
+    build_script_file="$(pwd)/$0"
+fi
 build_script_dir="${build_script_file%/*}"
 upload_script_file="$build_script_dir/upload.sh"
 
