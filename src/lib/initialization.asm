@@ -26,8 +26,8 @@
 
 InitializeSystem:
 
-    jsr InitializePPU
     jsr InitializeCPU
+    jsr InitializePPU
 
     rts ; // InitializeSystem
 
