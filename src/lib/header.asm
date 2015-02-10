@@ -1,3 +1,5 @@
+; LoROM header with 1 bank of 32KiB and a Reset and VBlank vector
+
 .MEMORYMAP
     SLOTSIZE $8000
     SLOT 0 START $8000
@@ -16,4 +18,3 @@
 .SNESNATIVEVECTOR
     NMI VBlank
 .ENDNATIVEVECTOR
-

@@ -1,7 +1,7 @@
 ; brightness
 ; Turn the brightness of the display up or down using the D-pad.
 
-.INCLUDE "header.asm"
+.INCLUDE "../lib/header.asm"
 .INCLUDE "../lib/registers.asm"
 .INCLUDE "../lib/settings.asm"
 .INCLUDE "../lib/values.asm"

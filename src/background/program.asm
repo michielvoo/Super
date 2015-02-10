@@ -1,7 +1,7 @@
 ; background
 ; Displays a background pattern.
 
-.INCLUDE "header.asm"
+.INCLUDE "../lib/header.asm"
 .INCLUDE "../lib/registers.asm"
 .INCLUDE "../lib/settings.asm"
 .INCLUDE "../lib/initialization.asm"

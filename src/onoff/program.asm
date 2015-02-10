@@ -1,7 +1,7 @@
 ; onoff
 ; Turn the screen on and off by pressing up and down respectively on the direction pad.
 
-.INCLUDE "header.asm"
+.INCLUDE "../lib/header.asm"
 .INCLUDE "../lib/registers.asm"
 .INCLUDE "../lib/settings.asm"
 .INCLUDE "../lib/values.asm"

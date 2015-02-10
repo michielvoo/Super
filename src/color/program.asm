@@ -1,7 +1,7 @@
 ; bgcolor
 ; Press the A, B, X and Y buttons to change the background color. 
 
-.INCLUDE "header.asm"
+.INCLUDE "../lib/header.asm"
 .INCLUDE "../lib/registers.asm"
 .INCLUDE "../lib/settings.asm"
 .INCLUDE "../lib/values.asm"
