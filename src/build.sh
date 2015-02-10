@@ -18,7 +18,8 @@ fi
 program_name="${program_file##*/}"
 project_dir="${program_file%/*}"
 project_name="${project_dir##*/}"
-obj_file="$project_dir/${program_name%.*}.o"
+obj_file_name="${program_name%.*}.o"
+obj_file="$project_dir/$obj_file_name"
 link_file="$project_dir/link.txt"
 rom_file="$project_dir/$project_name.rom"
 
@@ -33,6 +34,10 @@ pushd "$project_dir" 1> /dev/null
 
 PATH=$PATH:/usr/local/bin
 wla-65816 -oiv "$program_file" "$obj_file" || { exit 1; }
+
+echo "# This file was auto-generated" > "$link_file"
+echo "[objects]" >> "$link_file"
+echo "$obj_file_name" >> "$link_file"
 
 wlalink -irv "$link_file" "$rom_file"
 while [ $? -eq 139 ];

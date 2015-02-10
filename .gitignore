@@ -1,5 +1,6 @@
 wiki/
 .DS_Store
+link.txt
 upload.sh
 *.lst
 *.o
