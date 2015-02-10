@@ -267,8 +267,8 @@ Reset:
     lda #$0F
     sta INIDISP
 
-    ; Enable the VBlank NMI
-    lda #NMITIMEN_NMIENABLE
+    ; Enable VBlank
+    lda #NMITIMEN_NMI_ENABLE
     sta NMITIMEN
 
     ; Keep waiting for interrupts

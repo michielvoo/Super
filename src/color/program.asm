@@ -29,8 +29,8 @@ Reset:
     lda #$0F
     sta INIDISP
 
-    ; Enable the VBlank NMI and the joypad
-    lda #(NMITIMEN_NMIENABLE | NMITIMEN_JOYENABLE)
+    ; Enable VBlank and the joypad
+    lda #(NMITIMEN_NMI_ENABLE | NMITIMEN_JOY_ENABLE)
     sta NMITIMEN
 
     ; Keep waiting for interrupts

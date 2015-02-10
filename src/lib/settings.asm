@@ -1,4 +1,4 @@
 ; Register settings
 
-.DEFINE NMITIMEN_NMIENABLE  $80 ; Enable NMI
-.DEFINE NMITIMEN_JOYENABLE  $01 ; Enable joypad
+.DEFINE NMITIMEN_NMI_ENABLE  $80 ; Enable NMI
+.DEFINE NMITIMEN_JOY_ENABLE  $01 ; Enable joypad auto-read
