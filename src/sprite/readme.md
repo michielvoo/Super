@@ -2,7 +2,7 @@ This program displayes a multi-colored 16 by 16 pixels sprite in the middle of t
 
 ![screenshot](screenshot.png?raw=true "sprite")
 
-The program starts by creating five colors in a color palette using CGRAM port. Because sprites can only use color palettes starting at address 128 in CGRAM, the program first sets `CGADD` to `$81` (skipping the first 'transparant' color).
+The program starts by creating five colors in a color palette using CGRAM port. Because sprites can only use color palettes starting at address `$80` in CGRAM, the program first sets `CGADD` to `$81` (skipping the first 'transparant' color).
 
 The program then sets the `OBSEL` register, which determines which actual dimensions correspond to the 'small' and 'large' sprite size. In this program small is 8 by 8 pixels, and large is 16 by 16 pixels. 
 The `OBSEL` register also determines the sprite segment in VRAM where characters (pixel data) for all sprites are stored. This program sets it to zero, which means that sprite characters are stored at the beginning of VRAM.
