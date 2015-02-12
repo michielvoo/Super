@@ -18,9 +18,9 @@ Reset:
     ; Set accumulator register to 8-bit
     sep #$20
 
-    ; Set color 0 of palette 0 to white
+    ; Set color 0 of palette 0 to blue
     stz CGADD
-    lda #$FF
+    lda #$00
     sta CGDATA
     lda #$7F
     sta CGDATA
