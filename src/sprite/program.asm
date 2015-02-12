@@ -83,6 +83,7 @@ Reset:
     sta OAMDATA
 
 ; Create a character
+
     ; Set VRAM write mode to increment the VRAM address after writing VMDATAH
     lda #$80
     sta VMAIN
@@ -259,7 +260,7 @@ Reset:
     sta VMDATAL
     stz VMDATAH
 
-    ; Enable background layer 1
+    ; Enable the 'sprite layer'
     lda #%00010000
     sta TM
 
