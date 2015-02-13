@@ -1,6 +1,6 @@
 This program allows changing the horizontal and vertical offset of background layer 1 using the D-pad.
 
-![screenshot](screenshot.png?raw=true "sprite")
+![screenshot](screenshot.png?raw=true "screenshot")
 
 The program first sets color 1 of palette 0 to orange. This color will be used by the background tiles.
 
@@ -14,4 +14,4 @@ The tilemap is then created as a 32 by 32 'grid' of tiles, where each tile refer
 
 Then background layer 1 is enabled in the `TM` register, and finally the program enables NMI, so the VBlank interrupt handler will be called every frame. Joypad auto-read is also enabled, so the joypad input can be read during VBlank.
 
-After waiting for the joypad to be read, the program checks if up, down, left or right was pressed on joypad 1. It jumps to code that retrieves the current horizontal or vertical offset value of background layer 1 from WRAM, and increments or decrements it. After changing the value, it is set to register `BG1HOFS` or `BG1VOFS` and saved back to WRAM.
+After waiting for the joypad to be read, the program checks if up, down, left or right was pressed on joypad 1. It jumps to code that retrieves the current horizontal or vertical offset value of background layer 1 from WRAM, and increments or decrements it. After changing the value, it is set to register `BG1HOFS` or `BG1VOFS` and saved back to WRAM. To be able to store the offset values in the accumulator register, it is first set to 16-it mode by `rep $#20`.

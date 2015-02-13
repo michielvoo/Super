@@ -1,6 +1,6 @@
 This program displayes a multi-colored 16 by 16 pixels sprite in the middle of the screen.
 
-![screenshot](screenshot.png?raw=true "sprite")
+![screenshot](screenshot.png?raw=true "screenshot")
 
 The program starts by creating five colors in a color palette using CGRAM port. Because sprites can only use color palettes starting at address `$80` in CGRAM, the program first sets `CGADD` to `$81` (skipping the first 'transparant' color).
 
