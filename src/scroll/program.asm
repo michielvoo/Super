@@ -1,4 +1,4 @@
-; offset
+; scroll
 ; Move the background by changing its offset with the D-pad 
 
 .INCLUDE "../lib/header.asm"
