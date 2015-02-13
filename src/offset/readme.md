@@ -1,4 +1,4 @@
-This program allow changing the horizontal and vertical offset of background layer 1 using the D-pad.
+This program allows changing the horizontal and vertical offset of background layer 1 using the D-pad.
 
 ![screenshot](screenshot.png?raw=true "sprite")
 
