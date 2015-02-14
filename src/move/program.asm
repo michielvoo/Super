@@ -29,14 +29,24 @@ Reset:
     ; and sprite character segment to 0
     stz OBSEL
 
+    ; Create variables for the sprite coordinates
+    .DEFINE SPRITE_X $7E0000
+    .DEFINE SPRITE_Y $7E0001
+
+    ; Load variables
+    lda #(SCREEN_W / 2 - 4)
+    sta SPRITE_X
+    lda #(SCREEN_H / 2 - 4)
+    sta SPRITE_Y
+
     ; Select sprite table 1 record 0
     stz OAMADDH
     stz OAMADDL
 
     ; Create record
-    lda #(SCREEN_W / 2 - 4)
+    lda SPRITE_X
     sta OAMDATA
-    lda #(SCREEN_H / 2 - 4)
+    lda SPRITE_Y
     sta OAMDATA
     lda #$02
     sta OAMDATA
@@ -143,18 +153,21 @@ VBlank:
     rti
 
 Up:
-    ; Set accumulator to 9-bit mode
+    ; Set accumulator and index registers to 9-bit mode
     sep #$20
 
     ; Select sprite table 1
     lda #$00
     sta OAMADDH
 
-    ; Enable sprite 0 vertical flip
+    ; Enable sprite 0 vertical flip and move it up
     stz OAMADDL
-    lda #(SCREEN_W / 2 - 4)
+    lda SPRITE_X
     sta OAMDATA
-    lda #(SCREEN_H / 2 - 4)
+    lda SPRITE_Y
+    dec a
+    dec a
+    sta SPRITE_Y
     sta OAMDATA
     lda #$01
     sta OAMDATA
@@ -173,9 +186,12 @@ Down:
 
     ; Disable sprite 0 vertical flip
     stz OAMADDL
-    lda #(SCREEN_W / 2 - 4)
+    lda SPRITE_X
     sta OAMDATA
-    lda #(SCREEN_H / 2 - 4)
+    lda SPRITE_Y
+    inc a
+    inc a
+    sta SPRITE_Y
     sta OAMDATA
     lda #$01
     sta OAMDATA
@@ -193,9 +209,12 @@ Left:
 
     ; Enable sprite 0 horizontal flip
     stz OAMADDL
-    lda #(SCREEN_W / 2 - 4)
+    lda SPRITE_X
+    dec a
+    dec a
+    sta SPRITE_X
     sta OAMDATA
-    lda #(SCREEN_H / 2 - 4)
+    lda SPRITE_Y
     sta OAMDATA
     lda #$02
     sta OAMDATA
@@ -214,9 +233,12 @@ Right:
 
     ; Enable sprite 0 horizontal flip
     stz OAMADDL
-    lda #(SCREEN_W / 2 - 4)
+    lda SPRITE_X
+    inc a
+    inc a
+    sta SPRITE_X
     sta OAMDATA
-    lda #(SCREEN_H / 2 - 4)
+    lda SPRITE_Y
     sta OAMDATA
     lda #$02
     sta OAMDATA
