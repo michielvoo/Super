@@ -42,18 +42,18 @@ Reset:
     sta OAMDATA
     stz OAMDATA
 
-    ; Select sprite table 2 sprites 0-3
+    ; Select sprite table 2 record 0-3
     lda #$01
     sta OAMADDH
     stz OAMADDL
 
-    ; Create record
+    ; Create records
     stz OAMDATA
 
     ; Set VRAM write mode to increment after every writing to VMDATAL
     stz VMAIN
 
-    ; Create character 2 in sprite character segment 0 (@4bpp)
+    ; Create character 1 in sprite character segment 0 (@4bpp)
     lda #$10
     sta VMADD
 
@@ -90,6 +90,89 @@ Reset:
     jmp -
 
 VBlank:
+    ; Wait for joypad auto-read
+-   lda HVBJOY
+    bit #HVBJOY_JOYREADY
+    bne -
+
+    ; Reset accumulator to 16-bit
+    rep #$20
+
+    ; Get joypad input
+    lda JOY1
+
+    ; Check if up was pressed on the D-pad
+    bit #JOY_UP
+    bne Up
+
+    ; Check if down was pressed on the D-pad
+    bit #JOY_DOWN
+    bne Down
+
+    ; Check if left was pressed on the D-pad
+    bit #JOY_LEFT
+    bne Left
+
+    ; Check if right was pressed on the D-pad
+    bit #JOY_RIGHT
+    bne Right
+
+    rti
+
+Up:
+    ; Set accumulator to 9-bit mode
+    sep #$20
+
+    ; Select sprite table 1
+    lda #$00
+    sta OAMADDH
+
+    ; Set sprite 0 vertical flip
+    stz OAMADDL
+    lda #(SCREEN_W / 2 - 4)
+    sta OAMDATA
+    lda #(SCREEN_H / 2 - 4)
+    sta OAMDATA
+    lda #$01
+    sta OAMDATA
+    lda #%10000000
+    sta OAMDATA
+
+    rti
+
+Down:
+    ; Set accumulator to 9-bit mode
+    sep #$20
+
+    ; Select sprite table 1
+    lda #$00
+    sta OAMADDH
+
+    ; Set sprite 0 vertical flip
+    stz OAMADDL
+    lda #(SCREEN_W / 2 - 4)
+    sta OAMDATA
+    lda #(SCREEN_H / 2 - 4)
+    sta OAMDATA
+    lda #$01
+    sta OAMDATA
+    lda #%00000000
+    sta OAMDATA
+
+    rti
+
+Left:
+    rti
+
+Right:
     rti
 
 .ENDS
+
+
+
+
+
+
+
+
