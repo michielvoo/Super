@@ -38,7 +38,7 @@ Reset:
     sta OAMDATA
     lda #(SCREEN_H / 2 - 4)
     sta OAMDATA
-    lda #$01
+    lda #$02
     sta OAMDATA
     stz OAMDATA
 
@@ -57,6 +57,7 @@ Reset:
     lda #$10
     sta VMADD
 
+    ; Arrow up/down
     lda #%00011100
     sta VMDATAL
     lda #%00011100
@@ -72,6 +73,28 @@ Reset:
     lda #%00011100
     sta VMDATAL
     lda #%00001000
+    sta VMDATAL
+
+    ; Create character 2 in sprite character segment 0 (@4bpp)
+    lda #$20
+    sta VMADD
+
+    ; Arrow left/right
+    lda #%00010000
+    sta VMDATAL
+    lda #%00011000
+    sta VMDATAL
+    lda #%11111100
+    sta VMDATAL
+    lda #%11111110
+    sta VMDATAL
+    lda #%11111100
+    sta VMDATAL
+    lda #%00011000
+    sta VMDATAL
+    lda #%00010000
+    sta VMDATAL
+    lda #%00000000
     sta VMDATAL
 
     ; Enable the sprite layer
@@ -127,7 +150,7 @@ Up:
     lda #$00
     sta OAMADDH
 
-    ; Set sprite 0 vertical flip
+    ; Enable sprite 0 vertical flip
     stz OAMADDL
     lda #(SCREEN_W / 2 - 4)
     sta OAMDATA
@@ -148,7 +171,7 @@ Down:
     lda #$00
     sta OAMADDH
 
-    ; Set sprite 0 vertical flip
+    ; Disable sprite 0 vertical flip
     stz OAMADDL
     lda #(SCREEN_W / 2 - 4)
     sta OAMDATA
@@ -156,15 +179,49 @@ Down:
     sta OAMDATA
     lda #$01
     sta OAMDATA
-    lda #%00000000
-    sta OAMDATA
+    stz OAMDATA
 
     rti
 
 Left:
+    ; Set accumulator to 9-bit mode
+    sep #$20
+
+    ; Select sprite table 1
+    lda #$00
+    sta OAMADDH
+
+    ; Enable sprite 0 horizontal flip
+    stz OAMADDL
+    lda #(SCREEN_W / 2 - 4)
+    sta OAMDATA
+    lda #(SCREEN_H / 2 - 4)
+    sta OAMDATA
+    lda #$02
+    sta OAMDATA
+    lda #%01000000
+    sta OAMDATA
+
     rti
 
 Right:
+    ; Set accumulator to 9-bit mode
+    sep #$20
+
+    ; Select sprite table 1
+    lda #$00
+    sta OAMADDH
+
+    ; Enable sprite 0 horizontal flip
+    stz OAMADDL
+    lda #(SCREEN_W / 2 - 4)
+    sta OAMDATA
+    lda #(SCREEN_H / 2 - 4)
+    sta OAMDATA
+    lda #$02
+    sta OAMDATA
+    stz OAMDATA
+
     rti
 
 .ENDS
