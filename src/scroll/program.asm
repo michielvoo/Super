@@ -51,11 +51,11 @@ Reset:
     sta VMDATAL
     lda #%00000000
     sta VMDATAL
-    lda #%00010100
-    sta VMDATAL
     lda #%00001000
     sta VMDATAL
-    lda #%00010100
+    lda #%00011100
+    sta VMDATAL
+    lda #%00001000
     sta VMDATAL
     lda #%00000000
     sta VMDATAL
