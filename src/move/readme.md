@@ -1,4 +1,4 @@
-Move the sprite accross the screen with the D-pad. The sprite changes its orientation to always point in the direction it is moving in.
+Move the sprite across the screen with the D-pad. The sprite changes its orientation to always point in the direction it is moving in.
 
 ![screenshot](screenshot.png?raw=true "screenshot")
 
