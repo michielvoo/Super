@@ -1,6 +1,6 @@
 To build the examples, you need to install [WLA DX](http://www.villehelin.com/wla.html), an assembler for [65816 processors](https://en.wikipedia.org/wiki/WDC_65816/65802) that comes with special directives for assembling code into Super Nintendo ROMs.
 
-A build script for Unix-like systems is included in this directory. It has only been tested on OS X Yosemite (10.10). The following command, when executed from the `src` directory, builds a program:
+A build script for Unix-like systems is included in this directory. It has only been tested on OS X Yosemite (10.10). The following command, when executed from this directory, builds a program:
 
     ./build.sh sprite/program.asm
 
@@ -14,4 +14,4 @@ When using an emulator to test your programs, use [higan](http://byuu.org/emulat
 
 To build all examples, execute `./build.sh */program.asm`
 
-To remove all build artifacts and intermediate files produced by the build process from **all** subdirectories, run `./clean.sh` from the `src` directory.
+To remove all build artifacts and intermediate files produced by the build process from **all** subdirectories, run `./clean.sh` from this directory.
