@@ -1,4 +1,4 @@
-To build the example programs, you need to install [WLA DX](http://www.villehelin.com/wla.html), an assembler for [65816 processors](https://en.wikipedia.org/wiki/WDC_65816/65802) that comes with special directives for assembling code into Super Nintendo ROMs.
+To build the examples, you need to install [WLA DX](http://www.villehelin.com/wla.html), an assembler for [65816 processors](https://en.wikipedia.org/wiki/WDC_65816/65802) that comes with special directives for assembling code into Super Nintendo ROMs.
 
 A build script for Unix-like systems is included in this directory. It has only been tested on OS X Yosemite (10.10). The following command, when executed from the `src` directory, builds a program:
 
@@ -12,4 +12,6 @@ An upload script for [OpenEmu](http://openemu.org/) on OS X is provided in `uplo
 
 When using an emulator to test your programs, use [higan](http://byuu.org/emulation/higan/) for its accurate emulation (also available as a Super Nintendo emulator core in OpenEmu).
 
-To remove all build artifacts and intermediate files produced by the build process from all subdirectories, run `./clean.sh` from the `src` directory.
+To build all examples, execute `./build.sh */program.asm`
+
+To remove all build artifacts and intermediate files produced by the build process from **all** subdirectories, run `./clean.sh` from the `src` directory.
