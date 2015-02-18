@@ -44,9 +44,13 @@
 .DEFINE W34SEL      $2124       ; w
 .DEFINE WOBJSEL     $2125       ; w
 .DEFINE WH0         $2126       ; w
+.DEFINE WIN1L       WH0         ; w
 .DEFINE WH1         $2127       ; w
+.DEFINE WIN1R       WH1         ; w
 .DEFINE WH2         $2128       ; w
+.DEFINE WIN2L       WH2         ; w
 .DEFINE WH3         $2129       ; w
+.DEFINE WIN2R       WH3         ; w
 .DEFINE WBGLOG      $212A       ; w
 .DEFINE WOBJLOG     $212B       ; w
 .DEFINE TM          $212C       ; w
