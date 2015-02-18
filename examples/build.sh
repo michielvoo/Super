@@ -85,5 +85,8 @@ do
 
 done
 
-printf "Built "
-echo "$*."
+if [ $# -gt 1 ];
+then
+    printf "Built "
+    echo "$*."
+fi
