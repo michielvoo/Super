@@ -10,9 +10,10 @@
 .BANK 0
 .ORG 0
 
-.SECTION "Main"
-Reset:
-    RESET
+.SECTION ""
+
+Main:
+    Reset
 
     ; Set accumulator to 8-bit mode
     sep #$20

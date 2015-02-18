@@ -10,10 +10,10 @@
 .BANK 0
 .ORG 0
 
-.SECTION "Main"
+.SECTION ""
 
-Reset:
-    RESET
+Main:
+    Reset
 
     ; Set accumulator register to 8-bit
     sep #$20
@@ -82,7 +82,7 @@ Reset:
     lda #%00000010
     sta OAMDATA
 
-; Create a character
+; Create characters
 
     ; Set VRAM write mode to increment the VRAM address after writing VMDATAH
     lda #$80

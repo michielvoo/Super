@@ -1,4 +1,4 @@
-.MACRO RESET
+.MACRO Reset
     ; Disable interrupts
     sei
 
