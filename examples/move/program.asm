@@ -62,7 +62,7 @@ Main:
     stz OAMDATA
 
     ; Set VRAM write mode to increment after every writing to VMDATAL
-    stz VMAIN
+    stz VMAINC
 
     ; Create character 1 in sprite character segment 0 (@4bpp)
     lda #$10

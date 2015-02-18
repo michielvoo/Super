@@ -38,7 +38,7 @@ Main:
 
     ; Set VRAM port to increment after writing VMDATAL
     lda #$00
-    sta VMAIN
+    sta VMAINC
 
     ; Set VRAM address to background layer 1's character segment, character 1 (@2bpp)
     lda #$08
@@ -64,7 +64,7 @@ Main:
 
     ; Set VRAM port to increment after writing VMDATAH
     lda #$80
-    sta VMAIN
+    sta VMAINC
 
     ; Reset index registers to 16-bit mode
     rep #$10

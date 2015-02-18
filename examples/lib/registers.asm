@@ -3,9 +3,9 @@
 .DEFINE INIDISP     $2100       ; w
 .DEFINE OBSEL       $2101       ; w
 .DEFINE OAMADD      $2102       ; w, 16-bit
-.DEFINE OAMADDL     OAMADD      ; w, 2x
+.DEFINE OAMADDL     OAMADD      ; w
 .DEFINE OAMADDH     $2103       ; w (sprite table select)
-.DEFINE OAMDATA     $2104       ; w (also see OAMDATAREAD)
+.DEFINE OAMDATA     $2104       ; w, 2x (also see OAMDATAREAD)
 .DEFINE BGMODE      $2105       ; w
 .DEFINE MOSAIC      $2106       ; w
 .DEFINE BG1SC       $2107       ; w
@@ -24,7 +24,7 @@
 .DEFINE BG3VOFS     $2112       ; w, 2x
 .DEFINE BG4HOFS     $2113       ; w, 2x
 .DEFINE BG4VOFS     $2114       ; w, 2x
-.DEFINE VMAIN       $2115       ; w
+.DEFINE VMAINC      $2115       ; w
 .DEFINE VMADD       $2116       ; w, 16-bit
 .DEFINE VMADDL      $2116       ; w
 .DEFINE VMADDH      $2117       ; w
@@ -66,7 +66,7 @@
 .DEFINE MPYM        $2135       ; r
 .DEFINE MPYH        $2136       ; r
 .DEFINE SLHV        $2137       ; r
-.DEFINE OAMDATAREAD $2138       ; r (also see OAMADD and OAMDATA)
+.DEFINE OAMDATAREAD $2138       ; r, 2x (also see OAMADD and OAMDATA)
 .DEFINE VMDATAREAD  $2139       ; r, 16-bit (also see VMADD and VMDATA)
 .DEFINE VMDATALREAD VMDATAREAD  ; r
 .DEFINE VMDATAHREAD $213A       ; r

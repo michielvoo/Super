@@ -47,7 +47,7 @@ Main:
     ; Set VRAM write mode to increment the VRAM address after writing VMDATAL
     ; We will not be writing VMDATAH (bits for plane 1 of the background characters)
     lda #$00
-    sta VMAIN
+    sta VMAINC
 
     ; Set VRAM address to background layer 1's character segment, character 2 (@2bpp)
     lda #$10
@@ -134,7 +134,7 @@ Main:
 
     ; Set VRAM write mode to increment the VRAM address after writing VMDATAH
     lda #$80
-    sta VMAIN
+    sta VMAINC
 
     ; Reset index registers to 16-bit
     rep #$10
