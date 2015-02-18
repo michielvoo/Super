@@ -10,7 +10,7 @@
     [
         {
             "name": "WLA",
-            "cmd": ["$project_path/src/build.sh", "$file"]
+            "cmd": ["$project_path/examples/build.sh", "$file"]
         }
     ]
 }
