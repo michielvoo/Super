@@ -20,9 +20,9 @@ Main:
     ; Set color 1 of palette 0 (white)
     lda #$01
     sta CGADD
-    lda #$FF
+    lda #$CC
     sta CGDATA
-    lda #$7F
+    lda #$7A
     sta CGDATA
 
     ; Set background mode to 0 and tilesize to 8 by 8 pixels
@@ -44,21 +44,21 @@ Main:
     lda #$08
     sta VMADDL
 
-    lda #$FF
+    lda #%00000000
     sta VMDATAL
-    lda #$FF
+    lda #%00000000
     sta VMDATAL
-    lda #$FF
+    lda #%01000000
     sta VMDATAL
-    lda #$FF
+    lda #%00101000
     sta VMDATAL
-    lda #$FF
+    lda #%00010000
     sta VMDATAL
-    lda #$FF
+    lda #%00101000
     sta VMDATAL
-    lda #$FF
+    lda #%00000100
     sta VMDATAL
-    lda #$FF
+    lda #%00000000
     sta VMDATAL
 
     ; Reset accumulator to 16-bit mode
@@ -75,10 +75,16 @@ Main:
     lda #VMAINC_INC_H
     sta VMAINC
 
-    ; Create tile
+    ; Reset index registers to 16-bit mode
+    rep #$10
+
+    ; Create 32 by 32 tiles
     lda #$01
-    sta VMDATAL
-    stz VMDATAH    
+    ldx #$0400
+-   sta VMDATAL
+    stz VMDATAH
+    dex
+    bne -
 
     ; Enable background layer 1
     lda #$01
