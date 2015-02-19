@@ -31,13 +31,14 @@ Main:
     ; Set background layer 1's size to 32 by 32 tiles 
     ; and its tilemap segment to 1 (at $0400 in VRAM)
     lda #%00000100
-    sta BG12SC
+    sta BG1SC
 
     ; Set background layer 1's character segment to 0 (at $0400 in VRAM)
     stz BG12NBA
 
     ; Set VRAM port to increment address after writing lower byte
-    stz VMAINC
+    lda #VMAINC_INC_L
+    sta VMAINC
 
     ; Create character 1 (background layer sprite segment 0, @2bpp)
     lda #$08
@@ -71,7 +72,7 @@ Main:
     sep #$20
 
     ; Set VRAM port to increment address after writing upper byte
-    lda #$80
+    lda #VMAINC_INC_H
     sta VMAINC
 
     ; Create tile

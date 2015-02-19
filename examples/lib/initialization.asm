@@ -203,9 +203,9 @@ ClearVRAM:
     ; Set accumulator to 8-bit mode
     sep #$20
 
-    ; Set VRAM transfer mode to 16-bit
-    lda #$80
-    sta VMAIN
+    ; Set VRAM transfer mode to increment after writing VMDATAH
+    lda #VMAINC_INC_H
+    sta VMAINC
 
     ; Reset index registers to 16-bit mode
     rep #$10

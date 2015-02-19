@@ -37,7 +37,7 @@ Main:
     stz BG12NBA
 
     ; Set VRAM port to increment after writing VMDATAL
-    lda #$00
+    lda #VMAINC_INC_L
     sta VMAINC
 
     ; Set VRAM address to background layer 1's character segment, character 1 (@2bpp)
@@ -63,7 +63,7 @@ Main:
     sta VMDATAL
 
     ; Set VRAM port to increment after writing VMDATAH
-    lda #$80
+    lda #VMAINC_INC_H
     sta VMAINC
 
     ; Reset index registers to 16-bit mode

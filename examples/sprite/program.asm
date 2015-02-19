@@ -85,7 +85,7 @@ Main:
 ; Create characters
 
     ; Set VRAM write mode to increment the VRAM address after writing VMDATAH
-    lda #$80
+    lda #VMAINC_INC_H
     sta VMAINC
 
     ; Set VRAM address to sprite 0's character segment, character 2 (@4bpp)
