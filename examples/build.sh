@@ -42,23 +42,12 @@ do
     PATH=$PATH:/usr/local/bin
     wla-65816 -oiv "$program_file" "$obj_file" || { exit 1; }
 
+    # Create input file for linker
     echo "# This file was auto-generated" > "$link_file"
     echo "[objects]" >> "$link_file"
     echo "$obj_file_name" >> "$link_file"
 
-    wlalink -irv "$link_file" "$rom_file"
-    while [ $? -eq 139 ];
-    do
-        # wlalink segfaults intermittently
-        wlalink -irv "$link_file" "$rom_file"
-    done
-
-    if [ $? -gt 0 ];
-    then
-        # Remove intermediate build artifacts
-        rm -f "$obj_file"
-        exit 1
-    fi
+    wlalink -irv "$link_file" "$rom_file" || { rm -f "$obj_file"; exit 1; }
 
     popd 1> /dev/null
 
