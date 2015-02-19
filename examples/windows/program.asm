@@ -86,6 +86,36 @@ Main:
     dex
     bne -
 
+    ; Reset accumulator to 16-bit mode
+    rep #$20
+
+    ; Set window 1 left and right
+    lda #$0020
+    sta WIN1L
+    lda #$0060
+    sta WIN1R
+
+    ; Set window 2 left and right
+    lda #$0090
+    sta WIN2L
+    lda #$00B0
+    sta WIN2R
+
+    ; Set accumulator to 8-bit mode
+    sep #$20
+
+    ; Assign window 1 and 2 to background layer 1 andask outside the windows
+    lda #%00001111
+    sta W12SEL
+
+    ; Set windows 1 and 2 combined masking mode for background layer 1
+    lda #%00000001
+    sta WBGLOG
+
+    ; Enable masking for background layer 1 on the main screen
+    lda #%00000001
+    sta TMW
+
     ; Enable background layer 1
     lda #$01
     sta TM
