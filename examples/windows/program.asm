@@ -1,5 +1,5 @@
 ; window
-; Masks backgound layer 1
+; Masks backgound layer 1 using two separate windows
 
 .INCLUDE "../lib/header.asm"
 .INCLUDE "../lib/registers.asm"
@@ -16,6 +16,13 @@ Main:
 
     ; Set accumulator to 8-bit
     sep #$20
+
+    ; Set background color (dark blue)
+    stz CGADD
+    lda #%00100001
+    sta CGDATA
+    lda #%00001100
+    sta CGDATA
 
     ; Set color 1 of palette 0 (white)
     lda #$01
@@ -104,7 +111,7 @@ Main:
     ; Set accumulator to 8-bit mode
     sep #$20
 
-    ; Assign window 1 and 2 to background layer 1 andask outside the windows
+    ; Assign window 1 and 2 to background layer 1 and mask outside the windows
     lda #%00001111
     sta W12SEL
 
