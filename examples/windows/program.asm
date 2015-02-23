@@ -24,7 +24,7 @@ Main:
     lda #%00001100
     sta CGDATA
 
-    ; Set color 1 of palette 0 (white)
+    ; Set color 1 of palette 0 (blue)
     lda #$01
     sta CGADD
     lda #$CC
@@ -47,7 +47,7 @@ Main:
     lda #VMAINC_INC_L
     sta VMAINC
 
-    ; Create character 1 (background layer sprite segment 0, @2bpp)
+    ; Create character 1 (background layer character segment 0, @2bpp)
     lda #$08
     sta VMADDL
 
