@@ -57,12 +57,12 @@ Main:
     lda #$08
     sta VMADDL
 
-    lda #%10000000
+    lda #%11000000
 
     ; Character 1 (top-left pixel color 1)
     sta VMDATAL
     stz VMDATAH
-    stz VMDATAL
+    sta VMDATAL
     stz VMDATAH
     stz VMDATAL
     stz VMDATAH
@@ -81,7 +81,7 @@ Main:
     stz VMDATAL
     sta VMDATAH
     stz VMDATAL
-    stz VMDATAH
+    sta VMDATAH
     stz VMDATAL
     stz VMDATAH
     stz VMDATAL
@@ -98,8 +98,8 @@ Main:
     ; Character 3 (top-left pixel color 3)
     sta VMDATAL
     sta VMDATAH
-    stz VMDATAL
-    stz VMDATAH
+    sta VMDATAL
+    sta VMDATAH
     stz VMDATAL
     stz VMDATAH
     stz VMDATAL
@@ -145,7 +145,7 @@ Main:
     cmp #$04
     bne +
     
-    ; Rest to 1
+    ; Reset to 1
     lda #$01
 +   pha
 
@@ -154,7 +154,7 @@ Main:
 
     dex
     bne -
-    
+
     ; Enable background layer 1 on the main screen
     lda #$01
     sta TM
@@ -164,13 +164,91 @@ Main:
     sta INIDISP
 
     ; Enable VBlank
-    lda #NMITIMEN_NMI_ENABLE
+    lda #(NMITIMEN_NMI_ENABLE | NMITIMEN_JOY_ENABLE)
     sta NMITIMEN
+
+    ; For comparing joypad input
+    .DEFINE INPUT $7F0000
+    .DEFINE INPUT_PREVIOUS $7F0002
+
+    ; Push mosaic size
+    lda #$00
+    pha
 
 -   wai
     jmp -
 
 VBlank:
-    rti
+    ; Set accumulator to 8-bit mode
+    sep #$20
+
+    ; Wait for joypad auto-read
+-   lda #HVBJOY_JOYREADY
+    and HVBJOY
+    cmp #HVBJOY_JOYREADY
+    bne -
+
+    ; Reset accumulator to 16-bit
+    rep #$20
+
+    ; Get joypad input
+    lda JOY1
+
+    ; When the joypad input is the same as during the previous VBlank, return
+    sta INPUT
+    cmp INPUT_PREVIOUS
+    beq +
+    sta INPUT_PREVIOUS
+
+    ; Check if up was pressed on the D-pad
+    bit #JOY_UP
+    bne Up
+
+    ; Check if down was pressed on the D-pad
+    bit #JOY_DOWN
+    bne Down
+
+None:
++   rti
+
+Up:
+    ; Set accumulator to 8-bit mode
+    sep #$20
+
+    pla
+    
+    cmp #%00001111
+    beq +
+    inc a
+    pha
+
+    asl
+    asl
+    asl
+    asl
+    ora #$01
+    sta MOSAIC
+
++   rti
+
+Down:
+    ; Set accumulator to 8-bit mode
+    sep #$20
+
+    pla
+
+    cmp #$00
+    beq +
+    dec a
+    pha
+
+    asl
+    asl
+    asl
+    asl
+    ora #$01
+    sta MOSAIC
+
++   rti
 
 .ENDS
