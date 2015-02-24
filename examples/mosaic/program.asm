@@ -142,6 +142,7 @@ Main:
 -   pla
     sta VMDATAL
 
+    ; Alternate between characters 1, 2 and 3
     inc a
     cmp #$04
     bne +
@@ -155,10 +156,6 @@ Main:
 
     dex
     bne -
-
-    ; Move background layer 1 down 1 scanline
-    lda #$01
-    sta BG1VOFS
 
     ; Enable background layer 1 on the main screen
     lda #$01
