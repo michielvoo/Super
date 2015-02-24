@@ -155,7 +155,7 @@ VBlank:
     rti
 
 Up:
-    ; Set accumulator and index registers to 9-bit mode
+    ; Set accumulator to 8-bit mode
     sep #$20
 
     ; Select sprite table 1
@@ -179,7 +179,7 @@ Up:
     rti
 
 Down:
-    ; Set accumulator to 9-bit mode
+    ; Set accumulator to 8-bit mode
     sep #$20
 
     ; Select sprite table 1
@@ -202,7 +202,7 @@ Down:
     rti
 
 Left:
-    ; Set accumulator to 9-bit mode
+    ; Set accumulator to 8-bit mode
     sep #$20
 
     ; Select sprite table 1
@@ -226,7 +226,7 @@ Left:
     rti
 
 Right:
-    ; Set accumulator to 9-bit mode
+    ; Set accumulator to 8-bit mode
     sep #$20
 
     ; Select sprite table 1
