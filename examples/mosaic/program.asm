@@ -175,13 +175,13 @@ Main:
     ; For comparing joypad input
     .DEFINE INPUT $7F0000
     .DEFINE INPUT_PREVIOUS $7F0002
+    .DEFINE MOSAIC_VALUE $7F0004
 
     ; Enable mosaic effect for background layer 1
     lda #$01
     sta MOSAIC
-
-    ; Push mosaic settings
-    pha
+    lda #$00
+    sta MOSAIC_VALUE
 
 -   wai
     jmp -
@@ -223,14 +223,18 @@ Up:
     ; Set accumulator to 8-bit mode
     sep #$20
 
-    ; Pull mosaic settings
-    pla
-    
-    cmp #%11110001
+    lda MOSAIC_VALUE    
+    cmp #%00001111
     beq +
-    adc #%00010000
-    sta MOSAIC
-    pha
+    inc a
+    sta MOSAIC_VALUE
+
+    asl
+    asl
+    asl
+    asl
+    ora #$01
+    sta MOSAIC    
 
 +   rti
 
@@ -238,13 +242,18 @@ Down:
     ; Set accumulator to 8-bit mode
     sep #$20
 
-    pla
-
-    cmp #%00000001
+    lda MOSAIC_VALUE
+    cmp #$00
     beq +
-    sbc #%00010000
-    sta MOSAIC
-    pha
+    dec a
+    sta MOSAIC_VALUE
+
+    asl
+    asl
+    asl
+    asl
+    ora #$01
+    sta MOSAIC    
 
 +   rti
 
