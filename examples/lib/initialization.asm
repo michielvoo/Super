@@ -145,7 +145,7 @@ InitializePPU:
 
     ; Initialize main and subscreen
     stz TM
-    stz TD
+    stz TS
     stz TMW
     stz TSW
 

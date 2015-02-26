@@ -54,7 +54,7 @@
 .DEFINE WBGLOG      $212A       ; w
 .DEFINE WOBJLOG     $212B       ; w
 .DEFINE TM          $212C       ; w
-.DEFINE TD          $212D       ; w
+.DEFINE TS          $212D       ; w
 .DEFINE TMW         $212E       ; w
 .DEFINE TSW         $212F       ; w
 .DEFINE CGWSEL      $2130       ; w
