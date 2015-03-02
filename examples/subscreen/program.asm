@@ -27,7 +27,7 @@ Main:
     sta CGDATA
 
     ; Color to use for characters on background layer 2
-    lda #$22
+    lda #$21
     sta CGADD
     lda #$FF
     sta CGDATA
@@ -83,30 +83,30 @@ Main:
     stz VMDATAH
 
     ; Character 2
-    stz VMDATAL
     lda #%11111111
-    sta VMDATAH
-    stz VMDATAL
+    sta VMDATAL
+    stz VMDATAH
     lda #%11111111
-    sta VMDATAH
-    stz VMDATAL
+    sta VMDATAL
+    stz VMDATAH
     lda #%11111111
-    sta VMDATAH
-    stz VMDATAL
+    sta VMDATAL
+    stz VMDATAH
     lda #%11111111
-    sta VMDATAH
-    stz VMDATAL
+    sta VMDATAL
+    stz VMDATAH
     lda #%11111111
-    sta VMDATAH
-    stz VMDATAL
+    sta VMDATAL
+    stz VMDATAH
     lda #%11111111
-    sta VMDATAH
-    stz VMDATAL
+    sta VMDATAL
+    stz VMDATAH
     lda #%11111111
-    sta VMDATAH
-    stz VMDATAL
+    sta VMDATAL
+    stz VMDATAH
     lda #%11111111
-    sta VMDATAH
+    sta VMDATAL
+    stz VMDATAH
 
     ; Set VRAM port to increment after writing high byte
     lda #VMAINC_INC_H
