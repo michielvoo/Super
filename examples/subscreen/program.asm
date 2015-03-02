@@ -148,8 +148,20 @@ Main:
     bne -
 
     ; Enable background layer 1 on the main screen
-    lda #%00000011
+    lda #%00000001
     sta TM
+
+    ; Enable background layer 2 on the subscreen
+    lda #%00000010
+    sta TS
+
+    ; Enable subscreen for color math
+    lda #%00000010
+    sta CGWSEL
+
+    ; Enable color math on background layer 1 and 2 (using subtraction)
+    lda #%10000011
+    sta CGADSUB
 
     ; Turn on the screen at full brightness
     lda #$0F
