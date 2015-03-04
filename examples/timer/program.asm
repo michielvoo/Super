@@ -1,5 +1,5 @@
 ; timer
-; ...
+; Sets up a time to change the backdrop color twice on every frame
 
 
 .INCLUDE "../lib/header.asm"
@@ -25,8 +25,7 @@ Main:
     stz CGADD
     lda #$FF
     sta CGDATA
-    lda #$7F
-    sta CGDATA
+    stz CGDATA
 
     ; Keep track of the horizontal offset to trigger IRQ
     .DEFINE VTrigger $00
@@ -42,14 +41,13 @@ Main:
     sta INIDISP
 
     ; Enable VBlank interrupt and enable IRQ on every scanline
-    lda #(NMITIMEN_NMI_ENABLE | NMITIMEN_IRQ_ENABLE_VTIME)
+    lda #NMITIMEN_IRQ_ENABLE_VTIME
     sta NMITIMEN
 
 -   wai
     jmp -
 
 VBlank:
-    lda RDNMI
     rti
 
 IRQ:
@@ -59,10 +57,12 @@ IRQ:
     beq +
     bne ++
 
-    ; Set backdrop color to black
+    ; Set backdrop color
 +   stz CGADD
-    stz CGDATA
-    stz CGDATA
+    lda #%10000100
+    sta CGDATA
+    lda #%00010000
+    sta CGDATA
 
     ; Set vertical IRQ trigger to 112
     lda #$70
@@ -72,12 +72,11 @@ IRQ:
     lda TIMEUP
     rti
 
-    ; Set backdrop color to white
+    ; Set backdrop color
 ++  stz CGADD
     lda #$FF
     sta CGDATA
-    lda #$7F
-    sta CGDATA
+    stz CGDATA
 
     ; Set vertical IRQ trigger to zero
     stz VTIMEL
