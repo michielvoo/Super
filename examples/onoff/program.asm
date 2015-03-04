@@ -72,4 +72,8 @@ Off:
 
     rti
 
+IRQ:
+    lda TIMEUP
+    rti
+
 .ENDS

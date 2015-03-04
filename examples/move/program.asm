@@ -248,6 +248,10 @@ Right:
 
     rti
 
+IRQ:
+    lda TIMEUP
+    rti
+
 .ENDS
 
 

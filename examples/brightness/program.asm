@@ -93,4 +93,8 @@ Brighten:
 
 +   rti
 
+IRQ:
+    lda TIMEUP
+    rti
+
 .ENDS

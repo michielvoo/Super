@@ -279,4 +279,8 @@ Main:
 VBlank:
     rti
 
+IRQ:
+    lda TIMEUP
+    rti
+
 .ENDS

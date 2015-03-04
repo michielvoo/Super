@@ -130,4 +130,8 @@ Yellow:
 
     rti
 
+IRQ:
+    lda TIMEUP
+    rti
+
 .ENDS
