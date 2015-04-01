@@ -189,6 +189,6 @@ IRQ:
     lda TIMEUP
     rti
 
-.INCLUDE "sprite.asm"
+.INCLUDE "../assets/sprite.asm"
 
 .ENDS
