@@ -1,6 +1,7 @@
 wiki/
 .DS_Store
 link.txt
+[Ss]creenshots
 upload.sh
 *.lst
 *.o
