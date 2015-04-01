@@ -1,3 +1,7 @@
+; System constants
+
+.DEFINE BBUS_OFFSET $2100
+
 ; General register values
 
 .DEFINE HVBJOY_JOYREADY $01

@@ -31,7 +31,7 @@ Main:
     sta DMAP0
 
     ; Set DMA destination (B-bus)
-    lda #$22    ; CGDATA - $2100
+    lda #(CGDATA - BBUS_OFFSET)
     sta BBAD0
 
     ; Reset accumulator to 16-bit
