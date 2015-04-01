@@ -54,8 +54,9 @@ Main:
 
 ; Create a sprite
 
-    ; Set available sprite sizes to 8x8 and 16x16 and select sprite character segment 0
-    stz OBSEL
+    ; Set available sprite sizes to 16x16 and 32x32 and select sprite character segment 0
+    lda #%11100000
+    sta OBSEL
 
     ; Select sprite table 1
     stz OAMADDH
@@ -78,8 +79,8 @@ Main:
     stz OAMADDL
     sta OAMADDH
 
-    ; Set sprite 0 size to large
-    lda #%00000010
+    ; Set sprite 0 size to small (16x16)
+    lda #%00000000
     sta OAMDATA
 
 ; Create characters
