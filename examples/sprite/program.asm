@@ -92,65 +92,37 @@ Main:
     lda #$20
     sta VMADD
 
-    ; Write bits for character 2 plane 0 + 1 (sprite 0 part A)
-    stz VMDATAL
-    lda #%00000000
-    sta VMDATAH
-    stz VMDATAL
-    lda #%01111111
-    sta VMDATAH
-    stz VMDATAL
-    lda #%01000000
-    sta VMDATAH
-    stz VMDATAL
-    lda #%01000000
-    sta VMDATAH
-    stz VMDATAL
-    lda #%01000000
-    sta VMDATAH
-    stz VMDATAL
-    lda #%01000000
-    sta VMDATAH
-    stz VMDATAL
-    lda #%01000000
-    sta VMDATAH
-    stz VMDATAL
-    lda #%01000000
-    sta VMDATAH
+    ; DMA control
+    lda #%00000001  ; From A-bus to B-bus, read consecutive addresses, write low + high
+    sta DMAP0
 
-    ; Set VRAM address to sprite 0's character segment, character 3 (@4bpp)
-    lda #$30
-    sta VMADD
+    ; Set DMA destination (B-bus)
+    lda #$18    ; VMDATA - $2100
+    sta BBAD0
 
-    ; Write bits for character 3 plane 0 + 1 (sprite 0 part B)
-    lda #%00000000
-    sta VMDATAL
-    sta VMDATAH
-    lda #%01111111
-    sta VMDATAL
-    sta VMDATAH
-    lda #%00000001
-    sta VMDATAL
-    sta VMDATAH
-    lda #%00000001
-    sta VMDATAL
-    sta VMDATAH
-    lda #%00000001
-    sta VMDATAL
-    sta VMDATAH
-    lda #%00000001
-    sta VMDATAL
-    sta VMDATAH
-    lda #%10000001
-    sta VMDATAL
-    lda #%00000001
-    sta VMDATAH
-    lda #%10000001
-    sta VMDATAL
-    lda #%00000001
-    sta VMDATAH
+    ; Reset accumulator to 16-bit
+    rep #$20
 
-    ; Reset accumulator register to 16-bit mode
+    ; Set DMA source (A-bus)
+    lda #SpriteAB
+    sta A1T0
+
+    ; Set accumulator to 8-bit
+    sep #$20
+
+    lda #:SpriteAB
+    sta A1B0
+
+    ; Set DMA transfer size (number of bytes)
+    lda #$40
+    sta DAS0L
+    stz DAS0H
+
+    ; Initialize DMA transfer
+    lda #$01
+    sta MDMAEN
+
+    ; Reset accumulator to 16-bit
     rep #$20
 
     ; Set VRAM address to sprite 0's character segment, character 18 (@4bpp)
@@ -158,107 +130,41 @@ Main:
     lda #$0120
     sta VMADD
 
-    ; Set accumulator register to 8-bit mode
+    ; Set accumulator to 8-bit
     sep #$20
 
-    ; Write bits for character 18 plane 0 + 1 (sprite 0 part C)
-    lda #%00000011
-    sta VMDATAL
-    stz VMDATAH
-    lda #%00000000
-    sta VMDATAL
-    stz VMDATAH
-    lda #%00000000
-    sta VMDATAL
-    stz VMDATAH
-    stz VMDATAL
-    stz VMDATAH
-    stz VMDATAL
-    stz VMDATAH
-    stz VMDATAL
-    stz VMDATAH
-    stz VMDATAL
-    stz VMDATAH
-    stz VMDATAL
-    stz VMDATAH
+    ; DMA control
+    lda #%00000001  ; From A-bus to B-bus, read consecutive addresses, write low + high
+    sta DMAP0
 
-    ; Write bits for character 18 plane 2 + 3 (sprite 0 part C)
-    lda #%00000000
-    sta VMDATAL
-    stz VMDATAH
-    lda #%01000000
-    sta VMDATAL
-    stz VMDATAH
-    lda #%01000000
-    sta VMDATAL
-    stz VMDATAH
-    lda #%01000000
-    sta VMDATAL
-    stz VMDATAH
-    lda #%01000000
-    sta VMDATAL
-    stz VMDATAH
-    lda #%01000000
-    sta VMDATAL
-    stz VMDATAH
-    lda #%01000000
-    sta VMDATAL
-    stz VMDATAH
-    lda #%01111111
-    sta VMDATAL
-    stz VMDATAH
+    ; Set DMA destination (B-bus)
+    lda #$18    ; VMDATA - $2100
+    sta BBAD0
 
-    ; Write bits for character 19 plane 0 + 1 (sprite 0 part D)
-    lda #%11100000
-    sta VMDATAL
-    stz VMDATAH
-    lda #%10000001
-    sta VMDATAL
-    stz VMDATAH
-    lda #%10000001
-    sta VMDATAL
-    stz VMDATAH
-    lda #%00000001
-    sta VMDATAL
-    stz VMDATAH
-    lda #%00000001
-    sta VMDATAL
-    stz VMDATAH
-    lda #%00000001
-    sta VMDATAL
-    stz VMDATAH
-    lda #%00000001
-    sta VMDATAL
-    stz VMDATAH
-    lda #%01111111
-    sta VMDATAL
-    stz VMDATAH
+    ; Reset accumulator to 16-bit
+    rep #$20
 
-    ; Write bits for character 19 plane 2 + 3 (sprite 0 part D)
-    lda #%00000000
-    sta VMDATAL
-    stz VMDATAH
-    lda #%00000001
-    sta VMDATAL
-    stz VMDATAH
-    lda #%00000001
-    sta VMDATAL
-    stz VMDATAH
-    lda #%00000001
-    sta VMDATAL
-    stz VMDATAH
-    lda #%00000001
-    sta VMDATAL
-    stz VMDATAH
-    lda #%00000001
-    sta VMDATAL
-    stz VMDATAH
-    lda #%00000001
-    sta VMDATAL
-    stz VMDATAH
-    lda #%01111111
-    sta VMDATAL
-    stz VMDATAH
+    ; Set DMA source (A-bus)
+    lda #SpriteCD
+    sta A1T0
+
+    ; Set accumulator to 8-bit
+    sep #$20
+
+    lda #:SpriteCD
+    sta A1B0
+
+    ; Set DMA transfer size (number of bytes)
+    lda #$40
+    sta DAS0L
+    stz DAS0H
+
+    ; Initialize DMA transfer
+    lda #$01
+    sta MDMAEN
+
+    ; Set accumulator register to 8-bit mode
+    sep #$20
 
     ; Enable the 'sprite layer'
     lda #%00010000
@@ -282,5 +188,31 @@ VBlank:
 IRQ:
     lda TIMEUP
     rti
+
+SpriteAB:
+    ; Character 2 plane 0 + 1 (sprite part A)
+    .db $00, $00, $00, $7F, $00, $40, $00, $40, $00, $40, $00, $40, $00, $40, $00, $40
+
+    ; Character 2 plane 2 + 3 (sprite part A)
+    .db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
+
+    ; Character 3 plane 0 + 1 (sprite part B)
+    .db $00, $00, $7F, $7F, $01, $01, $01, $01, $01, $01, $01, $01, $81, $01, $81, $01
+
+    ; Character 3 plane 2 + 3 (sprite part B)
+    .db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
+
+SpriteCD:
+    ; Character 18 plane 0 + 1 (sprite part C)
+    .db $03, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
+
+    ; Character 18 plane 2 + 3 (sprite part C)
+    .db $00, $00, $40, $00, $40, $00, $40, $00, $40, $00, $40, $00, $40, $00, $7F, $00
+
+    ; Character 19 plane 0 + 1 (sprite part D)
+    .db $E0, $00, $81, $00, $81, $00, $01, $00, $01, $00, $01, $00, $01, $00, $7F, $00
+
+    ; Character 19 plane 2 + 3 (sprite part D)
+    .db $00, $00, $01, $00, $01, $00, $01, $00, $01, $00, $01, $00, $01, $00, $7F, $00
 
 .ENDS
