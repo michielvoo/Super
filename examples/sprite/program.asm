@@ -189,30 +189,6 @@ IRQ:
     lda TIMEUP
     rti
 
-SpriteAB:
-    ; Character 2 plane 0 + 1 (sprite part A)
-    .db $00, $00, $00, $7F, $00, $40, $00, $40, $00, $40, $00, $40, $00, $40, $00, $40
-
-    ; Character 2 plane 2 + 3 (sprite part A)
-    .db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
-
-    ; Character 3 plane 0 + 1 (sprite part B)
-    .db $00, $00, $7F, $7F, $01, $01, $01, $01, $01, $01, $01, $01, $81, $01, $81, $01
-
-    ; Character 3 plane 2 + 3 (sprite part B)
-    .db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
-
-SpriteCD:
-    ; Character 18 plane 0 + 1 (sprite part C)
-    .db $03, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
-
-    ; Character 18 plane 2 + 3 (sprite part C)
-    .db $00, $00, $40, $00, $40, $00, $40, $00, $40, $00, $40, $00, $40, $00, $7F, $00
-
-    ; Character 19 plane 0 + 1 (sprite part D)
-    .db $E0, $00, $81, $00, $81, $00, $01, $00, $01, $00, $01, $00, $01, $00, $7F, $00
-
-    ; Character 19 plane 2 + 3 (sprite part D)
-    .db $00, $00, $01, $00, $01, $00, $01, $00, $01, $00, $01, $00, $01, $00, $7F, $00
+.INCLUDE "sprite.asm"
 
 .ENDS
