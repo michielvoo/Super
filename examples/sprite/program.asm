@@ -185,6 +185,94 @@ Main:
     lda #$01
     sta MDMAEN
 
+; Sprite row 3
+
+    ; Reset accumulator to 16-bit
+    rep #$20
+
+    ; Set VRAM address to sprite 0's character segment, character 20 (@4bpp)
+    ; Characters for sprites are interleaved in VRAM, so we skipped characters for other sprites
+    lda #$0240
+    sta VMADD
+
+    ; Set accumulator to 8-bit
+    sep #$20
+
+    ; DMA control
+    lda #%00000001  ; From A-bus to B-bus, read consecutive addresses, write low + high
+    sta DMAP0
+
+    ; Set DMA destination (B-bus)
+    lda #(VMDATA - BBUS_OFFSET)
+    sta BBAD0
+
+    ; Reset accumulator to 16-bit
+    rep #$20
+
+    ; Set DMA source (A-bus)
+    lda #SpriteRow3
+    sta A1T0
+
+    ; Set accumulator to 8-bit
+    sep #$20
+
+    lda #:SpriteRow3
+    sta A1B0
+
+    ; Set DMA transfer size (number of bytes)
+    lda #$80
+    sta DAS0L
+    stz DAS0H
+
+    ; Initialize DMA transfer
+    lda #$01
+    sta MDMAEN
+
+; Sprite row 4
+
+    ; Reset accumulator to 16-bit
+    rep #$20
+
+    ; Set VRAM address to sprite 0's character segment, character 20 (@4bpp)
+    ; Characters for sprites are interleaved in VRAM, so we skipped characters for other sprites
+    lda #$0340
+    sta VMADD
+
+    ; Set accumulator to 8-bit
+    sep #$20
+
+    ; DMA control
+    lda #%00000001  ; From A-bus to B-bus, read consecutive addresses, write low + high
+    sta DMAP0
+
+    ; Set DMA destination (B-bus)
+    lda #(VMDATA - BBUS_OFFSET)
+    sta BBAD0
+
+    ; Reset accumulator to 16-bit
+    rep #$20
+
+    ; Set DMA source (A-bus)
+    lda #SpriteRow4
+    sta A1T0
+
+    ; Set accumulator to 8-bit
+    sep #$20
+
+    lda #:SpriteRow4
+    sta A1B0
+
+    ; Set DMA transfer size (number of bytes)
+    lda #$80
+    sta DAS0L
+    stz DAS0H
+
+    ; Initialize DMA transfer
+    lda #$01
+    sta MDMAEN
+
+; End of sprite DMA
+
     ; Set accumulator register to 8-bit mode
     sep #$20
 
