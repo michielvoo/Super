@@ -124,13 +124,13 @@ Main:
     rep #$20
 
     ; Set DMA source (A-bus)
-    lda #SpriteRow1
+    lda #Sprite
     sta A1T0
 
     ; Set accumulator to 8-bit
     sep #$20
 
-    lda #:SpriteRow1
+    lda #:Sprite
     sta A1B0
 
     ; Set DMA transfer size (number of bytes for one row of a 32x32 sprite)
@@ -167,13 +167,13 @@ Main:
     rep #$20
 
     ; Set DMA source (A-bus)
-    lda #SpriteRow2
+    lda #(Sprite + $80)
     sta A1T0
 
     ; Set accumulator to 8-bit
     sep #$20
 
-    lda #:SpriteRow2
+    lda #:Sprite
     sta A1B0
 
     ; Set DMA transfer size (number of bytes)
@@ -210,13 +210,13 @@ Main:
     rep #$20
 
     ; Set DMA source (A-bus)
-    lda #SpriteRow3
+    lda #(Sprite + $100)
     sta A1T0
 
     ; Set accumulator to 8-bit
     sep #$20
 
-    lda #:SpriteRow3
+    lda #:Sprite
     sta A1B0
 
     ; Set DMA transfer size (number of bytes)
@@ -253,13 +253,13 @@ Main:
     rep #$20
 
     ; Set DMA source (A-bus)
-    lda #SpriteRow4
+    lda #(Sprite + $180)
     sta A1T0
 
     ; Set accumulator to 8-bit
     sep #$20
 
-    lda #:SpriteRow4
+    lda #:Sprite
     sta A1B0
 
     ; Set DMA transfer size (number of bytes)

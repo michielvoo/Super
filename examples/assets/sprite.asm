@@ -1,4 +1,5 @@
-SpriteRow1:
+Sprite:
+
     ; Character 4 plane 0 + 1 (sprite part AA)
     .db $00, $00, $00, $7F, $00, $40, $00, $40, $00, $40, $00, $40, $00, $40, $00, $40
 
@@ -23,7 +24,8 @@ SpriteRow1:
     ; Character 7 plane 2 + 3 (sprite part BB)
     .db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
 
-SpriteRow2:
+; Row 2
+
     ; Character 20 plane 0 + 1 (sprite part AC)
     .db $03, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
 
@@ -48,7 +50,8 @@ SpriteRow2:
     ; Character 23 plane 2 + 3 (sprite part BD)
     .db $00, $00, $01, $00, $01, $00, $01, $00, $01, $00, $01, $00, $01, $00, $7F, $00
 
-SpriteRow3:
+; Row 3
+
     ; Character 4 plane 0 + 1 (sprite part AA)
     .db $00, $00, $00, $7F, $00, $40, $00, $40, $00, $40, $00, $40, $00, $40, $00, $40
 
@@ -73,7 +76,8 @@ SpriteRow3:
     ; Character 7 plane 2 + 3 (sprite part BB)
     .db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
 
-SpriteRow4:
+; Row 4
+
     ; Character 20 plane 0 + 1 (sprite part AC)
     .db $03, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
 
