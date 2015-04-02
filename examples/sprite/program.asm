@@ -62,14 +62,14 @@ Main:
     stz OAMADDH
     stz OAMADDL
     
-    ; Center sprite 0 on the screen
-    lda #(SCREEN_W / 2 - 8)
+    ; Center sprite 0 on the screen (sprite is 32x32)
+    lda #(SCREEN_W / 2 - 16)
     sta OAMDATA
-    lda #(SCREEN_H / 2 - 8)
+    lda #(SCREEN_H / 2 - 16)
     sta OAMDATA
 
     ; Sprite 0 refers to character 2
-    lda #$02
+    lda #$04
     sta OAMDATA
     ; Sprite 0 refers to palette 0, has priority 0 and no flip
     stz OAMDATA
@@ -79,18 +79,37 @@ Main:
     stz OAMADDL
     sta OAMADDH
 
-    ; Set sprite 0 size to small (16x16)
-    lda #%00000000
+    ; Set sprite 0 size to large (32x32)
+    lda #%00000010
     sta OAMDATA
 
 ; Create characters
+; Current sprite data is 16x16 requiring 4 characters
+; Interleave pattern is:    A B . . . . . . . . . . . . . . C D
+; We skip the first sprite: . . A B . . . . . . . . . . . . . . C D
+; Single DMA transfer can write 1 row, then skip the interleaved region
+; We need 2 DMA transfers
+; DMA 1: skip 2 characters
+; DMA 2: skip 6 + 2 characters
+
+; New sprite is 32x32 requiring 16 characters
+; Interleave pattern is:    AA AB BA BB .  .  .  .  .  .  .  .  .  .  .  .  AC AD BC BD
+; We skip the first sprint: .  .  .  .  AA AB BA BB .  .  .  .  .  .  .  .  .  .  .  .  AC AD BC BD
+; Single DMA transfer can write 1 row, then skip the interleaved region
+; We need 4 DMA transfers
+; DMA 1: skip 4 characters
+; DMA 2: skip 16 + 4 characters
+; DMA 3: skip 32 + 4 characters
+; DMA 4: skip 48 + 4 characters
 
     ; Set VRAM write mode to increment the VRAM address after writing VMDATAH
     lda #VMAINC_INC_H
     sta VMAINC
 
-    ; Set VRAM address to sprite 0's character segment, character 2 (@4bpp)
-    lda #$20
+; Sprite row 1
+
+    ; Set VRAM address to sprite 0's character segment, character 4 (@4bpp, 32x32 sprites)
+    lda #$40
     sta VMADD
 
     ; DMA control
@@ -105,17 +124,17 @@ Main:
     rep #$20
 
     ; Set DMA source (A-bus)
-    lda #SpriteAB
+    lda #SpriteRow1
     sta A1T0
 
     ; Set accumulator to 8-bit
     sep #$20
 
-    lda #:SpriteAB
+    lda #:SpriteRow1
     sta A1B0
 
-    ; Set DMA transfer size (number of bytes)
-    lda #$40
+    ; Set DMA transfer size (number of bytes for one row of a 32x32 sprite)
+    lda #$80
     sta DAS0L
     stz DAS0H
 
@@ -123,12 +142,14 @@ Main:
     lda #$01
     sta MDMAEN
 
+; Sprite row 2
+
     ; Reset accumulator to 16-bit
     rep #$20
 
-    ; Set VRAM address to sprite 0's character segment, character 18 (@4bpp)
+    ; Set VRAM address to sprite 0's character segment, character 20 (@4bpp)
     ; Characters for sprites are interleaved in VRAM, so we skipped characters for other sprites
-    lda #$0120
+    lda #$0140
     sta VMADD
 
     ; Set accumulator to 8-bit
@@ -139,24 +160,24 @@ Main:
     sta DMAP0
 
     ; Set DMA destination (B-bus)
-    lda #$18    ; VMDATA - $2100
+    lda #(VMDATA - BBUS_OFFSET)
     sta BBAD0
 
     ; Reset accumulator to 16-bit
     rep #$20
 
     ; Set DMA source (A-bus)
-    lda #SpriteCD
+    lda #SpriteRow2
     sta A1T0
 
     ; Set accumulator to 8-bit
     sep #$20
 
-    lda #:SpriteCD
+    lda #:SpriteRow2
     sta A1B0
 
     ; Set DMA transfer size (number of bytes)
-    lda #$40
+    lda #$80
     sta DAS0L
     stz DAS0H
 

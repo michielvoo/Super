@@ -1,25 +1,49 @@
-SpriteAB:
-    ; Character 2 plane 0 + 1 (sprite part A)
+SpriteRow1:
+    ; Character 4 plane 0 + 1 (sprite part AA)
     .db $00, $00, $00, $7F, $00, $40, $00, $40, $00, $40, $00, $40, $00, $40, $00, $40
 
-    ; Character 2 plane 2 + 3 (sprite part A)
+    ; Character 4 plane 2 + 3 (sprite part AA)
     .db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
 
-    ; Character 3 plane 0 + 1 (sprite part B)
+    ; Character 5 plane 0 + 1 (sprite part AB)
     .db $00, $00, $7F, $7F, $01, $01, $01, $01, $01, $01, $01, $01, $81, $01, $81, $01
 
-    ; Character 3 plane 2 + 3 (sprite part B)
+    ; Character 5 plane 2 + 3 (sprite part AB)
     .db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
 
-SpriteCD:
-    ; Character 18 plane 0 + 1 (sprite part C)
+    ; Character 6 plane 0 + 1 (sprite part BA)
+    .db $00, $00, $00, $7F, $00, $40, $00, $40, $00, $40, $00, $40, $00, $40, $00, $40
+
+    ; Character 6 plane 2 + 3 (sprite part BA)
+    .db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
+
+    ; Character 7 plane 0 + 1 (sprite part BB)
+    .db $00, $00, $7F, $7F, $01, $01, $01, $01, $01, $01, $01, $01, $81, $01, $81, $01
+
+    ; Character 7 plane 2 + 3 (sprite part BB)
+    .db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
+
+SpriteRow2:
+    ; Character 20 plane 0 + 1 (sprite part AC)
     .db $03, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
 
-    ; Character 18 plane 2 + 3 (sprite part C)
+    ; Character 20 plane 2 + 3 (sprite part AC)
     .db $00, $00, $40, $00, $40, $00, $40, $00, $40, $00, $40, $00, $40, $00, $7F, $00
 
-    ; Character 19 plane 0 + 1 (sprite part D)
+    ; Character 21 plane 0 + 1 (sprite part AD)
     .db $E0, $00, $81, $00, $81, $00, $01, $00, $01, $00, $01, $00, $01, $00, $7F, $00
 
-    ; Character 19 plane 2 + 3 (sprite part D)
+    ; Character 21 plane 2 + 3 (sprite part AD)
+    .db $00, $00, $01, $00, $01, $00, $01, $00, $01, $00, $01, $00, $01, $00, $7F, $00
+
+    ; Character 22 plane 0 + 1 (sprite part BC)
+    .db $03, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
+
+    ; Character 22 plane 2 + 3 (sprite part BC)
+    .db $00, $00, $40, $00, $40, $00, $40, $00, $40, $00, $40, $00, $40, $00, $7F, $00
+
+    ; Character 23 plane 0 + 1 (sprite part BD)
+    .db $E0, $00, $81, $00, $81, $00, $01, $00, $01, $00, $01, $00, $01, $00, $7F, $00
+
+    ; Character 23 plane 2 + 3 (sprite part BD)
     .db $00, $00, $01, $00, $01, $00, $01, $00, $01, $00, $01, $00, $01, $00, $7F, $00
