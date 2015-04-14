@@ -39,7 +39,14 @@ width = header[2]
 height = header[3]
 
 if width > 64 or height > 64:
-    print "Unable to convert \"{}\", width and/or height exceeds 64 pixels".format(source)
+    print "Unable to convert \"{}\" because its width or height exceeds 64 pixels".format(source)
+    exit()
+
+# Check that the file has a global color table
+fields = header[4]
+
+if not fields & 0x80:
+    print "Unable to convert \"{}\" because it does not have a global color table".format(source)
     exit()
 
 #
