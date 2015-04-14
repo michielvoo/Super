@@ -22,4 +22,10 @@ class Image(object):
         if any(d > 64 for d in self.dimensions):
             raise ValueError("Unsupported GIF image, dimensions may not exceed 64 by 64 pixels")
 
+        self._fields = header[4]
+
+        if not self._fields & 0x80:
+            raise ValueError("Unsupported GIF image, no global color table")
+
+
 #
