@@ -5,10 +5,16 @@ class Image(object):
     def open(class_, buffer):
         return Image(buffer)
 
-    header = {}
-
     def __init__(self, buffer):
-        data = struct.unpack("<3s3shhb", buffer.read(11))
-        self.header["id"] = data[0]
-        self.header["version"] = data[1]
-        pass
+        try:
+            header = struct.unpack("<3s3shhb", buffer.read(11))
+        except struct.error:
+            raise ValueError("Invalid GIF file")
+
+        self._id = header[0]
+        self._version = header[1]
+        
+        if self._id != "GIF" or self._version != "89a":
+            raise ValueError("Invalid GIF file, only GIF89a is supported")
+
+#
