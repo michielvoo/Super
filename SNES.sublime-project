@@ -12,5 +12,14 @@
             "name": "WLA",
             "cmd": ["$project_path/examples/build.sh", "$file"]
         }
+        ,
+        {
+            "name": "Python run",
+            "cmd": ["python", "$file"]
+        },
+        {
+            "name": "Python unittest",
+            "cmd": ["python", "-m", "unittest", "discover", "$project_path/tools"]
+        }
     ]
 }
