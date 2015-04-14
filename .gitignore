@@ -5,6 +5,7 @@ link.txt
 upload.sh
 *.lst
 *.o
+*.pyc
 *.rom
 *.sublime-workspace
 *.sym
