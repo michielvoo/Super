@@ -15,6 +15,11 @@ class Image(object):
         self._version = header[1]
         
         if self._id != "GIF" or self._version != "89a":
-            raise ValueError("Invalid GIF file, only GIF89a is supported")
+            raise ValueError("Unsupported GIF image, only GIF89a is supported")
+
+        self.dimensions = (header[2], header[3])
+
+        if any(d > 64 for d in self.dimensions):
+            raise ValueError("Unsupported GIF image, dimensions may not exceed 64 by 64 pixels")
 
 #
