@@ -65,13 +65,12 @@ class ImageTests(unittest.TestCase):
 
     def test_open_raises_ValueException_if_GIF_image_has_more_than_16_colors(self):
         # Arrange
-        header = self.header(color_depth=3)
+        header = self.header(color_depth=5)
         buffer = StringIO(header)
 
         # Act and assert
         with self.assertRaises(ValueError):
             image = Image.open(buffer)
-            print image._num_colors
 
     def test_dimensions_attribute_is_read_from_GIF_image_header(self):
         # Arrange

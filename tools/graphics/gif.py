@@ -5,6 +5,13 @@ class Image(object):
     def open(class_, buffer):
         return Image(buffer)
 
+    _max_color_depth = 4
+    _max_colors = pow(2, _max_color_depth)
+
+    @property
+    def dimensions(self):
+        return self._dimensions
+
     def __init__(self, buffer):
         try:
             header = struct.unpack("<3s3shhBBB", buffer.read(13))
@@ -35,11 +42,7 @@ class Image(object):
         if not self._fields & 0x80:
             raise ValueError("GIF images without a global color table are not supported")
 
-        if self._color_depth > 2:
-            raise ValueError("Color depth may not exceed 2")
-
-    @property
-    def dimensions(self):
-        return self._dimensions
+        if self._color_depth > self._max_color_depth:
+            raise ValueError("Number of colors may not exceed " + str(self._max_color_depth))
 
 #
