@@ -102,6 +102,12 @@ class ImageTests(unittest.TestCase):
 
         header += struct.pack('B', field)
 
+        # Background color index
+        header += struct.pack('B', 0)
+
+        # Pixel aspect ratio
+        header += struct.pack('B', 1)
+
         return header
 
 if __name__ == "__main__":

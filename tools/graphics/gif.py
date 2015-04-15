@@ -7,16 +7,18 @@ class Image(object):
 
     def __init__(self, buffer):
         try:
-            header = struct.unpack("<3s3shhB", buffer.read(11))
+            header = struct.unpack("<3s3shhBBB", buffer.read(13))
         except struct.error:
             raise ValueError("Invalid GIF file")
 
         # Initialize fields
         self._id = header[0]
         self._version = header[1]
-        self.dimensions = (header[2], header[3])
+        self._dimensions = (header[2], header[3])
         self._fields = header[4]
         self._color_depth = (self._fields & 0x07) + 1
+        self._background_color_index = header[5]
+        self._pixel_aspect_ratio = header[6]
         
         self._validate()
 
@@ -35,5 +37,9 @@ class Image(object):
 
         if self._color_depth > 2:
             raise ValueError("Color depth may not exceed 2")
+
+    @property
+    def dimensions(self):
+        return self._dimensions
 
 #
