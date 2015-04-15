@@ -25,15 +25,15 @@ class Image(object):
     """
     def _validate(self):
         if self._id != "GIF" or self._version != "89a":
-            raise ValueError("Unsupported GIF image, only GIF89a is supported")
+            raise ValueError("GIF89a images are not supported")
 
         if any(d > 64 for d in self.dimensions):
-            raise ValueError("Unsupported GIF image, dimensions may not exceed 64 by 64 pixels")
+            raise ValueError("Dimensions may not exceed 64 by 64 pixels")
         
         if not self._fields & 0x80:
-            raise ValueError("Unsupported GIF image, no global color table")
+            raise ValueError("GIF images without a global color table are not supported")
 
         if self._color_depth > 2:
-            raise ValueError("Unsupported GIF image, too many colors")
+            raise ValueError("Color depth may not exceed 2")
 
 #
