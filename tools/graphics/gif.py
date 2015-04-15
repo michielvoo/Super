@@ -7,7 +7,7 @@ class Image(object):
 
     def __init__(self, buffer):
         try:
-            header = struct.unpack("<3s3shhb", buffer.read(11))
+            header = struct.unpack("<3s3shhB", buffer.read(11))
         except struct.error:
             raise ValueError("Invalid GIF file")
 
@@ -27,5 +27,9 @@ class Image(object):
         if not self._fields & 0x80:
             raise ValueError("Unsupported GIF image, no global color table")
 
+        # 'Isolate' the last 3 bits by AND-ing with 
+        self._color_depth = (self._fields & 0x07) + 1
 
+        if self._color_depth > 2:
+            raise ValueError("Unsupported GIF image, too many colors")
 #

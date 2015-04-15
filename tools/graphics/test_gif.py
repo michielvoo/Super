@@ -1,46 +1,108 @@
 import unittest
 from StringIO import StringIO
+import struct
 
 from gif import Image
 
 class ImageTests(unittest.TestCase):
 
     def test_open_returns_instance(self):
-        buffer = StringIO("GIF89a\x40\x00\x40\x00\x80")
+        # Arrange
+        header = self.header()
+        buffer = StringIO(header)
+
+        # Act
         image = Image.open(buffer)
+
+        # Assert
         self.assertIsNotNone(image)
 
     def test_open_raises_ValueException_for_invalid_GIF_image_header(self):
+        # Arrange
         empty = ""
-        not_gif = "PNG___\x40\x00\x40\x00\x80"
+        not_gif = self.header(prefix="PNG89a")
 
         headers = [empty, not_gif]
         for header in headers:
             buffer = StringIO(header)
+
+            # Act and assert
             with self.assertRaises(ValueError):
                 image = Image.open(buffer)
 
     def test_open_raises_ValueException_for_unsupported_GIF_version(self):
-        buffer = StringIO("GIF87a\x40\x00\x40\x00\x80")
+        # Arrange
+        header = self.header(prefix="GIF87a")
+        buffer = StringIO(header)
+
+        # Act and assert
         with self.assertRaises(ValueError):
             image = Image.open(buffer)
 
     def test_open_raises_ValueException_for_unsupported_dimensions(self):
-        buffer = StringIO("GIF89a\x41\x00\x41\x00\x80")
-        with self.assertRaises(ValueError):
-            image = Image.open(buffer)
+        # Arrange
+        headers = [
+            self.header(width=65), 
+            self.header(height=65),
+            self.header(width=65, height=65)
+        ]
+
+        for header in headers:
+            buffer = StringIO(header)
+
+            # Act and assert
+            with self.assertRaises(ValueError):
+                image = Image.open(buffer)
 
     def test_open_raises_ValueException_if_GIF_image_has_no_global_color_table(self):
-        buffer = StringIO("GIF89a\x00\x01\x00\x01\x80")
+        # Arrange
+        header = self.header(global_color_table=False)
+        buffer = StringIO(header)
+
+        # Act and assert
         with self.assertRaises(ValueError):
             image = Image.open(buffer)
 
+    def test_open_raises_ValueException_if_GIF_image_has_more_than_16_colors(self):
+        # Arrange
+        header = self.header(color_depth=3)
+        buffer = StringIO(header)
+
+        # Act and assert
+        with self.assertRaises(ValueError):
+            image = Image.open(buffer)
+            print image._num_colors
+
     def test_dimensions_attribute_is_read_from_GIF_image_header(self):
-        buffer = StringIO("GIF89a\x40\x00\x20\x00\x80")
+        # Arrange
+        expected = (1, 2)
+        header = self.header(width=expected[0], height=expected[1])
+        buffer = StringIO(header)
+
+        # Act
         actual = Image.open(buffer).dimensions
-        expected = (64, 32)
+
+        # Assert
         self.assertEqual(expected, actual)
 
+# Helpers
+
+    def header(self, prefix="GIF89a", width=16, height=16, global_color_table=True, color_depth=2):
+        header = prefix
+
+        # Width and height are packed as little-endian
+        header += struct.pack("<h", width)
+        header += struct.pack("<h", height)
+
+        field = 0;
+        if global_color_table:
+            # MSB indicated presence of a global color table
+            field += 0x80
+        field += color_depth - 1
+
+        header += struct.pack('B', field)
+
+        return header
 
 if __name__ == "__main__":
     unittest.main()
