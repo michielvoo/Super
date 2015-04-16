@@ -14,7 +14,19 @@ class ImageTests(unittest.TestCase):
         buffer = StringIO(header)
 
         # Act
-        image = Image.open(buffer)
+        image = Image.decode(buffer)
+
+        # Assert
+        self.assertIsNotNone(image)
+
+
+    def test_open_GIF87a_returns_instance(self):
+        # Arrange
+        header = self._header(prefix="GIF87a")
+        buffer = StringIO(header)
+
+        # Act
+        image = Image.decode(buffer)
 
         # Assert
         self.assertIsNotNone(image)
@@ -31,17 +43,17 @@ class ImageTests(unittest.TestCase):
 
             # Act and assert
             with self.assertRaises(ValueError):
-                image = Image.open(buffer)
+                image = Image.decode(buffer)
 
 
     def test_open_raises_ValueException_for_unsupported_GIF_version(self):
         # Arrange
-        header = self._header(prefix="GIF87a")
+        header = self._header(prefix="GIF88a")
         buffer = StringIO(header)
 
         # Act and assert
         with self.assertRaises(ValueError):
-            image = Image.open(buffer)
+            image = Image.decode(buffer)
 
 
     def test_open_raises_ValueException_for_unsupported_dimensions(self):
@@ -57,7 +69,7 @@ class ImageTests(unittest.TestCase):
 
             # Act and assert
             with self.assertRaises(ValueError):
-                image = Image.open(buffer)
+                image = Image.decode(buffer)
 
 
     def test_open_raises_ValueException_if_GIF_image_has_no_global_color_table(self):
@@ -67,7 +79,7 @@ class ImageTests(unittest.TestCase):
 
         # Act and assert
         with self.assertRaises(ValueError):
-            image = Image.open(buffer)
+            image = Image.decode(buffer)
 
 
     def test_open_raises_ValueException_if_GIF_image_has_more_than_16_colors(self):
@@ -77,7 +89,7 @@ class ImageTests(unittest.TestCase):
 
         # Act and assert
         with self.assertRaises(ValueError):
-            image = Image.open(buffer)
+            image = Image.decode(buffer)
 
 
     def test_dimensions_attribute_is_read_from_GIF_image_header(self):
@@ -87,7 +99,7 @@ class ImageTests(unittest.TestCase):
         buffer = StringIO(header)
 
         # Act
-        actual = Image.open(buffer).dimensions
+        actual = Image.decode(buffer).dimensions
 
         # Assert
         self.assertEqual(expected, actual)
@@ -106,7 +118,7 @@ class ImageTests(unittest.TestCase):
         buffer = StringIO(header + color_data)
 
         # Act
-        actual = Image.open(buffer).colors
+        actual = Image.decode(buffer).colors
 
         # Assert
         self.assertEqual(expected, actual)

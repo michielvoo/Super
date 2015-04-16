@@ -2,7 +2,7 @@ import struct
 
 class Image(object):
     @classmethod
-    def open(class_, buffer):
+    def decode(class_, buffer):
         return Image(buffer)
 
     _data = None
