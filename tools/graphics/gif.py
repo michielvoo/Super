@@ -44,8 +44,8 @@ class Image(object):
         raise an exception if the GIF file uses unsupported features.
     """
     def _validate(self):
-        if self._id != "GIF" or self._version != "89a":
-            raise ValueError("GIF89a images are not supported")
+        if self._id != "GIF" or self._version not in ["87a", "89a"]:
+            raise ValueError("{}{} images are not supported".format(self._id, self._version))
 
         if any(d > 64 for d in self.dimensions):
             raise ValueError("Dimensions may not exceed 64 by 64 pixels")
