@@ -10,8 +10,8 @@ class ImageTests(unittest.TestCase):
 
     def test_open_returns_instance(self):
         # Arrange
-        header = self._header()
-        buffer = StringIO(header)
+        data = self._data()
+        buffer = StringIO(data)
 
         # Act
         image = Image.decode(buffer)
@@ -22,8 +22,8 @@ class ImageTests(unittest.TestCase):
 
     def test_open_GIF87a_returns_instance(self):
         # Arrange
-        header = self._header(prefix="GIF87a")
-        buffer = StringIO(header)
+        data = self._data(prefix="GIF87a")
+        buffer = StringIO(data)
 
         # Act
         image = Image.decode(buffer)
@@ -35,7 +35,7 @@ class ImageTests(unittest.TestCase):
     def test_open_raises_ValueException_for_invalid_GIF_image_header(self):
         # Arrange
         empty = ""
-        not_gif = self._header(prefix="PNG89a")
+        not_gif = self._data(prefix="PNG89a")
 
         headers = [empty, not_gif]
         for header in headers:
@@ -48,8 +48,8 @@ class ImageTests(unittest.TestCase):
 
     def test_open_raises_ValueException_for_unsupported_GIF_version(self):
         # Arrange
-        header = self._header(prefix="GIF88a")
-        buffer = StringIO(header)
+        data = self._data(prefix="GIF88a")
+        buffer = StringIO(data)
 
         # Act and assert
         with self.assertRaises(ValueError):
@@ -58,14 +58,14 @@ class ImageTests(unittest.TestCase):
 
     def test_open_raises_ValueException_for_unsupported_dimensions(self):
         # Arrange
-        headers = [
-            self._header(width=65), 
-            self._header(height=65),
-            self._header(width=65, height=65)
+        data = [
+            self._data(width=65), 
+            self._data(height=65),
+            self._data(width=65, height=65)
         ]
 
-        for header in headers:
-            buffer = StringIO(header)
+        for d in data:
+            buffer = StringIO(d)
 
             # Act and assert
             with self.assertRaises(ValueError):
@@ -74,8 +74,8 @@ class ImageTests(unittest.TestCase):
 
     def test_open_raises_ValueException_if_GIF_image_has_no_global_color_table(self):
         # Arrange
-        header = self._header(global_color_table=False)
-        buffer = StringIO(header)
+        data = self._data(global_color_table=False)
+        buffer = StringIO(data)
 
         # Act and assert
         with self.assertRaises(ValueError):
@@ -84,8 +84,8 @@ class ImageTests(unittest.TestCase):
 
     def test_open_raises_ValueException_if_GIF_image_has_more_than_16_colors(self):
         # Arrange
-        header = self._header(color_depth=5)
-        buffer = StringIO(header)
+        data = self._data(color_depth=5)
+        buffer = StringIO(data)
 
         # Act and assert
         with self.assertRaises(ValueError):
@@ -95,8 +95,8 @@ class ImageTests(unittest.TestCase):
     def test_dimensions_attribute_is_read_from_GIF_image_header(self):
         # Arrange
         expected = (1, 2)
-        header = self._header(width=expected[0], height=expected[1])
-        buffer = StringIO(header)
+        data = self._data(width=expected[0], height=expected[1])
+        buffer = StringIO(data)
 
         # Act
         actual = Image.decode(buffer).dimensions
@@ -106,16 +106,15 @@ class ImageTests(unittest.TestCase):
 
 # Test colors
 
-    def test_colors_returns_iterable_of_tuples(self):
+    def test_colors_property_is_iterable_of_tuple(self):
         # Arrange
         expected = [(10, 20, 30), (40, 50, 60)]
 
-        # Flatten into a list
+        # Flatten RGB tuples into a list
         color_values = [ i for t in expected for i in t ]
 
-        header = self._header(color_depth=1)
-        color_data = struct.pack("B" * len(color_values), *color_values)
-        buffer = StringIO(header + color_data)
+        data = self._data(color_depth=1, global_colors=color_values)
+        buffer = StringIO(data)
 
         # Act
         actual = Image.decode(buffer).colors
@@ -123,14 +122,26 @@ class ImageTests(unittest.TestCase):
         # Assert
         self.assertEqual(expected, actual)
 
+# Test pixels
+
+    def test_pixels_property_is_iterable_of_int(self):
+        # Arrange
+
+        # Act
+
+        # Assert
+        pass
+
 # Helpers
 
-    def _header(self, prefix="GIF89a", width=16, height=16, global_color_table=True, color_depth=2):
-        header = prefix
+    """ Returns a GIF image data stream
+    """
+    def _data(self, prefix="GIF89a", width=16, height=16, global_color_table=True, color_depth=2, global_colors=[]):
+        data = prefix
 
         # Width and height are packed as little-endian
-        header += struct.pack("<h", width)
-        header += struct.pack("<h", height)
+        data += struct.pack("<h", width)
+        data += struct.pack("<h", height)
 
         field = 0;
         if global_color_table:
@@ -138,15 +149,25 @@ class ImageTests(unittest.TestCase):
             field += 0x80
         field += color_depth - 1
 
-        header += struct.pack('B', field)
+        data += struct.pack('B', field)
 
         # Background color index
-        header += struct.pack('B', 0)
+        data += struct.pack('B', 0)
 
         # Pixel aspect ratio
-        header += struct.pack('B', 1)
+        data += struct.pack('B', 1)
 
-        return header
+        if not global_colors:
+            # Generate some random colors
+            global_colors = [ i for i in 3 * range(pow(2, color_depth)) ]
+
+        data += struct.pack("B" * len(global_colors), *global_colors)
+
+        # Add the trailing byte
+        data += struct.pack('B', 0x3b)
+
+        return data
+
 
 if __name__ == "__main__":
     unittest.main()
