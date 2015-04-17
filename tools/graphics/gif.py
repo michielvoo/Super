@@ -9,6 +9,7 @@ class Image(object):
     _max_colors = pow(2, _max_color_depth)
     _colors = []
     _pixels = []
+    _frames = []
 
     @property
     def dimensions(self):
@@ -81,15 +82,57 @@ class Image(object):
         blocks = self._get_blocks(buffer)
         pass
 
+    """ Reads the GIF image blocks (only supports the image descriptor block)
+    """
     def _get_blocks(self, buffer):
-        # Trailing byte as str
-        EOF = chr(0x3b)
+        # Trailing byte
+        EOF = 0x3b
+        IMAGE = 0x2c
 
-        # Read next byte as str
+        # Read/process all blocks
         b = None
-        while b != EOF:
+        while b != chr(EOF):
             b = buffer.read(1)
             if b == '':
-                raise ValueError("Invalid GIF image, last byte should be {}".format(hex(0x3b)))
+                eof_as_str = hex(EOF)
+                message = "Invalid GIF image, last byte should be {}"
+                raise ValueError(message.format(eof_as_str))
+
+            if b == chr(IMAGE):
+                # Process an image descriptor block
+                image = self._get_image(buffer)
+                self._frames.append(image)
+
+            elif b != chr(EOF):
+                # Unsupported block which is not the trailer
+                identifier = hex(ord(b))
+                message = "Unsupported GIF image, block identified by {} is not supported"
+                raise ValueError(message.format(identifier))
+
+    """ Read the next image block from the buffer
+    """
+    def _get_image(self, buffer):
+        try:
+            header = struct.unpack("<hhhhB", buffer.read(9))
+        except struct.error:
+            raise ValueError("Invalid GIF file")
+
+        image = {}
+        image["left"] = header[0]
+        image["top"] = header[1]
+        image["width"] = header[2]
+        image["height"] = header[3]
+
+        field = header[4]
+
+        if field & 0x80:
+            raise ValueError("Unsupported GIF image, local color tables are not supported")
+
+        if field & 0x40:
+            raise ValueError("Unsupported GIF image, interlacing is not supported")
+
+        # TODO: process data sub-blocks
+
+        return image
 
 #
