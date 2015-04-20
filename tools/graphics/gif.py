@@ -129,17 +129,15 @@ class Image(object):
         if field & 0x40:
             raise ValueError("Unsupported GIF image, interlacing is not supported")
 
-        sub_blocks = self._get_image_descriptor_sub_blocks(buffer)
+        compressed_data = self._get_image_descriptor_sub_blocks(buffer)
 
-        # Decompress sub blocks
+        image = self._decompress_image_descriptor_data(compressed_data)
 
         return image
 
-
+    """ Returns the compressed data stored in sub blocks as a single stream of bytes
+    """
     def _get_image_descriptor_sub_blocks(self, buffer):
-        # Each sub block has chunks, each chunk is (up to) 255 bytes
-        # Each chunk starts with a byte which is the lenght of the chunk
-
         data = None
         b = None
         while 1:
@@ -159,8 +157,12 @@ class Image(object):
                 # Premature end of the data stream
                 raise ValueError("Invalid GIF file, missing bytes in image descriptor sub block")
 
-            data += sub_block
+            for d in data:
+                yield d
 
-        pass
+    """ Decompresses the LZW-compressed data of an image descriptor block
+    """
+    def _decompress_image_descriptor_data(self, data):
+        return data
 
 #

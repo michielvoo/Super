@@ -3,6 +3,7 @@ from StringIO import StringIO
 import struct
 
 from gif import Image
+import lzw
 
 class ImageTests(unittest.TestCase):
 
@@ -127,7 +128,7 @@ class ImageTests(unittest.TestCase):
     def test_decode_raises_ValueException_if_block_is_not_supported(self):
         # Arrange
         block = chr(0x42)
-        data = self._get_data_stream(blocks=[block, ])
+        data = self._get_data_stream(blocks=[block])
         buffer = StringIO(data)
 
         # Act + assert
@@ -138,7 +139,7 @@ class ImageTests(unittest.TestCase):
     def test_decode_raises_ValueException_if_image_descriptor_block_has_local_color_table(self):
         # Arrange
         block = self._get_image_descriptor_block(local_color_table=True)
-        data = self._get_data_stream(blocks=[block, ])
+        data = self._get_data_stream(blocks=[block])
         buffer = StringIO(data)
 
         # Act + assert
@@ -149,13 +150,31 @@ class ImageTests(unittest.TestCase):
     def test_decode_raises_ValueException_if_image_descriptor_block_is_interlaced(self):
         # Arrange
         block = self._get_image_descriptor_block(interlaced=True)
-        data = self._get_data_stream(blocks=[block, ])
+        data = self._get_data_stream(blocks=[block])
         buffer = StringIO(data)
 
         # Act + assert
         with self.assertRaises(ValueError):
             image = Image.decode(buffer)
 
+
+    def test_decode_raises_ValueError_if_image_descriptor_block_is_missing_sub_blocks(self):
+        # Arrange
+        block = self._get_image_descriptor_block()
+        data = self._get_data_stream(blocks=[block])
+        buffer = StringIO(data)
+
+        # Act + assert
+        with self.assertRaises(ValueError):
+            image = Image.decode(buffer)
+
+
+    def test_decode_raises_ValueError_if_image_descriptor_block_has_invalid_sub_blocks(self):
+        pass
+
+
+    def test_TEMPORARY_decode_stores_compressed_data_from_image_descriptor_block(self):
+        pass
 
 # Helpers
 
@@ -216,9 +235,10 @@ class ImageTests(unittest.TestCase):
             width=8, 
             height=8, 
             local_color_table=False, 
-            interlaced=False):
+            interlaced=False,
+            data=None):
 
-        data = chr(0x2c) + struct.pack("<hhhh", left, top, width, height)
+        block = chr(0x2c) + struct.pack("<hhhh", left, top, width, height)
 
         field = 0
 
@@ -228,8 +248,54 @@ class ImageTests(unittest.TestCase):
         if interlaced:
             field += 0x40
 
-        data += struct.pack("B", field)
+        block += struct.pack("B", field)
 
+        block += self._compress_image_descriptor_data(data)
+
+        return block
+
+
+    """ Compresses the data of an image descriptor
+    """
+    def _compress_image_descriptor_data(self, data):
+        if data is None:
+            return ''
+        data = self._compress(data)
+
+        sub_blocks = None
+
+        if len(data) < 256:
+            # Add the single data sub block
+            size = len(data)
+            sub_blocks += chr(size) + data
+        else:
+            offset = 0
+            size = len(data) - offset
+            while size > 255:
+                # Add as many large (255 bytes + 1 size byte) sub blocks
+                sub_blocks += chr(size) + data[offset:255]
+                offset += 255
+                size = len(data) - offset
+
+            # Add the last data sub block
+            sub_blocks += chr(size) + data[offset:]
+
+        # Add the trailing \x00 and return
+        sub_blocks += chr(0)
+        return sub_blocks
+
+
+    """ Compresses the data using the LZW algorithm
+    """
+    def _compress(self, data):
+        # TODO: implement LZW
+        return data
+
+
+    """ Decompresses the data using the LZW algorithm
+    """
+    def _decompress(self, data):
+        # TODO: implement LZW
         return data
 
 
