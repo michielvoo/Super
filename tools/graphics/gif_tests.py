@@ -157,14 +157,6 @@ class ImageTests(unittest.TestCase):
             image = Image.decode(buffer)
 
 
-    def test_pixels_property_is_iterable_of_int(self):
-        # Arrange
-
-        # Act
-
-        # Assert
-        pass
-
 # Helpers
 
     """ Returns a GIF image data stream
