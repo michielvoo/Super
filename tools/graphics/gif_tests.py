@@ -3,7 +3,6 @@ from StringIO import StringIO
 import struct
 
 from gif import Image
-import lzw
 
 class ImageTests(unittest.TestCase):
 
@@ -109,12 +108,8 @@ class ImageTests(unittest.TestCase):
 
     def test_colors_property_is_iterable_of_tuple(self):
         # Arrange
-        expected = [(10, 20, 30), (40, 50, 60)]
-
-        # Flatten RGB tuples into a list
-        color_values = [ i for t in expected for i in t ]
-
-        data = self._get_data_stream(color_depth=1, global_colors=color_values)
+        colors = expected = [(10, 20, 30), (40, 50, 60)]
+        data = self._get_data_stream(color_depth=1, global_colors=colors)
         buffer = StringIO(data)
 
         # Act
@@ -160,7 +155,7 @@ class ImageTests(unittest.TestCase):
 
     def test_decode_raises_ValueError_if_image_descriptor_block_is_missing_sub_blocks(self):
         # Arrange
-        block = self._get_image_descriptor_block()
+        block = self._get_image_descriptor_block(pixels=[])
         data = self._get_data_stream(blocks=[block])
         buffer = StringIO(data)
 
@@ -169,12 +164,29 @@ class ImageTests(unittest.TestCase):
             image = Image.decode(buffer)
 
 
-    def test_decode_raises_ValueError_if_image_descriptor_block_has_invalid_sub_blocks(self):
-        pass
+    def test_decode_raises_ValueError_if_image_descriptor_block_has_invalid_trailing_sub_block(self):
+        # Arrange
+        block = self._get_image_descriptor_block(pixels=[0, 0, 0, 0])
+        block += chr(12) # Add another byte to the end of the block
 
+        data = self._get_data_stream(blocks=[block])
+        buffer = StringIO(data)
 
-    def test_TEMPORARY_decode_stores_compressed_data_from_image_descriptor_block(self):
-        pass
+        # Act + assert
+        with self.assertRaises(ValueError):
+            image = Image.decode(buffer)
+
+    def test_decode_raises_ValueError_if_image_descriptor_block_has_invalid_sub_block(self):
+        # Arrange
+        block = self._get_image_descriptor_block(pixels=[0, 0, 0, 0])
+        block = block[0:len(block) - 2] + block[-1] # Remove a byte from the sub block 
+
+        data = self._get_data_stream(blocks=[block])
+        buffer = StringIO(data)
+
+        # Act + assert
+        with self.assertRaises(ValueError):
+            image = Image.decode(buffer)
 
 # Helpers
 
@@ -182,8 +194,8 @@ class ImageTests(unittest.TestCase):
     """
     def _get_data_stream(self, 
             prefix="GIF89a", 
-            width=16, 
-            height=16, 
+            width=2, 
+            height=2, 
             global_color_table=True, 
             color_depth=2, 
             global_colors=[], 
@@ -211,34 +223,46 @@ class ImageTests(unittest.TestCase):
         # Pixel aspect ratio
         data += struct.pack('B', 1)
 
+        number_of_colors = pow(2, color_depth)
         if not global_colors:
             # Generate some random colors
-            global_colors = [ i for i in 3 * range(pow(2, color_depth)) ]
+            color_values = [ i for i in 3 * range(number_of_colors) ]
+        else:
+            if len(global_colors) != number_of_colors:
+                raise ValueError("Please provide colors matching the color depth argument when creating a test data stream")
 
-        data += struct.pack("B" * len(global_colors), *global_colors)
+            # Flatten RGB tuples into a list
+            color_values = [ i for t in global_colors for i in t ]
 
-        # Add all blocks
-        for block in blocks:
+        data += struct.pack("B" * len(color_values), *color_values)
+
+        if not blocks:
+            # Generate a valid image descriptor block using only color 0
+            pixels = [0 for i in range(width * height)]
+            block = self._get_image_descriptor_block(width=width, height=height, pixels=pixels)
             data += block
+        else:
+            # Add all blocks
+            for block in blocks:
+                data += block
 
-        # Add the trailing byte
+        # Add the trailing block
         data += struct.pack('B', 0x3b)
 
         return data
 
 
-    """ Returns an image descriptor block
+    """ Creates an image descriptor block
+        Returns a str object
     """
-    def _get_image_descriptor_block(self, 
-            left=0, 
-            top=0, 
-            width=8, 
-            height=8, 
+    def _get_image_descriptor_block(self,
+            width=0, 
+            height=0, 
             local_color_table=False, 
             interlaced=False,
-            data=None):
+            pixels=[]):
 
-        block = chr(0x2c) + struct.pack("<hhhh", left, top, width, height)
+        block = chr(0x2c) + struct.pack("<hhhh", 0, 0, width, height)
 
         field = 0
 
@@ -250,19 +274,19 @@ class ImageTests(unittest.TestCase):
 
         block += struct.pack("B", field)
 
-        block += self._compress_image_descriptor_data(data)
+        block += self._compress_image_descriptor_block_data(pixels)
 
         return block
 
 
-    """ Compresses the data of an image descriptor
+    """ Compresses the pixel data of an image descriptor block
+        Returns a str object
     """
-    def _compress_image_descriptor_data(self, data):
-        if data is None:
-            return ''
-        data = self._compress(data)
+    def _compress_image_descriptor_block_data(self, pixels=[]):
+        # TODO: implement LZW algorithm
+        data = bytearray(pixels)
 
-        sub_blocks = None
+        sub_blocks = bytearray()
 
         if len(data) < 256:
             # Add the single data sub block
@@ -271,10 +295,10 @@ class ImageTests(unittest.TestCase):
         else:
             offset = 0
             size = len(data) - offset
-            while size > 255:
+            while size >= 256:
                 # Add as many large (255 bytes + 1 size byte) sub blocks
-                sub_blocks += chr(size) + data[offset:255]
-                offset += 255
+                sub_blocks += chr(255) + data[offset:256]
+                offset += 256
                 size = len(data) - offset
 
             # Add the last data sub block
@@ -282,21 +306,7 @@ class ImageTests(unittest.TestCase):
 
         # Add the trailing \x00 and return
         sub_blocks += chr(0)
-        return sub_blocks
-
-
-    """ Compresses the data using the LZW algorithm
-    """
-    def _compress(self, data):
-        # TODO: implement LZW
-        return data
-
-
-    """ Decompresses the data using the LZW algorithm
-    """
-    def _decompress(self, data):
-        # TODO: implement LZW
-        return data
+        return str(sub_blocks)
 
 
 if __name__ == "__main__":

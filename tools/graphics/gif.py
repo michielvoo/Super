@@ -89,6 +89,7 @@ class Image(object):
         b = None
         while b != chr(EOF):
             b = buffer.read(1)
+
             if b == '':
                 # Unexpected end of the buffer
                 eof_as_str = hex(EOF)
@@ -102,8 +103,9 @@ class Image(object):
 
             elif b != chr(EOF):
                 # Unsupported block which is not the trailer
-                identifier = hex(ord(b))
-                message = "Unsupported GIF image, block identified by {} is not supported"
+                identifier = b.encode("hex")
+                message = "Unsupported GIF image, block identified by \\x{} is not supported"
+
                 raise ValueError(message.format(identifier))
 
 
@@ -129,17 +131,16 @@ class Image(object):
         if field & 0x40:
             raise ValueError("Unsupported GIF image, interlacing is not supported")
 
-        compressed_data = self._get_image_descriptor_sub_blocks(buffer)
-
+        compressed_data = self._get_image_descriptor_data(buffer)
         image = self._decompress_image_descriptor_data(compressed_data)
 
         return image
 
-    """ Returns the compressed data stored in sub blocks as a single stream of bytes
+    """ Returns the compressed data stored in sub blocks
     """
-    def _get_image_descriptor_sub_blocks(self, buffer):
-        data = None
-        b = None
+    def _get_image_descriptor_data(self, buffer):
+        data = ''
+
         while 1:
             b = buffer.read(1)
 
@@ -156,9 +157,10 @@ class Image(object):
             if len(sub_block) < size:
                 # Premature end of the data stream
                 raise ValueError("Invalid GIF file, missing bytes in image descriptor sub block")
+            else:
+                data += sub_block
 
-            for d in data:
-                yield d
+        return data
 
     """ Decompresses the LZW-compressed data of an image descriptor block
     """
