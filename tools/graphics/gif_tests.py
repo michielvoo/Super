@@ -190,8 +190,6 @@ class ImageTests(unittest.TestCase):
 
 # Helpers
 
-    """ Returns a GIF image data stream
-    """
     def _get_data_stream(self, 
             prefix="GIF89a", 
             width=2, 
@@ -200,6 +198,8 @@ class ImageTests(unittest.TestCase):
             color_depth=2, 
             global_colors=[], 
             blocks=[]):
+        """ Returns a GIF image data stream
+        """
 
         data = prefix
 
@@ -252,15 +252,15 @@ class ImageTests(unittest.TestCase):
         return data
 
 
-    """ Creates an image descriptor block
-        Returns a str object
-    """
     def _get_image_descriptor_block(self,
             width=0, 
             height=0, 
             local_color_table=False, 
             interlaced=False,
             pixels=[]):
+        """ Creates an image descriptor block
+            Returns a str object
+        """
 
         block = chr(0x2c) + struct.pack("<hhhh", 0, 0, width, height)
 
@@ -279,10 +279,11 @@ class ImageTests(unittest.TestCase):
         return block
 
 
-    """ Compresses the pixel data of an image descriptor block
-        Returns a str object
-    """
     def _compress_image_descriptor_block_data(self, pixels=[]):
+        """ Compresses the pixel data of an image descriptor block
+            Returns a str object
+        """
+        
         # TODO: implement LZW algorithm
         data = bytearray(pixels)
 

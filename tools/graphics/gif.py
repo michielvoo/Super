@@ -47,10 +47,11 @@ class Image(object):
         self._process_data_blocks(buffer)
 
 
-    """ Performs several checks on the GIF file to determine if it is supported. This method will 
-        raise an exception if the GIF file uses unsupported features.
-    """
     def _validate(self):
+        """ Performs several checks on the GIF file to determine if it is supported. This method will 
+            raise an exception if the GIF file uses unsupported features.
+        """
+
         if self._id != "GIF" or self._version not in ["87a", "89a"]:
             message = "Unsupported file, {}{} images are not supported"
             raise ValueError(message.format(self._id, self._version))
@@ -66,9 +67,10 @@ class Image(object):
             raise ValueError(message.format(self._max_color_depth))
 
 
-    """ Extracts the colors as RGB tuples from the global color table.
-    """
     def _get_global_color_table_colors(self, buffer):
+        """ Extracts the colors as RGB tuples from the global color table.
+        """
+
         length = 3 * pow(2, self._color_depth)
         indices = range(0, length, 3)
 
@@ -78,10 +80,10 @@ class Image(object):
         return colors
 
 
-    """ Processes all data blocks (only supports image descriptor block)
-    """
     def _process_data_blocks(self, buffer):
-        # Trailing byte
+        """ Processes all data blocks (only supports image descriptor block)
+        """
+
         EOF = 0x3b
         IMAGE = 0x2c
 
@@ -109,9 +111,10 @@ class Image(object):
                 raise ValueError(message.format(identifier))
 
 
-    """ Read the next image descriptor block from the buffer
-    """
     def _get_image_from_image_descriptor_block(self, buffer):
+        """ Read the next image descriptor block from the buffer
+        """
+
         try:
             header = struct.unpack("<hhhhB", buffer.read(9))
         except struct.error:
@@ -136,9 +139,11 @@ class Image(object):
 
         return image
 
-    """ Returns the compressed data stored in sub blocks
-    """
+
     def _get_image_descriptor_data(self, buffer):
+        """ Returns the compressed data stored in sub blocks
+        """
+
         data = ''
 
         while 1:
@@ -162,9 +167,11 @@ class Image(object):
 
         return data
 
-    """ Decompresses the LZW-compressed data of an image descriptor block
-    """
+
     def _decompress_image_descriptor_data(self, data):
+        """ Decompresses the LZW-compressed data of an image descriptor block
+        """
+
         return data
 
 #
