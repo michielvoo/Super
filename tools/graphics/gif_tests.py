@@ -274,18 +274,24 @@ class ImageTests(unittest.TestCase):
 
         block += struct.pack("B", field)
 
-        block += self._compress_image_descriptor_block_data(pixels)
+        data = self._compress_data(bytearray(pixels))
+        block += self._make_sub_blocks(data)
 
         return block
 
-
-    def _compress_image_descriptor_block_data(self, pixels=[]):
-        """ Compresses the pixel data of an image descriptor block
+    def _compress_data(self, data):
+        """ Compresses the bytes data using the GIF compression algorithm
             Returns a str object
         """
-        
+
         # TODO: implement LZW algorithm
-        data = bytearray(pixels)
+        return data
+
+
+    def _make_sub_blocks(self, data):
+        """ Creates 256 byte blocks from the data.
+            Returns a str object
+        """
 
         sub_blocks = bytearray()
 

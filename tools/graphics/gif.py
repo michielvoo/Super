@@ -135,7 +135,10 @@ class Image(object):
             raise ValueError("Unsupported GIF image, interlacing is not supported")
 
         compressed_data = self._get_image_descriptor_data(buffer)
-        image = self._decompress_image_descriptor_data(compressed_data)
+        decompressed_data = self._decompress_data(compressed_data)
+
+        # TODO: convert to image (pixel array)
+        image = decompressed_data
 
         return image
 
@@ -168,7 +171,7 @@ class Image(object):
         return data
 
 
-    def _decompress_image_descriptor_data(self, data):
+    def _decompress_data(self, data):
         """ Decompresses the LZW-compressed data of an image descriptor block
         """
 
