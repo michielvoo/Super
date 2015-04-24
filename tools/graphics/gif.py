@@ -1,3 +1,5 @@
+from __future__ import print_function
+from __future__ import unicode_literals
 import struct
 
 class Image(object):
@@ -25,7 +27,7 @@ class Image(object):
 
     def __init__(self, buffer):
         try:
-            header = struct.unpack("<3s3shhBBB", buffer.read(13))
+            header = struct.unpack(b"<3s3shhBBB", buffer.read(13))
         except struct.error:
             raise ValueError("Unsupported file, unable to recognize header")
 
@@ -52,7 +54,7 @@ class Image(object):
             raise an exception if the GIF file uses unsupported features.
         """
 
-        if self._id != "GIF" or self._version not in ["87a", "89a"]:
+        if self._id != b"GIF" or self._version not in [b"87a", b"89a"]:
             message = "Unsupported file, {}{} images are not supported"
             raise ValueError(message.format(self._id, self._version))
 
@@ -75,7 +77,7 @@ class Image(object):
         indices = range(0, length, 3)
 
         # For each index (0, 3, 6, ...), collect 3 bytes into a tuple, converting the bytes to int
-        colors = [ tuple( [ ord(v) for v in buffer.read(3) ] ) for i in indices ]
+        colors = [ tuple( [ int(v) for v in buffer.read(3) ] ) for i in indices ]
 
         return colors
 
@@ -84,28 +86,27 @@ class Image(object):
         """ Processes all data blocks (only supports image descriptor block)
         """
 
-        EOF = 0x3b
-        IMAGE = 0x2c
+        EOF = b'\x3b'
+        IMAGE = b'\x2c'
 
         # Read/process all blocks
         b = None
-        while b != chr(EOF):
+        while b != EOF:
             b = buffer.read(1)
 
             if b == '':
                 # Unexpected end of the buffer
-                eof_as_str = hex(EOF)
-                message = "Invalid GIF image, last byte should be {}"
+                message = "Invalid GIF image, last byte should be \x3b"
                 raise ValueError(message.format(eof_as_str))
 
-            if b == chr(IMAGE):
+            if b == IMAGE:
                 # Process an image descriptor block
                 image = self._get_image_from_image_descriptor_block(buffer)
                 self._frames.append(image)
 
-            elif b != chr(EOF):
+            elif b != EOF:
                 # Unsupported block which is not the trailer
-                identifier = b.encode("hex")
+                identifier = int(b)
                 message = "Unsupported GIF image, block identified by \\x{} is not supported"
 
                 raise ValueError(message.format(identifier))
@@ -116,7 +117,7 @@ class Image(object):
         """
 
         try:
-            header = struct.unpack("<hhhhB", buffer.read(9))
+            header = struct.unpack(b"<hhhhB", buffer.read(9))
         except struct.error:
             raise ValueError("Invalid GIF file, invalid header for image descriptor block")
 
@@ -147,16 +148,16 @@ class Image(object):
         """ Returns the compressed data stored in sub blocks
         """
 
-        data = ''
+        data = b''
 
         while 1:
             b = buffer.read(1)
 
-            if b == '':
+            if b == b'':
                 # Premature end of the data stream
                 raise ValueError("Invalid GIF file, missing image descriptor sub block(s)")
 
-            size = ord(b)
+            size = int(b[0])
             if size == 0:
                 # Last sub block
                 break
