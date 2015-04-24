@@ -77,7 +77,7 @@ class Image(object):
         indices = range(0, length, 3)
 
         # For each index (0, 3, 6, ...), collect 3 bytes into a tuple, converting the bytes to int
-        colors = [ tuple( [ int(v) for v in buffer.read(3) ] ) for i in indices ]
+        colors = [ tuple( [ v for v in bytearray(buffer.read(3)) ] ) for i in indices ]
 
         return colors
 
@@ -151,18 +151,19 @@ class Image(object):
         data = b''
 
         while 1:
-            b = buffer.read(1)
+            b = bytearray(buffer.read(1))
 
-            if b == b'':
+            if len(b) == 0:
                 # Premature end of the data stream
                 raise ValueError("Invalid GIF file, missing image descriptor sub block(s)")
 
-            size = int(b[0])
+            size = b[0]
             if size == 0:
                 # Last sub block
                 break
 
             sub_block = buffer.read(size)
+
             if len(sub_block) < size:
                 # Premature end of the data stream
                 raise ValueError("Invalid GIF file, missing bytes in image descriptor sub block")
