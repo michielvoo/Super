@@ -14,7 +14,7 @@
         },
         {
             "name": "Python unittest",
-            "cmd": ["python", "-m", "unittest", "discover", "$project_path/tools", "-p", "*_tests.py", "-v"]
+            "cmd": ["python", "-m", "unittest", "discover", "$project_path/tools", "-p", "*_tests.py"]
         }
     ]
 }
