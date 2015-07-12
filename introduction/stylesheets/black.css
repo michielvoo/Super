@@ -152,8 +152,7 @@ body {
   border-spacing: 0; }
 
 .reveal table th {
-  font-weight: bold; 
-  text-shadow: none; }
+  font-weight: bold; }
 
 .reveal table th, .reveal table td {
   text-align: left;
