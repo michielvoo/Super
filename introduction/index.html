@@ -10,6 +10,7 @@
             <div class="slides">
                 <section>
                     <h1>Introduction</h1>
+                    <aside class="notes">Introduction slide, keep on screen before starting</aside>
                 </section>
                 <section>
                     <h1>History</h1>
@@ -19,6 +20,7 @@
                 </section>
             </div>
         </div>
+        <script src="scripts/head.min.js"></script>
         <script src="scripts/reveal.js"></script>
         <script>
             Reveal.initialize({
@@ -26,6 +28,9 @@
                 center: true,
                 history: true,
                 transition: 'slide',
+                dependencies: [
+                    { src: 'plugin/notes/notes.js', async: true }
+                ]
             });
         </script>
 </body>
