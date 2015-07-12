@@ -1,4 +1,4 @@
-@import url(../../lib/font/source-sans-pro/source-sans-pro.css);
+@import url(../fonts/source-sans-pro.css);
 /**
  * Black theme for reveal.js. This is the opposite of the 'white' theme.
  *
@@ -152,7 +152,8 @@ body {
   border-spacing: 0; }
 
 .reveal table th {
-  font-weight: bold; }
+  font-weight: bold; 
+  text-shadow: none; }
 
 .reveal table th, .reveal table td {
   text-align: left;
