@@ -222,6 +222,12 @@ body {
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.55); }
 
 /*********************************************
+ * EMBEDS
+ *********************************************/
+.reveal section iframe {
+    border: 4px solid #fff; }
+
+/*********************************************
  * NAVIGATION CONTROLS
  *********************************************/
 .reveal .controls div.navigate-left, .reveal .controls div.navigate-left.enabled {
