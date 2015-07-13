@@ -14,6 +14,10 @@
                         スーパーファミコン
                     </h1>
                     <h2>Development</h2>
+                    <p><small>
+                            <a href="https://michielvoo.github.io/SNES/introduction">https://michielvoo.github.io/SNES/introduction</a>
+                        </small>
+                    </p>
                     <aside class="notes">
                         <p>Programmer's introduction into the Super Nintendo</p>
                         <p>AKA Super Famicom (Japan)</p>
@@ -74,6 +78,7 @@
                     <aside class="notes">
                         <p>3 subsystems</p>
                         <p>Direct access to subsystems and IO: cartridge, controller, ext port</p>
+                        <p>V/H-Blank as run loop</p>
                         <p>DMA to transfer data from cart to (video) memory</li>
                     </aside>
                 </section>
@@ -142,47 +147,44 @@
                         </figure>
                         <aside class="notes">
                             <p>Consists of 2 processors</p>
+                            
                         </aside>
                     </section>
                     <section>
-                        <figure>
-                            <img src="images/chrono-trigger.gif"
-                                alt="Chrono Trigger"
-                                width="512" />
-                            <figcaption>Colors</figcaption>
-                            <!-- Source: http://neogaf.com/forum/showthread.php?t=1008046&page=4 -->
-                        </figure>
+                        <div class="layout" style="display: flex">
+                            <div class="first column" style="width: 50%">
+                                <img src="images/zelda.png"
+                                    alt="Zelda"
+                                    width="512" />
+                                <!-- Source: http://www.ign.com/boards/threads/favourite-views-in-the-series.454221187/ -->
+                            </div>
+                            <div class="last column" style="width: 50%; text-align: left; padding-left: 1em;">
+                                <p>240p @ 60FPS</p>
+                                <p class="fragment">32K colors</p>
+                                <p class="fragment">16 palettes &times; 16 colors</p>
+                                <p class="fragment">4 background layers</p>
+                                <p class="fragment">128 sprites (64 &times; 64)</p>
+                                <p class="fragment">1 palette per sprite</p>
+                            </div>
+                        </div>
                         <aside class="notes">
-                            <p>32k colors<p/>
-                            <p>16 colors per palette</p>
-                            <p>16 palettes</p>
+                            <p>8 background modes</p>
+                            <p>Sprites up to 64 by 64 pixels</p>
+                            <p>256 pixels by 224 lines</p>
                         </aside>
                     </section>
+
                     <section>
                         <figure>
-                            <img src="images/zelda.png"
-                                alt="Zelda"
+                            <img src="images/secret-of-mana-transparency.png"
+                                alt="Secret of Mana"
                                 width="512" />
-                            <figcaption>Backgrounds</figcaption>
-                            <!-- Source: http://www.ign.com/boards/threads/favourite-views-in-the-series.454221187/ -->
+                            <figcaption>Color addition and subtraction</figcaption>
+                            <!-- Source: http://nateewertkrocker.com/2013/03/ -->
                         </figure>
                         <aside class="notes">
-                            <p>Up to 4 background layers</p>
-                        </aside>
-                    </section>
-                    <section>
-                        <figure>
-                            <img src="images/contra-3.gif"
-                                alt="Contra 3"
-                                width="512" />
-                            <figcaption>Sprites</figcaption>
-                            <!-- Source: https://giphy.com/gifs/snes-contra-3-143c0HBGv5oUPm -->
-                        </figure>
-                        <aside class="notes">
-                            <p>Up to 128 sprites on screen</p>
-                            <p>Up to 64 by 64 pixels</p>
-                            <p>16 colors per sprite</p>
-                            <p>Example: Contra 3 uses large (composite) sprites</p>
+                            <p>Transparency effect</p>
+                            <p>Uses color addition and subtraction</p>
                         </aside>
                     </section>
                     <section>
@@ -190,7 +192,7 @@
                             <img src="images/super-mario-world-mosaic.gif"
                                 alt="Super Mario World"
                                 width="512" />
-                            <figcaption>Mosaic</figcaption>
+                            <figcaption>Mosaic effect</figcaption>
                             <!-- Source: http://hellyeakpokemon.tumblr.com/ -->
                         </figure>
                         <aside class="notes">
@@ -209,19 +211,6 @@
                             <p>Entire track is zoomed, scaled and rotated during the race</p>
                         </aside>
                     </section>
-                    <section>
-                        <figure>
-                            <img src="images/secret-of-mana-transparency.png"
-                                alt="Secret of Mana"
-                                width="512" />
-                            <figcaption>Color addition and subtraction</figcaption>
-                            <!-- Source: http://nateewertkrocker.com/2013/03/ -->
-                        </figure>
-                        <aside class="notes">
-                            <p>Transparency effect</p>
-                            <p>Uses color addition and subtraction</p>
-                        </aside>
-                    </section>
                     <!-- /S-PPU -->
                 </section>
 
@@ -235,16 +224,8 @@
                             <p>Embedded in cartridge</p>
                             <p>By design</p>
                             <p>Super Nintendo can yield to co-processor</p>
+                            <p>Some by Nintendo, some by 3rd party publishers</p>
                         </aside>
-                    </section>
-                    <section>
-                        <figure>
-                            <img src="images/super-mario-kart.gif"
-                                alt="Super Mario Kart"
-                                width="512" />
-                            <figcaption>DSP</figcaption>
-                            <!-- Source: http://geek-crafts.fr/39-mario-kart -->
-                        </figure>
                     </section>
                     <section>
                         <figure>
@@ -259,7 +240,7 @@
                             <p>Developed by Argonout Games</p>
                             <p>Argonaut Games also developed Star Fox</p>
                             <p>Draw polygons into frame buffer</p>
-                            <p>Also used to port Doom to Super Nintendo</p>
+                            <p>DSP used by Super Mario Kart is another examples</p>
                         </aside>
                     </section>
                     <!-- /Enhancements -->
@@ -270,7 +251,6 @@
                     <ul>
                         <li><a href="https://github.com/michielvoo/SNES/tree/master/examples" target="_blank">Examples</a></li>
                         <li><a href="https://github.com/michielvoo/SNES/wiki" target="_blank">Documentation</a></li>
-                        <li><a href="https://michielvoo.github.io/SNES/introduction/">Slides</a></li>
                     </ul>
                 </section>
             </div>
