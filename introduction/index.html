@@ -89,23 +89,27 @@
                             <img src="images/ricoh-5a22.jpg"
                                 alt="Ricoh 5A22" 
                                 height="256" />
-                            <figcaption>Ricoh 5A22</figcaption>
+                            <figcaption>Ricoh 5A22 (based on W65C816)</figcaption>
                             <!-- Source: https://en.wikipedia.org/wiki/File:5A22-02_01.jpg -->
                         </figure>
                     </section>
                     <section>
-                        <h2>Baded on the 65816</h2>
+                        <h2>S-CPU</h2>
                         <ul>
-                            <li class="fragment">6502 emulation mode</li>
                             <li class="fragment">8- or 16-bit registers</li>
                             <li class="fragment">24-bit addressable memory space</li>
+                            <li class="fragment">6502 emulation mode</li>
+                            <li class="fragment"><hr />Max 3.58 MHz</li>
+                            <li class="fragment">24-bit A-bus and 8-bit B-bus</li>
                             <li class="fragment">Multiplication and division</li>
-                            <li class="fragment">Max 3.58 MHz</li>
                         </ul>
                         <aside class="notes">
-                            <p>6502 used in NES and Apple IIGS</p>
-                            <p>Relatively slow</p>
+                            <p>Register size switch at will</p>
                             <p>16MB address space, but system has 128KB RAM</p>
+                            <p>6502 used in NES and Apple IIGS</p>
+                            <hr />
+                            <p>Relatively slow</p>
+                            <p>DMA between A-bus and B-bus</p>
                         </aside>
                     </section>
                     <!-- /S-CPU -->
