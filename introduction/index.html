@@ -57,15 +57,24 @@
 
                 <section>
                     <h2>Hardware</h2>
-                    <h4>Memory-mapped I/O</h4>
-                    <h4>3 'processing units'</h4>
                     <ul>
-                        <li class="fragment">Central Processing Unit</li>
-                        <li class="fragment">Audio Processing Unit</li>
-                        <li class="fragment">Picture Processing Unit</li>
+                        
+                        <li class="fragment">3 'processing units'
+                            <ul>
+                                <li class="fragment">Central Processing Unit</li>
+                                <li class="fragment">Audio Processing Unit</li>
+                                <li class="fragment">Picture Processing Unit</li>
+                            </ul>
+                        </li>
+                        <li class="fragment">128KB RAM</li>
+                        <li class="fragment">Memory-mapped I/O</li>
+                        <li class="fragment">V/H-Blank interrupts</li>
+                        <li class="fragment">DMA</li>
                     </ul>
                     <aside class="notes">
-                        
+                        <p>3 subsystems</p>
+                        <p>Direct access to subsystems and IO: cartridge, controller, ext port</p>
+                        <p>DMA to transfer data from cart to (video) memory</li>
                     </aside>
                 </section>
                 <section>
@@ -80,7 +89,7 @@
                         </figure>
                     </section>
                     <section>
-                        <h2>65816</h2>
+                        <h2>Baded on the 65816</h2>
                         <ul>
                             <li class="fragment">6502 emulation mode</li>
                             <li class="fragment">8- or 16-bit registers</li>
