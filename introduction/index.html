@@ -174,7 +174,7 @@
                     <section>
                         <div class="layout" style="display: flex">
                             <div class="first column" style="width: 50%">
-                                <img src="images/zelda.png"
+                                <img src="images/super-mario-world-special.png"
                                     alt="Zelda"
                                     width="512" />
                                 <!-- Source: http://www.ign.com/boards/threads/favourite-views-in-the-series.454221187/ -->
@@ -210,8 +210,34 @@
                     </section>
                     <section>
                         <figure>
+                            <img src="images/super-mario-world-flying.gif"
+                                alt="Super Mario World scrolling"
+                                width="512" />
+                            <figcaption>Scrolling</figcaption>
+                            <!-- Source: https://www.tumblr.com/search/flying%20yoshi -->
+                        </figure>
+                        <aside class="notes">
+                            <p>Built-in effect, horizontal and vertical</p>
+                            <p>Combine with V/H-Blank to create custom shapes</p>
+                        </aside>
+                    </section>
+                    <section>
+                        <figure>
+                            <img src="images/super-mario-world-window-mask.gif"
+                                alt="Super Mario World window mask"
+                                width="512" />
+                            <figcaption>Window mask</figcaption>
+                            <!-- Source: ? -->
+                        </figure>
+                        <aside class="notes">
+                            <p>Built-in effect, horizontal and vertical</p>
+                            <p>Combine with V/H-Blank to create custom shapes</p>
+                        </aside>
+                    </section>
+                    <section>
+                        <figure>
                             <img src="images/super-mario-world-mosaic.gif"
-                                alt="Super Mario World"
+                                alt="Super Mario World mosaic"
                                 width="512" />
                             <figcaption>Mosaic effect</figcaption>
                             <!-- Source: http://hellyeakpokemon.tumblr.com/ -->
@@ -326,15 +352,13 @@
                         <h2>Assembly</h2>
                         <p>Opcodes and operands</p>
                         <pre>
-                            <code>
-01 clc                  ; Clear the CPU carry flag
+                            <code>01 clc                  ; Clear the CPU carry flag
 02 xce                  ; Switch to 65816 native mode
 
 03 .DEFINE CGDATA $2122 ; Use directive to define a named value
 
 04 lda #$FF             ; Load the accumulator with the value 0xFF
-05 sta CGDATA           ; Store the accumulator value in address $2121
-                            </code>
+05 sta CGDATA           ; Store the accumulator value in address $2121</code>
                         </pre>
                         <aside class="notes">
                             <p>Opcodes</p>
@@ -347,8 +371,7 @@
                         <h2>Assembly 2</h2>
                         <p>Control flow</p>
                         <pre>
-                            <code>
-<span class="fragment">01 ; Wait for joypad auto-read
+                            <code><span class="fragment">01 ; Wait for joypad auto-read
 02 -   lda HVBJOY
 03     bit #HVBJOY_JOYREADY
 04     bne -</span>
@@ -359,8 +382,7 @@
 08     bne Up</span>
 <span class="fragment">
 09     bit #JOY_DOWN ; Check if down was pressed on the D-pad
-10     bne Down</span>
-                            </code>
+10     bne Down</span></code>
                         </pre>
                         <aside class="notes">
                             <p>Opcodes</p>
@@ -389,8 +411,7 @@
                         <h2>Ports</h2>
                         <p>Write color data to (CGRAM) 'through' a port</p>
                         <pre>
-                            <code>
-<span class="fragment">01 ; Set color 1 of palette 8 to white</span>
+                            <code><span class="fragment">01 ; Set color 1 of palette 8 to white</span>
 <span class="fragment">02 lda #$81          ; Load destination address</span>
 <span class="fragment">03 sta CGADD         ; Set destination address (CGRAM)</span>
 <span class="fragment">04 lda #$FF          ; Load value (L)</span>
@@ -400,8 +421,7 @@
 <span class="fragment">
 08 ; Next color...
 09 lda #$82          ; Load destination address
-10 sta CGADD         ; Set destination address (CGRAM)</span>
-                            </code>
+10 sta CGADD         ; Set destination address (CGRAM)</span></code>
                         </pre>
                         <aside class="notes">
                             <p>(CGRAM) is not mapped into address space</p>
@@ -414,8 +434,7 @@
                         <h2>Ports 2</h2>
                         <p>Write pixel data to (VRAM) 'through' a port</p>
                         <pre>
-                            <code>
-<span class="fragment">01 lda #VMAINC_INC_H ; Increment after writing VMDATAH</span> 
+                            <code><span class="fragment">01 lda #VMAINC_INC_H ; Increment after writing VMDATAH</span> 
 <span class="fragment">02 sta VMAINC        ; Set VRAM increment mode</span>
 
 <span class="fragment">03 ldx #$0400        ; Load destination address</span>
@@ -429,8 +448,7 @@
 09 lda #%00000111
 10 sta VMDATAL       ; Address was incremented automatically to #$0401
 11 lda #%00000100
-12 sta VMDATAH</span>
-                            </code>
+12 sta VMDATAH</span></code>
                         </pre>
                         <aside class="notes">
                             <p>Set write mode (optional)</p>
@@ -445,8 +463,7 @@
                         <h2>DMA</h2>
                         <p>Transfer data between cartridge and VRAM</p>
                         <pre>
-                            <code>
-<span class="fragment">01 lda #%00000000    ; From A-bus to B-bus, read consecutive addresses</span>
+                            <code><span class="fragment">01 lda #%00000000    ; From A-bus to B-bus, read consecutive addresses</span>
 <span class="fragment">02 sta DMAP0         ; Set DMA control</span>
 <span class="fragment">03 lda #(CGDATA - BBUS_OFFSET)
 04 sta BBAD0         ; Set DMA destination (8-bit B-bus is A-bus - $2100)</span>
@@ -459,8 +476,7 @@
 11 stz DAS0H</span>
 <span class="fragment">12 stz CGADD         ; Set starting address
 13 lda #$01
-14 sta MDMAEN        ; Initialize DMA transfer</span>
-                            </code>
+14 sta MDMAEN        ; Initialize DMA transfer</span></code>
                         </pre>
                         <aside class="notes">
                             <p>Transfer between A-bus and B-bus</p>
@@ -469,7 +485,63 @@
                             <p>Combined with addressing modes</p>
                         </aside>
                     </section>
-                    
+                    <section>
+                        <h2>V-Blank interrupt</h2>
+                        <p>Callback every field/frame</p>
+                        <pre>
+                            <code><span class="fragment">01     .SNESNATIVEVECTOR ; WLA-DX directives
+02         NMI VBlank
+03     .ENDNATIVEVECTOR</span>
+
+<span class="fragment">04     ; Enable V-Blank
+05     lda #NMITIMEN_NMI_ENABLE
+06     sta NMITIMEN</span>
+
+<span class="fragment">07 -   wai
+08     jmp -       ; Infinite loop</span>
+
+<span class="fragment">09 VBlank:
+10     ; Callback code goes here...</span></code>
+                        </pre>
+                        <aside class="notes">
+                            <p>50 or 60 times per second</p>
+                            <p>Some time before next screen is rendered</p>
+                        </aside>
+                    </section>
+                </section>
+
+                <section>
+                    <section>
+                        <h2>Tiles</h2>
+                        <ul>
+                            <li>Used for backgrounds and sprites</li>
+                            <li>Stored in VRAM as planar bit maps</li>
+                        </ul>
+                    </section>
+                    <section>
+                        <h2>Planar bitmaps</h2>
+                        <ul>
+                            <li>2, 4 or 8 planes (layers)</li>
+                            <li></li>
+                        </ul>
+                    </section>
+                    <section>
+                        <h2>Sprites</h2>
+                        <p>Metadata for each sprite is stored in a table</p>
+                        <ul>
+                            <li>X-coordinate</li>
+                            <li>Y-coordinate</li>
+                            <li>Character number (VRAM)</li>
+                            <li>Palette number</li>
+                            <li>Priority (Z-ordering)</li>
+                            <li>Horizontal/vertical flip</li>
+                            <li>Size</li>
+                        </ul>
+                        <aside class="notes">
+                            <p>Size: 8, 16, 32, 64</p>
+                            <p>Character number is used to determine the tiles in VRAM</p>
+                        </aside>
+                    </section>
                 </section>
 
                 <section>
