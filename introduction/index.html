@@ -15,7 +15,7 @@
                     </h1>
                     <h2>Development</h2>
                     <p><small>
-                            <a href="https://michielvoo.github.io/SNES/introduction">https://michielvoo.github.io/SNES/introduction</a>
+                            <a href="https://michielvoo.github.io/SNES/introduction">michielvoo.github.io/SNES/introduction</a>
                         </small>
                     </p>
                     <aside class="notes">
@@ -126,7 +126,9 @@
                             <!-- Source:  -->
                         </figure>
                         <aside class="notes">
+                            <p>Designed by Ken Kutaragi (Sony PlayStation)</p>
                             <p>Separate PCB in early revisions</p>
+                            <p>More like midi than wav</p>
                         </aside>
                     </section>
                     <section>
@@ -251,10 +253,140 @@
                 </section>
 
                 <section>
+                    <section>
+                        <h2>Tools</h2>
+                        <figure>
+                            <img src="images/emulator-se.jpg"
+                                alt="Emulator SE"
+                                height="384" />
+                            <figcaption>Official development kit</figcaption>
+                            <!-- Source: ? -->
+                        </figure>
+                        <aside class="notes">
+                            <p>Used in the 90's</p>
+                            <p>Very rare today</p>
+                            <p>Recently on eBay for $7000 or more</p>
+                            <p>Not known to work (missing software)</p>
+                        </aside>
+                    </section>
+                    <section>
+                        <h2>Alternatives</h2>
+                        <figure>
+                            <img src="images/super-wild-card-dx.jpg"
+                                alt="Super Wild Card DX"
+                                width="512" />
+                            <figcaption>Un-official 'development kit'</figcaption>
+                            <!-- Source: ? -->
+                        </figure>
+                        <aside class="notes">
+                            <p>Load programs from floppy</p>
+                            <p>Upload programs through parallel port</p>
+                            <p>Can also dump cartridge to floppy</p>
+                            <p>Mainly used for copying</p>
+                            <p>Support software is mostly 16-bit Windows 95</p>
+                        </aside>
+                    </section>
+                </section>
+
+                <section>
+                    <section>
+                        <h2>Programming</h2>
+                        <ul>
+                            <li class="fragment">65816 assembly language</li>
+                            <li  class="fragment">Memory-mapped I/O</li>
+                        </ul>
+                        <aside class="notes">
+                            <p>Most important</p>
+                            <p>skill: assembly</p>
+                            <p>concept: memory-mapped I/O</p>
+                        </aside>
+                    </section>
+                    <section>
+                        <h2>Assembly</h2>
+                        <pre>
+clc                  ; Clear the CPU carry flag
+xce                  ; Switch to 65816 native mode
+
+.DEFINE CGDATA $2122 ; Use directive to define a symbol
+.DEFINE CGADD  $2121 ; Use directive to define a symbol
+
+stz CGADD            ; Store zero in address $2121 (bank 0)
+
+lda #$FF             ; Load the accumulator with the value 0xFF
+sta CGDATA           ; Store the accumulator value in address $2121
+lda #$7F             ; Load the accumulator with the value 0xF7
+sta CGDATA           ; Store the accumulator value in address $2121
+
+<span class="fragment">; Did you notice? One address, 2 writes (16 bits)</span>
+                        </pre>
+                        <aside class="notes">
+                            <p>Opcodes</p>
+                            <p>Addressing modes</p>
+                            <p>Directives</p>
+                            <p>DMA</p>
+                        </aside>
+                    </section>
+                    <section>
+                        <figure>
+                            <img src="images/memory-map.png"
+                                alt="Super Nintendo Memory Map" />
+                            <figcaption>Super Nintendo Memory Map</figcaption>
+                            <!-- Source: ? -->
+                        </figure>
+                        <aside class="notes">
+                            <p>Right to left, bottom to top</p>
+                            <p>Address by bank</p>
+                            <p>Mirrored regions</p>
+                            <p>RAM vs cartridge</p>
+                            <p>2000 - 2100</p>
+                        </aside>
+                    </section>
+                    <section>
+                        <h2>Ports</h2>
+                        <pre>
+lda #VMAINC_INC_H ; Increment after writing VMDATAH 
+sta VMAINC        ; Set VRAM increment mode
+
+ldx #$0400        ; Load destination address
+stx VMADD         ; Set destination address
+
+lda #$02          ; Load value (L)
+sta VMDATAL       ; Write value to port
+lda #%00000100    ; Load value (H)
+sta VMDATAH       ; Write value to port
+
+; Address #$0400 is incremented automatically to #$0401
+<span class="fragment">; Did you notice? One address, 2 writes (16-bits, L + H)</span>
+                        </pre>
+                        <aside class="notes">
+                            <p>Set write mode (optional)</p>
+                            <p>Set destination address</p>
+                            <p>Write data 'through' port</p>
+                            <p>Write to 
+                        </aside>
+                    </section>
+                    <section>
+                        <h2>Color palettes</p>
+                        <pre>
+stz CGADD
+
+                        </pre>
+                    </section>
+                </section>
+
+                <section>
+                    <h2>Code + demo?</h2>
+                    <img src="images/demo.png" alt="Super Nintendo demo program" width="512" />
+                </section>
+
+                <section>
                     <h2>Links</h2>
                     <ul>
                         <li><a href="https://github.com/michielvoo/SNES/tree/master/examples" target="_blank">Examples</a></li>
                         <li><a href="https://github.com/michielvoo/SNES/wiki" target="_blank">Documentation</a></li>
+                        <li><a href="https://github.com/vhelin/wla-dx">WLA-DX assembler</a></li>
+                        <li><a href="http://byuu.org/emulation/higan/">Higan</a> (emulator)</li>
+                        <li><a href="http://openemu.org/">OpenEMU</a> (emulator host)</li>
                     </ul>
                 </section>
             </div>
