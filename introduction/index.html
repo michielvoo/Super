@@ -247,6 +247,7 @@
                             <p>By design</p>
                             <p>Super Nintendo can yield to co-processor</p>
                             <p>Some by Nintendo, some by 3rd party publishers</p>
+                            <p>Also copy-protection</p>
                         </aside>
                     </section>
                     <section>
@@ -325,13 +326,15 @@
                         <h2>Assembly</h2>
                         <p>Opcodes and operands</p>
                         <pre>
-clc                  ; Clear the CPU carry flag
-xce                  ; Switch to 65816 native mode
+                            <code>
+01 clc                  ; Clear the CPU carry flag
+02 xce                  ; Switch to 65816 native mode
 
-.DEFINE CGDATA $2122 ; Use directive to define a named value
+03 .DEFINE CGDATA $2122 ; Use directive to define a named value
 
-lda #$FF             ; Load the accumulator with the value 0xFF
-sta CGDATA           ; Store the accumulator value in address $2121
+04 lda #$FF             ; Load the accumulator with the value 0xFF
+05 sta CGDATA           ; Store the accumulator value in address $2121
+                            </code>
                         </pre>
                         <aside class="notes">
                             <p>Opcodes</p>
@@ -344,7 +347,20 @@ sta CGDATA           ; Store the accumulator value in address $2121
                         <h2>Assembly 2</h2>
                         <p>Control flow</p>
                         <pre>
-; todo
+                            <code>
+<span class="fragment">01 ; Wait for joypad auto-read
+02 -   lda HVBJOY
+03     bit #HVBJOY_JOYREADY
+04     bne -</span>
+<span class="fragment">
+05     rep #$20   ; Reset accumulator to 16-bit
+06     lda JOY1    ; Get joypad input
+07     bit #JOY_UP ; Check if up was pressed on the D-pad
+08     bne Up</span>
+<span class="fragment">
+09     bit #JOY_DOWN ; Check if down was pressed on the D-pad
+10     bne Down</span>
+                            </code>
                         </pre>
                         <aside class="notes">
                             <p>Opcodes</p>
@@ -373,17 +389,19 @@ sta CGDATA           ; Store the accumulator value in address $2121
                         <h2>Ports</h2>
                         <p>Write color data to (CGRAM) 'through' a port</p>
                         <pre>
-<span class="fragment">; Set color 1 of palette 8 to white</span>
-<span class="fragment">lda #$81          ; Load destination address</span>
-<span class="fragment">sta CGADD         ; Set destination address (CGRAM)</span>
-<span class="fragment">lda #$FF          ; Load value (L)</span>
-<span class="fragment">sta CGDATA        ; Write value to port (CGRAM)</span>
-<span class="fragment">lda #$7F          ; Load value (H)</span>
-<span class="fragment">sta CGDATA        ; Write value to port (CGRAM)</span>
+                            <code>
+<span class="fragment">01 ; Set color 1 of palette 8 to white</span>
+<span class="fragment">02 lda #$81          ; Load destination address</span>
+<span class="fragment">03 sta CGADD         ; Set destination address (CGRAM)</span>
+<span class="fragment">04 lda #$FF          ; Load value (L)</span>
+<span class="fragment">05 sta CGDATA        ; Write value to port (CGRAM)</span>
+<span class="fragment">06 lda #$7F          ; Load value (H)</span>
+<span class="fragment">07 sta CGDATA        ; Write value to port (CGRAM)</span>
 <span class="fragment">
-; Next color...
-lda #$82          ; Load destination address
-sta CGADD         ; Set destination address (CGRAM)</span>
+08 ; Next color...
+09 lda #$82          ; Load destination address
+10 sta CGADD         ; Set destination address (CGRAM)</span>
+                            </code>
                         </pre>
                         <aside class="notes">
                             <p>(CGRAM) is not mapped into address space</p>
@@ -396,22 +414,23 @@ sta CGADD         ; Set destination address (CGRAM)</span>
                         <h2>Ports 2</h2>
                         <p>Write pixel data to (VRAM) 'through' a port</p>
                         <pre>
-<span class="fragment">lda #VMAINC_INC_H ; Increment after writing VMDATAH</span> 
-<span class="fragment">sta VMAINC        ; Set VRAM increment mode</span>
+                            <code>
+<span class="fragment">01 lda #VMAINC_INC_H ; Increment after writing VMDATAH</span> 
+<span class="fragment">02 sta VMAINC        ; Set VRAM increment mode</span>
 
-<span class="fragment">ldx #$0400        ; Load destination address</span>
-<span class="fragment">stx VMADD         ; Set destination address (VRAM)</span>
+<span class="fragment">03 ldx #$0400        ; Load destination address</span>
+<span class="fragment">04 stx VMADD         ; Set destination address (VRAM)</span>
 
-<span class="fragment">lda #%00000100    ; Load value (L)</span>
-<span class="fragment">sta VMDATAL       ; Write value to port (VRAM)</span>
-<span class="fragment">lda #%01110100    ; Load value (H)</span>
-<span class="fragment">sta VMDATAH       ; Write value to port (VRAM)</span>
+<span class="fragment">05 lda #%00000100    ; Load value (L)</span>
+<span class="fragment">06 sta VMDATAL       ; Write value to port (VRAM)</span>
+<span class="fragment">07 lda #%01110100    ; Load value (H)</span>
+<span class="fragment">08 sta VMDATAH       ; Write value to port (VRAM)</span>
 <span class="fragment">
-; Address #$0400 is now incremented automatically to #$0401
-lda #%00000111
-sta VMDATAL
-lda #%00000100
-sta VMDATAH</span>
+09 lda #%00000111
+10 sta VMDATAL       ; Address was incremented automatically to #$0401
+11 lda #%00000100
+12 sta VMDATAH</span>
+                            </code>
                         </pre>
                         <aside class="notes">
                             <p>Set write mode (optional)</p>
@@ -426,25 +445,22 @@ sta VMDATAH</span>
                         <h2>DMA</h2>
                         <p>Transfer data between cartridge and VRAM</p>
                         <pre>
-<span class="fragment">lda #%00000000    ; From A-bus to B-bus, read consecutive addresses</span>
-<span class="fragment">sta DMAP0         ; Set DMA control</span>
-
-<span class="fragment">lda #(CGDATA - BBUS_OFFSET)
-sta BBAD0         ; Set DMA destination (8-bit B-bus is A-bus - $2100)</span>
-
-<span class="fragment">lda #Color        ; Address of the defined bytes at the Color label
-sta A1T0          ; Set DMA source (A-bus)</span>
-
-<span class="fragment">lda #:Color       ; Get the bank of some defined bytes at the Color label
-sta A1B0          ; Set the bank to use during DMA</span>
-
-<span class="fragment">lda #$02
-sta DAS0L         ; Set DMA transfer size (number of bytes)
-stz DAS0H</span>
-
-<span class="fragment">stz CGADD         ; Set starting address
-lda #$01
-sta MDMAEN        ; Initialize DMA transfer</span>
+                            <code>
+<span class="fragment">01 lda #%00000000    ; From A-bus to B-bus, read consecutive addresses</span>
+<span class="fragment">02 sta DMAP0         ; Set DMA control</span>
+<span class="fragment">03 lda #(CGDATA - BBUS_OFFSET)
+04 sta BBAD0         ; Set DMA destination (8-bit B-bus is A-bus - $2100)</span>
+<span class="fragment">05 lda #Color        ; Address of the defined bytes at the Color label
+06 sta A1T0          ; Set DMA source (A-bus)</span>
+<span class="fragment">07 lda #:Color       ; Get the bank of some defined bytes at the Color label
+08 sta A1B0          ; Set the bank to use during DMA</span>
+<span class="fragment">09 lda #$02
+10 sta DAS0L         ; Set DMA transfer size (number of bytes)
+11 stz DAS0H</span>
+<span class="fragment">12 stz CGADD         ; Set starting address
+13 lda #$01
+14 sta MDMAEN        ; Initialize DMA transfer</span>
+                            </code>
                         </pre>
                         <aside class="notes">
                             <p>Transfer between A-bus and B-bus</p>
@@ -482,7 +498,10 @@ sta MDMAEN        ; Initialize DMA transfer</span>
                 history: true,
                 transition: 'slide',
                 dependencies: [
-                    { src: 'plugin/notes/notes.js', async: true }
+                    {
+                        src: 'plugin/notes/notes.js', 
+                        async: true
+                    }
                 ]
             });
         </script>
