@@ -2,6 +2,7 @@
 <html>
     <head>
         <meta charset="utf-8" />
+        <title>Super Nintendo development</title>
         <link rel="stylesheet" type="text/css" href="stylesheets/reveal.css" />
         <link rel="stylesheet" type="text/css" href="stylesheets/black.css" />
     </head>
@@ -9,10 +10,10 @@
         <div class="reveal">
             <div class="slides">
                 <section>
-                    <h1>
+                    <h2>
                         Super Nintendo <br/>
                         スーパーファミコン
-                    </h1>
+                    </h2>
                     <h2>Development</h2>
                     <p><small>
                             <a href="https://michielvoo.github.io/SNES/introduction">michielvoo.github.io/SNES/introduction</a>
@@ -61,20 +62,26 @@
 
                 <section>
                     <h2>Hardware</h2>
-                    <ul>
-                        
-                        <li class="fragment">3 'processing units'
+                    <div class="layout" style="display: flex">
+                        <div class="first column" style="width: 50%">
+                            <img src="images/super-famicom-pcb.png" alt="Super Famicom printed circuit board" />
+                        </div>
+                        <div class="last column" style="width: 50%; text-align: left; padding-left: 1em;">
                             <ul>
-                                <li class="fragment">Central Processing Unit</li>
-                                <li class="fragment">Audio Processing Unit</li>
-                                <li class="fragment">Picture Processing Unit</li>
+                                <li>3 'processing units'
+                                    <ul>
+                                        <li class="fragment">Central Processing Unit</li>
+                                        <li class="fragment">Audio Processing Unit</li>
+                                        <li class="fragment">Picture Processing Unit</li>
+                                    </ul>
+                                </li>
+                                <li class="fragment">128KB RAM</li>
+                                <li class="fragment">Memory-mapped I/O</li>
+                                <li class="fragment">V/H-Blank interrupts</li>
+                                <li class="fragment">DMA</li>
                             </ul>
-                        </li>
-                        <li class="fragment">128KB RAM</li>
-                        <li class="fragment">Memory-mapped I/O</li>
-                        <li class="fragment">V/H-Blank interrupts</li>
-                        <li class="fragment">DMA</li>
-                    </ul>
+                        </div>
+                    </div>
                     <aside class="notes">
                         <p>3 subsystems</p>
                         <p>Direct access to subsystems and IO: cartridge, controller, ext port</p>
@@ -96,20 +103,29 @@
                     <section>
                         <h2>S-CPU</h2>
                         <ul>
+                            <li class="fragment">Registers
+                                <ul>
+                                    <li class="fragment">3 general-purpose (A, X & Y)</li>
+                                    <li class="fragment">1 status</li>
+                                    <li class="fragment">2 addressing (D 0-offset and DB bank)</li>
+                                    <li class="fragment">Stack pointer (S)</li>
+                                    <li class="fragment">Program counter (PC)</li>
+                                </ul>
+                            </li>
                             <li class="fragment">8- or 16-bit registers</li>
-                            <li class="fragment">24-bit addressable memory space</li>
+                            <li class="fragment">24-bit address space</li>
                             <li class="fragment">6502 emulation mode</li>
                             <li class="fragment"><hr />Max 3.58 MHz</li>
-                            <li class="fragment">24-bit A-bus and 8-bit B-bus</li>
                             <li class="fragment">Multiplication and division</li>
                         </ul>
                         <aside class="notes">
+                            <p>D: offset for direct addressing</p>
+                            <p>B: select bank 0 - 255</p>
                             <p>Register size switch at will</p>
                             <p>16MB address space, but system has 128KB RAM</p>
                             <p>6502 used in NES and Apple IIGS</p>
                             <hr />
                             <p>Relatively slow</p>
-                            <p>DMA between A-bus and B-bus</p>
                         </aside>
                     </section>
                     <!-- /S-CPU -->
@@ -153,7 +169,6 @@
                         </figure>
                         <aside class="notes">
                             <p>Consists of 2 processors</p>
-                            
                         </aside>
                     </section>
                     <section>
@@ -226,6 +241,7 @@
                         <img src="images/super-fx-chip.jpg"
                             alt="Super FX chip"
                             width="512" />
+                        <p>Installed on cartridge</p>
                         <aside class="notes">
                             <p>Embedded in cartridge</p>
                             <p>By design</p>
@@ -291,33 +307,44 @@
                 <section>
                     <section>
                         <h2>Programming</h2>
+                        <p>Skills and concepts</p>
                         <ul>
                             <li class="fragment">65816 assembly language</li>
                             <li  class="fragment">Memory-mapped I/O</li>
+                            <li  class="fragment">Read/write ports and DMA</li>
+                            <li  class="fragment">V-Blank interrupt</li>
                         </ul>
                         <aside class="notes">
                             <p>Most important</p>
                             <p>skill: assembly</p>
                             <p>concept: memory-mapped I/O</p>
+                            <p>concept: V-Blank</p>
                         </aside>
                     </section>
                     <section>
                         <h2>Assembly</h2>
+                        <p>Opcodes and operands</p>
                         <pre>
 clc                  ; Clear the CPU carry flag
 xce                  ; Switch to 65816 native mode
 
-.DEFINE CGDATA $2122 ; Use directive to define a symbol
-.DEFINE CGADD  $2121 ; Use directive to define a symbol
-
-stz CGADD            ; Store zero in address $2121 (bank 0)
+.DEFINE CGDATA $2122 ; Use directive to define a named value
 
 lda #$FF             ; Load the accumulator with the value 0xFF
 sta CGDATA           ; Store the accumulator value in address $2121
-lda #$7F             ; Load the accumulator with the value 0xF7
-sta CGDATA           ; Store the accumulator value in address $2121
-
-<span class="fragment">; Did you notice? One address, 2 writes (16 bits)</span>
+                        </pre>
+                        <aside class="notes">
+                            <p>Opcodes</p>
+                            <p>Addressing modes</p>
+                            <p>Directives</p>
+                            <p>DMA</p>
+                        </aside>
+                    </section>
+                    <section>
+                        <h2>Assembly 2</h2>
+                        <p>Control flow</p>
+                        <pre>
+; todo
                         </pre>
                         <aside class="notes">
                             <p>Opcodes</p>
@@ -335,43 +362,98 @@ sta CGDATA           ; Store the accumulator value in address $2121
                         </figure>
                         <aside class="notes">
                             <p>Right to left, bottom to top</p>
-                            <p>Address by bank</p>
-                            <p>Mirrored regions</p>
-                            <p>RAM vs cartridge</p>
-                            <p>2000 - 2100</p>
+                            <p>Address by bank (using CPU DB register)</p>
+                            <p>Mirrored regions, sometimes different speed</p>
+                            <p>Contiguous RAM in bank 7E + 7F</p>
+                            <p>PPU, controller, DMA</p>
+                            <p>Cartridge size is limited by map (but workarounds)</p>
                         </aside>
                     </section>
                     <section>
                         <h2>Ports</h2>
+                        <p>Write color data to (CGRAM) 'through' a port</p>
                         <pre>
-lda #VMAINC_INC_H ; Increment after writing VMDATAH 
-sta VMAINC        ; Set VRAM increment mode
-
-ldx #$0400        ; Load destination address
-stx VMADD         ; Set destination address
-
-lda #$02          ; Load value (L)
-sta VMDATAL       ; Write value to port
-lda #%00000100    ; Load value (H)
-sta VMDATAH       ; Write value to port
-
-; Address #$0400 is incremented automatically to #$0401
-<span class="fragment">; Did you notice? One address, 2 writes (16-bits, L + H)</span>
+<span class="fragment">; Set color 1 of palette 8 to white</span>
+<span class="fragment">lda #$81          ; Load destination address</span>
+<span class="fragment">sta CGADD         ; Set destination address (CGRAM)</span>
+<span class="fragment">lda #$FF          ; Load value (L)</span>
+<span class="fragment">sta CGDATA        ; Write value to port (CGRAM)</span>
+<span class="fragment">lda #$7F          ; Load value (H)</span>
+<span class="fragment">sta CGDATA        ; Write value to port (CGRAM)</span>
+<span class="fragment">
+; Next color...
+lda #$82          ; Load destination address
+sta CGADD         ; Set destination address (CGRAM)</span>
                         </pre>
                         <aside class="notes">
-                            <p>Set write mode (optional)</p>
-                            <p>Set destination address</p>
-                            <p>Write data 'through' port</p>
-                            <p>Write to 
+                            <p>(CGRAM) is not mapped into address space</p>
+                            <p>Palette 0, color 1 and then color 2</p>
+                            <p>Example of a double-write port</p>
+                            <p>Have to change the address for the next color</p>
                         </aside>
                     </section>
                     <section>
-                        <h2>Color palettes</p>
+                        <h2>Ports 2</h2>
+                        <p>Write pixel data to (VRAM) 'through' a port</p>
                         <pre>
-stz CGADD
+<span class="fragment">lda #VMAINC_INC_H ; Increment after writing VMDATAH</span> 
+<span class="fragment">sta VMAINC        ; Set VRAM increment mode</span>
 
+<span class="fragment">ldx #$0400        ; Load destination address</span>
+<span class="fragment">stx VMADD         ; Set destination address (VRAM)</span>
+
+<span class="fragment">lda #%00000100    ; Load value (L)</span>
+<span class="fragment">sta VMDATAL       ; Write value to port (VRAM)</span>
+<span class="fragment">lda #%01110100    ; Load value (H)</span>
+<span class="fragment">sta VMDATAH       ; Write value to port (VRAM)</span>
+<span class="fragment">
+; Address #$0400 is now incremented automatically to #$0401
+lda #%00000111
+sta VMDATAL
+lda #%00000100
+sta VMDATAH</span>
                         </pre>
+                        <aside class="notes">
+                            <p>Set write mode (optional)</p>
+                            <p>VMAINC Video Memory Address Increment Mode</p>
+                            <p>Set destination address</p>
+                            <p>Write data 'through' port</p>
+                            <p>Don't have to change the address for consecutive bytes</p>
+                            <p>Notice syntax hex vs. binary</p>
+                        </aside>
                     </section>
+                    <section>
+                        <h2>DMA</h2>
+                        <p>Transfer data between cartridge and VRAM</p>
+                        <pre>
+<span class="fragment">lda #%00000000    ; From A-bus to B-bus, read consecutive addresses</span>
+<span class="fragment">sta DMAP0         ; Set DMA control</span>
+
+<span class="fragment">lda #(CGDATA - BBUS_OFFSET)
+sta BBAD0         ; Set DMA destination (8-bit B-bus is A-bus - $2100)</span>
+
+<span class="fragment">lda #Color        ; Address of the defined bytes at the Color label
+sta A1T0          ; Set DMA source (A-bus)</span>
+
+<span class="fragment">lda #:Color       ; Get the bank of some defined bytes at the Color label
+sta A1B0          ; Set the bank to use during DMA</span>
+
+<span class="fragment">lda #$02
+sta DAS0L         ; Set DMA transfer size (number of bytes)
+stz DAS0H</span>
+
+<span class="fragment">stz CGADD         ; Set starting address
+lda #$01
+sta MDMAEN        ; Initialize DMA transfer</span>
+                        </pre>
+                        <aside class="notes">
+                            <p>Transfer between A-bus and B-bus</p>
+                            <p>Skips (pauses) the CPU</p>
+                            <p>Reason for ports in the address space</p>
+                            <p>Combined with addressing modes</p>
+                        </aside>
+                    </section>
+                    
                 </section>
 
                 <section>
