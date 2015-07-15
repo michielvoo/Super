@@ -174,7 +174,7 @@
                     <section>
                         <div class="layout" style="display: flex">
                             <div class="first column" style="width: 50%">
-                                <img src="images/super-mario-world-special.png"
+                                <img src="images/super-mario-world.png"
                                     alt="Zelda"
                                     width="512" />
                                 <!-- Source: http://www.ign.com/boards/threads/favourite-views-in-the-series.454221187/ -->
@@ -515,15 +515,30 @@
                         <h2>Tiles</h2>
                         <ul>
                             <li>Used for backgrounds and sprites</li>
-                            <li>Stored in VRAM as planar bit maps</li>
+                            <li>Stored in VRAM as 'characters'</li>
+                            <li>8 by 8 planar bitmaps</li>
                         </ul>
                     </section>
                     <section>
                         <h2>Planar bitmaps</h2>
                         <ul>
                             <li>2, 4 or 8 planes (layers)</li>
-                            <li></li>
+                            <li>1 or 0 in each plane is combined</li>
+                            <li>Value determines color</li>
                         </ul>
+                        <pre>
+                            <code>
+        Plane A
+         0 | 1      Plane B
+         - + -       1 | 1       Result
+         1 | 0       - + -       1 | 2
+                     0 | 0       - + -
+                                 1 | 0
+                            </code>
+                        </pre>
+                        <aside class="notes">
+                            <p>4, 16 or 256 possible values</p>
+                        </aside>
                     </section>
                     <section>
                         <h2>Sprites</h2>
@@ -540,6 +555,22 @@
                         <aside class="notes">
                             <p>Size: 8, 16, 32, 64</p>
                             <p>Character number is used to determine the tiles in VRAM</p>
+                        </aside>
+                    </section>
+                    <section>
+                        <h2>Backgrounds</h2>
+                        <p>Depends on background mode</p>
+                        <p>Consist of tilemaps of 32 by 32 tiles</p>
+                        <ul>
+                            <li>Character number (VRAM)</li>
+                            <li>Palette number</li>
+                            <li>Priority (Z-ordering)</li>
+                            <li>Horizontal/vertical flip</li>
+                        </ul>
+                        <aside class="notes">
+                            <p>Up to 4 backgrounds, depending on mode</p>
+                            <p>Size of background and tiles can be set</p>
+                            <p>May require 1, 2 or 4 tilemaps</p>
                         </aside>
                     </section>
                 </section>
