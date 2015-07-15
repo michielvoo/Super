@@ -536,8 +536,8 @@
                         <h2>Planar bitmaps</h2>
                         <ul>
                             <li>2, 4 or 8 planes (layers)</li>
-                            <li>1 or 0 in each plane is combined</li>
-                            <li>Value determines color</li>
+                            <li>1 or 0 from each separate plane is combined</li>
+                            <li>Resulting value determines color</li>
                         </ul>
                         <pre>
                             <code>
@@ -568,6 +568,7 @@
                         <aside class="notes">
                             <p>Size: 8, 16, 32, 64</p>
                             <p>Character number is used to determine the tiles in VRAM</p>
+                            <p>Palette swap can change colors fast</p>
                         </aside>
                     </section>
                     <section>
@@ -584,6 +585,7 @@
                             <p>Up to 4 backgrounds, depending on mode</p>
                             <p>Size of background and tiles can be set</p>
                             <p>May require 1, 2 or 4 tilemaps</p>
+                            <p>Palette swap can change colors fast</p>
                         </aside>
                     </section>
                 </section>
