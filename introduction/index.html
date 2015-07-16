@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta charset="utf-8" />
-        <title>Super Nintendo development</title>
+        <title>Super Nintendo スーパーファミコン development</title>
         <link rel="stylesheet" type="text/css" href="stylesheets/reveal.css" />
         <link rel="stylesheet" type="text/css" href="stylesheets/black.css" />
     </head>
@@ -384,18 +384,18 @@
                         <h2>Assembly 2</h2>
                         <p>Control flow</p>
                         <pre>
-                            <code><span class="fragment">01 ; Wait for joypad auto-read
+                            <code>01 ; Wait for joypad auto-read
 02 -   lda HVBJOY
 03     bit #HVBJOY_JOYREADY
-04     bne -</span>
-<span class="fragment">
+04     bne -
+
 05     rep #$20   ; Reset accumulator to 16-bit
 06     lda JOY1    ; Get joypad input
 07     bit #JOY_UP ; Check if up was pressed on the D-pad
-08     bne Up</span>
-<span class="fragment">
+08     bne Up
+
 09     bit #JOY_DOWN ; Check if down was pressed on the D-pad
-10     bne Down</span></code>
+10     bne Down</code>
                         </pre>
                         <aside class="notes">
                             <p>Opcodes</p>
@@ -424,17 +424,17 @@
                         <h2>Ports</h2>
                         <p>Write color data to (CGRAM) 'through' a port</p>
                         <pre>
-                            <code><span class="fragment">01 ; Set color 1 of palette 8 to white</span>
-<span class="fragment">02 lda #$81          ; Load destination address</span>
-<span class="fragment">03 sta CGADD         ; Set destination address (CGRAM)</span>
-<span class="fragment">04 lda #$FF          ; Load value (L)</span>
-<span class="fragment">05 sta CGDATA        ; Write value to port (CGRAM)</span>
-<span class="fragment">06 lda #$7F          ; Load value (H)</span>
-<span class="fragment">07 sta CGDATA        ; Write value to port (CGRAM)</span>
-<span class="fragment">
+                            <code>01 ; Set color 1 of palette 8 to white
+02 lda #$81          ; Load destination address
+03 sta CGADD         ; Set destination address (CGRAM)
+04 lda #$FF          ; Load value (L)
+05 sta CGDATA        ; Write value to port (CGRAM)
+06 lda #$7F          ; Load value (H)
+07 sta CGDATA        ; Write value to port (CGRAM)
+
 08 ; Next color...
 09 lda #$82          ; Load destination address
-10 sta CGADD         ; Set destination address (CGRAM)</span></code>
+10 sta CGADD         ; Set destination address (CGRAM)</code>
                         </pre>
                         <aside class="notes">
                             <p>(CGRAM) is not mapped into address space</p>
@@ -447,21 +447,21 @@
                         <h2>Ports 2</h2>
                         <p>Write pixel data to (VRAM) 'through' a port</p>
                         <pre>
-                            <code><span class="fragment">01 lda #VMAINC_INC_H ; Increment after writing VMDATAH</span> 
-<span class="fragment">02 sta VMAINC        ; Set VRAM increment mode</span>
+                            <code>01 lda #VMAINC_INC_H ; Increment after writing VMDATAH 
+02 sta VMAINC        ; Set VRAM increment mode
 
-<span class="fragment">03 ldx #$0400        ; Load destination address</span>
-<span class="fragment">04 stx VMADD         ; Set destination address (VRAM)</span>
+03 ldx #$0400        ; Load destination address
+04 stx VMADD         ; Set destination address (VRAM)
 
-<span class="fragment">05 lda #%00000100    ; Load value (L)</span>
-<span class="fragment">06 sta VMDATAL       ; Write value to port (VRAM)</span>
-<span class="fragment">07 lda #%01110100    ; Load value (H)</span>
-<span class="fragment">08 sta VMDATAH       ; Write value to port (VRAM)</span>
-<span class="fragment">
+05 lda #%00000100    ; Load value (L)
+06 sta VMDATAL       ; Write value to port (VRAM)
+07 lda #%01110100    ; Load value (H)
+08 sta VMDATAH       ; Write value to port (VRAM)
+
 09 lda #%00000111
 10 sta VMDATAL       ; Address was incremented automatically to #$0401
 11 lda #%00000100
-12 sta VMDATAH</span></code>
+12 sta VMDATAH</code>
                         </pre>
                         <aside class="notes">
                             <p>Set write mode (optional)</p>
@@ -476,20 +476,20 @@
                         <h2>DMA</h2>
                         <p>Transfer data between cartridge and VRAM</p>
                         <pre>
-                            <code><span class="fragment">01 lda #%00000000    ; From A-bus to B-bus, read consecutive addresses</span>
-<span class="fragment">02 sta DMAP0         ; Set DMA control</span>
-<span class="fragment">03 lda #(CGDATA - BBUS_OFFSET)
-04 sta BBAD0         ; Set DMA destination (8-bit B-bus is A-bus - $2100)</span>
-<span class="fragment">05 lda #Color        ; Address of the defined bytes at the Color label
-06 sta A1T0          ; Set DMA source (A-bus)</span>
-<span class="fragment">07 lda #:Color       ; Get the bank of some defined bytes at the Color label
-08 sta A1B0          ; Set the bank to use during DMA</span>
-<span class="fragment">09 lda #$02
+                            <code>01 lda #%00000000    ; From A-bus to B-bus, read consecutive addresses
+02 sta DMAP0         ; Set DMA control
+03 lda #(CGDATA - BBUS_OFFSET)
+04 sta BBAD0         ; Set DMA destination (8-bit B-bus is A-bus - $2100)
+05 lda #Color        ; Address of the defined bytes at the Color label
+06 sta A1T0          ; Set DMA source (A-bus)
+07 lda #:Color       ; Get the bank of some defined bytes at the Color label
+08 sta A1B0          ; Set the bank to use during DMA
+09 lda #$02
 10 sta DAS0L         ; Set DMA transfer size (number of bytes)
-11 stz DAS0H</span>
-<span class="fragment">12 stz CGADD         ; Set starting address
+11 stz DAS0H
+12 stz CGADD         ; Set starting address
 13 lda #$01
-14 sta MDMAEN        ; Initialize DMA transfer</span></code>
+14 sta MDMAEN        ; Initialize DMA transfer</code>
                         </pre>
                         <aside class="notes">
                             <p>Transfer between A-bus and B-bus</p>
@@ -502,19 +502,19 @@
                         <h2>V-Blank interrupt</h2>
                         <p>Callback every field/frame</p>
                         <pre>
-                            <code><span class="fragment">01     .SNESNATIVEVECTOR ; WLA-DX directives
+                            <code>01     .SNESNATIVEVECTOR ; WLA-DX directives
 02         NMI VBlank
-03     .ENDNATIVEVECTOR</span>
+03     .ENDNATIVEVECTOR
 
-<span class="fragment">04     ; Enable V-Blank
+04     ; Enable V-Blank
 05     lda #NMITIMEN_NMI_ENABLE
-06     sta NMITIMEN</span>
+06     sta NMITIMEN
 
-<span class="fragment">07 -   wai
-08     jmp -       ; Infinite loop</span>
+07 -   wai
+08     jmp -       ; Infinite loop
 
-<span class="fragment">09 VBlank:
-10     ; Callback code goes here...</span></code>
+09 VBlank:
+10     ; Callback code goes here...</code>
                         </pre>
                         <aside class="notes">
                             <p>50 or 60 times per second</p>
