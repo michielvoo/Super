@@ -336,9 +336,11 @@
                             <p>Upload programs through parallel port</p>
                             <p>Can also dump cartridge to floppy</p>
                             <p>Mainly used for copying</p>
+                            <p>No debugger</p>
                             <p>Support software is mostly 16-bit Windows 95</p>
                         </aside>
                     </section>
+                    <!-- /Enhancements -->
                 </section>
 
                 <section>
@@ -518,20 +520,41 @@
                             <p>Some time before next screen is rendered</p>
                         </aside>
                     </section>
+                    <!-- /Programming -->
                 </section>
 
                 <section>
                     <section>
-                        <h2>Tiles</h2>
+                        <h2>Programming 2</h2>
+                        <p>Using PPU features</p>
                         <ul>
-                            <li>Used for backgrounds and sprites</li>
-                            <li>Stored in VRAM as 'characters'</li>
-                            <li>8 by 8 planar bitmaps</li>
+                            <li class="fragment">Colors</li>
+                            <li class="fragment">Tiles</li>
+                            <li class="fragment">Sprites</li>
+                            <li class="fragment">Backgrounds</li>
                         </ul>
                     </section>
                     <section>
-                        <h2>Planar bitmaps</h2>
+                        <h2>Colors</h2>
                         <ul>
+                            <li>Stored CGRAM (256 × 15bits)</li>
+                            <li>16 palettes</li>
+                            <li>16 colors per palette</li>
+                        </ul>
+                    </section>
+                    <section>
+                        <h2>Tiles</h2>
+                        <ul>
+                            <li>Used for backgrounds and sprites</li>
+                            <li>Stored in VRAM (64KB) as 'characters'</li>
+                            <li>Planar bitmaps</li>
+                            <li>8 by 8 pixels</li>
+                        </ul>
+                    </section>
+                    <section>
+                        <h2>Characters</h2>
+                        <ul>
+                            <li>Planar bitmaps</li>
                             <li>2, 4 or 8 planes (layers)</li>
                             <li>1 or 0 from each separate plane is combined</li>
                             <li>Resulting value determines color</li>
@@ -552,7 +575,7 @@
                     </section>
                     <section>
                         <h2>Sprites</h2>
-                        <p>Metadata for each sprite is stored in a table</p>
+                        <p>Metadata for each sprite is stored in a OAM (544 bytes)</p>
                         <ul>
                             <li>X-coordinate</li>
                             <li>Y-coordinate</li>
