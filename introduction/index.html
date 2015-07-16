@@ -65,7 +65,7 @@
                         </div>
                         <div class="last column" style="width: 50%; text-align: left; padding-left: 1em;">
                             <ul>
-                                <li>3 'processing units'
+                                <li class="fragment">3 'processing units'
                                     <ul>
                                         <li class="fragment">Central Processing Unit</li>
                                         <li class="fragment">Audio Processing Unit</li>
@@ -101,12 +101,12 @@
                         <h2>S-CPU</h2>
                         <ul>
                             <li class="fragment">Registers
-                                <ul>
-                                    <li class="fragment">3 general-purpose (A, X & Y)</li>
-                                    <li class="fragment">1 status</li>
-                                    <li class="fragment">2 addressing (D 0-offset and DB bank)</li>
-                                    <li class="fragment">Stack pointer (S)</li>
-                                    <li class="fragment">Program counter (PC)</li>
+                                <ul class="fragment">
+                                    <li>3 general-purpose (A, X & Y)</li>
+                                    <li>1 status</li>
+                                    <li>2 addressing (D & DB)</li>
+                                    <li>Stack pointer (S)</li>
+                                    <li>Program counter (PC)</li>
                                 </ul>
                             </li>
                             <li class="fragment">8- or 16-bit registers</li>
@@ -117,8 +117,8 @@
                         </ul>
                         <aside class="notes">
                             <p>D: offset for direct addressing</p>
-                            <p>B: select bank 0 - 255</p>
-                            <p>Register size switch at will</p>
+                            <p>DB: select bank 0 - 255</p>
+                            <p>Register size: switch at will</p>
                             <p>16MB address space, but system has 128KB RAM</p>
                             <p>6502 used in NES and Apple IIGS</p>
                             <hr />
@@ -145,6 +145,7 @@
                         </aside>
                     </section>
                     <section>
+                        <h2>S-APU</h2>
                         <iframe width="512" height="384" src="https://www.youtube.com/embed/RDMWp1oLoA0?start=220" frameborder="0"></iframe>
                         <p>Musical scores</p>
                         <aside class="notes">
@@ -169,6 +170,7 @@
                         </aside>
                     </section>
                     <section>
+                        <h2>S-PPU</h2>
                         <div class="layout" style="display: flex">
                             <div class="first column" style="width: 50%">
                                 <img src="images/super-mario-world.png"
@@ -177,7 +179,7 @@
                                 <!-- Source: http://www.ign.com/boards/threads/favourite-views-in-the-series.454221187/ -->
                             </div>
                             <div class="last column" style="width: 50%; text-align: left; padding-left: 1em;">
-                                <p>240p @ 60FPS</p>
+                                <p class="fragment">240p @ 60FPS</p>
                                 <p class="fragment">32K colors</p>
                                 <p class="fragment">16 palettes &times; 16 colors</p>
                                 <p class="fragment">4 background layers</p>
@@ -186,13 +188,15 @@
                             </div>
                         </div>
                         <aside class="notes">
+                            <p>240p has scan lines</p>
+                            <p>Some games sometimes output 480i</p>
                             <p>8 background modes</p>
                             <p>Sprites up to 64 by 64 pixels</p>
                             <p>256 pixels by 224 lines</p>
                         </aside>
                     </section>
-
                     <section>
+                        <h2>S-PPU</h2>
                         <figure>
                             <img src="images/super-mario-world-transparency.png"
                                 alt="Secret of Mana"
@@ -206,6 +210,7 @@
                         </aside>
                     </section>
                     <section>
+                        <h2>S-PPU</h2>
                         <figure>
                             <img src="images/super-mario-world-flying.gif"
                                 alt="Super Mario World scrolling"
@@ -219,6 +224,7 @@
                         </aside>
                     </section>
                     <section>
+                        <h2>S-PPU</h2>
                         <figure>
                             <img src="images/super-mario-world-window-mask.gif"
                                 alt="Super Mario World window mask"
@@ -232,6 +238,7 @@
                         </aside>
                     </section>
                     <section>
+                        <h2>S-PPU</h2>
                         <figure>
                             <img src="images/super-mario-world-mosaic.gif"
                                 alt="Super Mario World mosaic"
@@ -244,6 +251,7 @@
                         </aside>
                     </section>
                     <section>
+                        <h2>S-PPU</h2>
                         <figure>
                             <img src="images/super-mario-world-bowser-mode-7.gif"
                                 alt="F-Zero"
@@ -274,11 +282,12 @@
                         </aside>
                     </section>
                     <section>
+                        <h2>Super FX</h2>
                         <figure>
                             <img src="images/star-fox.gif"
                                 alt="Star Fox"
                                 width="512" />
-                            <figcaption>Super FX</figcaption>
+                            <figcaption>Star Fox</figcaption>
                             <!-- Source: https://giphy.com/gifs/video-games-nintendo-snes-67c6xTeKCxXqM -->
                         </figure>
                         <aside class="notes">
@@ -305,7 +314,7 @@
                                     <!-- Source: ? -->
                                 </figure>
                             </div>
-                            <div class="last column" style="width: 50%; text-align: left; padding-left: 1em;">
+                            <div class="last column" style="width: 50%; padding-left: 1em;">
                                 <figure>
                                     <img src="images/sf-debugger.jpg"
                                         alt="SF Debugger"
@@ -323,14 +332,28 @@
                         </aside>
                     </section>
                     <section>
-                        <h2>Alternatives</h2>
-                        <figure>
-                            <img src="images/super-wild-card-dx.jpg"
-                                alt="Super Wild Card DX"
-                                width="512" />
-                            <figcaption>Un-official 'development kit'</figcaption>
-                            <!-- Source: ? -->
-                        </figure>
+                        <h2>Alternative</h2>
+                        <p>'development kits'</p>
+                        <div class="layout" style="display: flex">
+                            <div class="first column" style="width: 50%">
+                                <figure>
+                                    <img src="images/super-wild-card-dx.jpg"
+                                        alt="Super Wild Card"
+                                        height="384" />
+                                    <figcaption>Super Wild Card</figcaption>
+                                    <!-- Source: ? -->
+                                </figure>
+                            </div>
+                            <div class="last column" style="width: 50%; padding-left: 1em;">
+                                <figure>
+                                    <img src="images/super-wild-card-screen.gif"
+                                        alt="Super Wild Card"
+                                        height="384" />
+                                    <figcaption>Runs programs from floppy</figcaption>
+                                    <!-- Source: ? -->
+                                </figure>
+                            </div>
+                        </div>
                         <aside class="notes">
                             <p>Load programs from floppy</p>
                             <p>Upload programs through parallel port</p>
