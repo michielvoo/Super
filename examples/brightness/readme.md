@@ -1,5 +1,7 @@
 This program changes the brightness of the display when you press up or down on the D-pad.
 
+(Does not work on real hardware yet!)
+
 ![screenshot](screenshot.png?raw=true "screenshot")
 
 The program doesn't use any background layers or sprites, it simply sets color 0 of palette 0 (at CGRAM address `$00`) to white. This color is visible by default when no background layers are active.

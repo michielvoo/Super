@@ -1,5 +1,7 @@
 This program allows changing the horizontal and vertical offset of background layer 1 using the D-pad.
 
+(Does not work on real hardware yet!)
+
 ![screenshot](screenshot.png?raw=true "screenshot")
 
 The program first sets color 1 of palette 0 to orange. This color will be used by the background tiles.

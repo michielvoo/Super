@@ -1,5 +1,7 @@
 This program uses a timed interrupt handler to change the backdrop color twice every frame.
 
+(Does not work 100% correct on real hardware yet!)
+
 ![screenshot](screenshot.png?raw=true "screenshot")
 
 The program first clears the interrupt flag in the `P` register using the `cli` instruction, then sets the backdrop color to its initial value.

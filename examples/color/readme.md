@@ -1,5 +1,7 @@
 This program changes the background color when you press the A, B, X or Y button.
 
+(Does not work on real hardware yet!)
+
 ![screenshot](screenshot.png?raw=true "screenshot")
 
 The program uses only color 0 of palette 0, stored at address `$00` in CGRAM. This color is the 'transparant' color and is visible when no background layers are active (nothing is set in the `TM` or `TD` registers). The program sets this color to white (15-bit value `#%0111 1111 1111 1111`), then turns on the screen on full brightness in `INIDISP`. 
