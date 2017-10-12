@@ -1,13 +1,1 @@
-wiki/
 .DS_Store
-[Hh]ardware
-link.txt
-[Ss]creenshots
-upload.sh
-.python-version
-*.lst
-*.o
-*.pyc
-*.rom
-*.sublime-workspace
-*.sym
